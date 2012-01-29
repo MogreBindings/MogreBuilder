@@ -3,12 +3,15 @@ using System.IO;
 
 namespace Mogre.Builder.Tasks
 {
+    /// <summary>
+    /// Looks for the Ogre source directory.
+    /// </summary>
     class CheckTargetDir : Task
     {
         private string targetDir;
 
-        public CheckTargetDir(string targetDir, OutputManager outputMgr)
-            : base(outputMgr)
+        public CheckTargetDir(string targetDir, IOutputManager outputManager)
+            : base(outputManager)
         {
             this.targetDir = targetDir;
         }
@@ -42,7 +45,7 @@ namespace Mogre.Builder.Tasks
             if (found != 3)
                 throw new UserException("Target directory does not appear to be the root of a Mogre code tree.");
 
-            outputMgr.Info(string.Format("Target Directory: {0}", Directory.GetCurrentDirectory()));
+            outputManager.Info(string.Format("Target Directory: {0}", Directory.GetCurrentDirectory()));
         }
     }
 }

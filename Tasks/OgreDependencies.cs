@@ -8,7 +8,7 @@ namespace Mogre.Builder.Tasks
 {
     class OgreDependencies : MsBuildTask
     {
-        public OgreDependencies(OutputManager outputMgr, MsBuildManager msBuildMgr) : base(outputMgr, msBuildMgr) { }
+        public OgreDependencies(IOutputManager outputMgr, MsBuildManager msBuildMgr) : base(outputMgr, msBuildMgr) { }
 
         public override string ID          { get { return "ogre:dependencies"; } }
         public override string Name        { get { return "Handling Ogre dependencies"; } }
@@ -23,7 +23,7 @@ namespace Mogre.Builder.Tasks
             }
             else
             {
-                outputMgr.Info("Ogre dependencies project appears to exist - no need to download");
+                outputManager.Info("Ogre dependencies project appears to exist - no need to download");
             }
 
             // Build the Ogre dependencies if necessary.
@@ -32,7 +32,7 @@ namespace Mogre.Builder.Tasks
 
         private void GetOgreDependencies()
         {
-            outputMgr.Info("Downloading Ogre dependencies");
+            outputManager.Info("Downloading Ogre dependencies");
 
             try
             {
@@ -61,7 +61,7 @@ namespace Mogre.Builder.Tasks
 
             try
             {
-                outputMgr.Info("Unpacking Ogre dependencies");
+                outputManager.Info("Unpacking Ogre dependencies");
                 var zipFile = new ZipFile(@"Main\OgreSrc\ogre\Dependencies.zip");
                 zipFile.ExtractAll(@"Main\OgreSrc\ogre");
                 zipFile.Dispose();
@@ -76,9 +76,9 @@ namespace Mogre.Builder.Tasks
 
         private void BuildOgreDependencies()
         {
-            outputMgr.Info("Building Ogre dependencies (Debug)");
+            outputManager.Info("Building Ogre dependencies (Debug)");
             msBuildMgr.Build(@"Main\OgreSrc\ogre\Dependencies\src\OgreDependencies.VS2010.sln", "Debug", "Win32", "Build");
-            outputMgr.Info("Building Ogre dependencies (Release)");
+            outputManager.Info("Building Ogre dependencies (Release)");
             msBuildMgr.Build(@"Main\OgreSrc\ogre\Dependencies\src\OgreDependencies.VS2010.sln", "Release", "Win32", "Build");
         }
     }

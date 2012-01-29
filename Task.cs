@@ -1,18 +1,17 @@
 ﻿using System;
 using System.IO;
 using System.Text.RegularExpressions;
+using System.Diagnostics;
 
 namespace Mogre.Builder
 {
     abstract class Task
     {
-        protected OutputManager outputMgr;
-
+        protected IOutputManager outputManager;
         
-        
-        public Task(OutputManager outputMgr)
+        public Task(IOutputManager outputManager)
         {
-            this.outputMgr = outputMgr;
+            this.outputManager = outputManager;
         }
 
         abstract public void Run();
@@ -21,55 +20,57 @@ namespace Mogre.Builder
         abstract public string Name        { get; }
         abstract public string Description { get; }
 
-        protected CommandResult Cmd(string cmd)
-        {
-            return Cmd(cmd, null);
-        }
+        //protected CommandResult Cmd(string cmd)
+        //{
+        //    return Cmd(cmd, null);
+        //}
 
-        protected CommandResult Cmd(string cmd, string path)
+        protected CommandResult Cmd(string command, string arguments, string workingDirectory)
         {
-            var parts = cmd.Split(new char[] { ' ' }, 2);
+            Process process = new System.Diagnostics.Process();
+            process.EnableRaisingEvents = false;
+            process.StartInfo.FileName = command;
 
-            System.Diagnostics.Process proc = new System.Diagnostics.Process();
-            proc.EnableRaisingEvents = false;
-            proc.StartInfo.FileName = parts[0];
-            if (parts.Length > 1)
-                proc.StartInfo.Arguments = parts[1];
-            if (path != null)
+            if (arguments != null)
+                process.StartInfo.Arguments = arguments;
+
+            if (workingDirectory != null)
             {
-                if (Path.IsPathRooted(path))
-                    proc.StartInfo.WorkingDirectory = path;
+                if(!Directory.Exists(workingDirectory))
+                    throw new Exception(string.Format("{0} does not exist", workingDirectory));
+
+                if (Path.IsPathRooted(workingDirectory))
+                    process.StartInfo.WorkingDirectory = workingDirectory;
                 else
-                    proc.StartInfo.WorkingDirectory = Directory.GetCurrentDirectory() + "\\" + path;
+                    process.StartInfo.WorkingDirectory = Directory.GetCurrentDirectory() + "\\" + workingDirectory;
             }
             else
             {
-                proc.StartInfo.WorkingDirectory = Directory.GetCurrentDirectory();
+                process.StartInfo.WorkingDirectory = Directory.GetCurrentDirectory();
             }
-
-
+            
             string output = "";
-            proc.OutputDataReceived += delegate(object sender, System.Diagnostics.DataReceivedEventArgs e)
+            process.OutputDataReceived += delegate(object sender, System.Diagnostics.DataReceivedEventArgs e)
             {
                 output += e.Data + "\n";
             };
 
             string error = "";
-            proc.ErrorDataReceived += delegate(object sender, System.Diagnostics.DataReceivedEventArgs e)
+            process.ErrorDataReceived += delegate(object sender, System.Diagnostics.DataReceivedEventArgs e)
             {
                 error += e.Data + "\n";
             };
 
-            proc.StartInfo.UseShellExecute = false;
-            proc.StartInfo.RedirectStandardOutput = true;
-            proc.StartInfo.RedirectStandardError = true;
-            proc.Start();
-            proc.BeginOutputReadLine();
-            proc.BeginErrorReadLine();
-            proc.WaitForExit();
+            process.StartInfo.UseShellExecute = false;
+            process.StartInfo.RedirectStandardOutput = true;
+            process.StartInfo.RedirectStandardError = true;
+            process.Start();
+            process.BeginOutputReadLine();
+            process.BeginErrorReadLine();
+            process.WaitForExit();
 
-            var result = new CommandResult(output, error, proc.ExitCode);
-            proc.Dispose();
+            var result = new CommandResult(output, error, process.ExitCode);
+            process.Dispose();
             return result;
         }
 

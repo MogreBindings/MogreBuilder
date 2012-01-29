@@ -1,6 +1,7 @@
 ﻿using System;
 using System.IO;
 using System.Collections.Generic;
+using Mogre.Builder.Tasks;
 
 namespace Mogre.Builder
 {
@@ -8,7 +9,7 @@ namespace Mogre.Builder
     {
         static void Main(string[] cmdLineArgs)
         {
-            var outputMgr  = new OutputManager();
+            var outputMgr  = new ConsoleOutputManager();
 
             try
             {
@@ -19,11 +20,18 @@ namespace Mogre.Builder
                 {
                     outputMgr.Action(task.Name);
                     task.Run();
-                }
+                }                
             }
             catch (UserException e)
             {
-                outputMgr.DisplayMessage(e.Message, ConsoleColor.Red);
+                outputMgr.Error(e.Message);
+            }
+            finally
+            {
+                #if DEBUG
+                    Console.WriteLine("Press any key to continue...");
+                    Console.ReadKey();
+                #endif
             }
         }
 
@@ -37,27 +45,27 @@ namespace Mogre.Builder
             return parsedArgs;
         }
 
-        private static List<Task> BuildTaskList(CommandLineArgs args, OutputManager outputMgr)
+        private static List<Task> BuildTaskList(CommandLineArgs args, IOutputManager outputMgr)
         {
             var tasksToRun = new List<Task>(20);
             var msBuildMgr = new MsBuildManager(outputMgr);
 
-            tasksToRun.Add(new Tasks.CheckTargetDir(args.TargetDir, outputMgr));
-            tasksToRun.Add(new Tasks.CheckEnvironment(outputMgr));
+            tasksToRun.Add(new CheckTargetDir(args.TargetDir, outputMgr));
+            tasksToRun.Add(new CheckEnvironment(outputMgr));
             // Preparing Ogre code
             //CheckoutOgre();
-            tasksToRun.Add(new Tasks.PatchOgreCode(outputMgr));
-            tasksToRun.Add(new Tasks.OgreDependencies(outputMgr, msBuildMgr));
-            tasksToRun.Add(new Tasks.OgreCmake(outputMgr));
+            tasksToRun.Add(new PatchOgreCode(outputMgr));
+            tasksToRun.Add(new OgreDependencies(outputMgr, msBuildMgr));
+            tasksToRun.Add(new OgreCmake(outputMgr));
             // Auto-wrapping
-            tasksToRun.Add(new Tasks.AutoWrap(outputMgr, msBuildMgr));
-            tasksToRun.Add(new Tasks.AddClrClassesToOgre(outputMgr));
+            tasksToRun.Add(new AutoWrap(outputMgr, msBuildMgr));
+            tasksToRun.Add(new AddClrClassesToOgre(outputMgr));
             // Building
-            tasksToRun.Add(new Tasks.BuildOgreWithoutMogreLinking(outputMgr, msBuildMgr));
-            tasksToRun.Add(new Tasks.BuildMogre(outputMgr, msBuildMgr));
-            tasksToRun.Add(new Tasks.BuildOgreWithMogreLinking(outputMgr, msBuildMgr));
+            tasksToRun.Add(new BuildOgreWithoutMogreLinking(outputMgr, msBuildMgr));
+            tasksToRun.Add(new BuildMogre(outputMgr, msBuildMgr));
+            tasksToRun.Add(new BuildOgreWithMogreLinking(outputMgr, msBuildMgr));
             // Organizing the result
-            tasksToRun.Add(new Tasks.AssembleBinaryFiles(outputMgr));
+            tasksToRun.Add(new AssembleBinaryFiles(outputMgr));
 
             return tasksToRun;
         }

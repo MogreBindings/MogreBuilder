@@ -5,7 +5,7 @@ namespace Mogre.Builder.Tasks
 {
     class AssembleBinaryFiles : Task
     {
-        public AssembleBinaryFiles(OutputManager outputMgr) : base(outputMgr) { }
+        public AssembleBinaryFiles(IOutputManager outputMgr) : base(outputMgr) { }
 
         public override string ID          { get { return "build:assemble"; } }
         public override string Name        { get { return "Assembling the generated binaries"; } }
@@ -13,22 +13,34 @@ namespace Mogre.Builder.Tasks
 
         public override void Run()
         {
-            var targetDir = @"bin\Debug.NET4";
+            string target = "Release";
+            var targetDir = string.Format(@"bin\{0}.NET4", target);
 
             if (!Directory.Exists(targetDir))
                 Directory.CreateDirectory(targetDir);
 
             var binPaths = new string[] {
-                @"Main\lib\Debug",
-                @"Main\OgreSrc\build\bin\debug",
-                @"Main\OgreSrc\build\lib\Debug",
+                string.Format(@"Main\lib\{0}", target),
+                string.Format(@"Main\OgreSrc\build\bin\{0}", target),
+                string.Format(@"Main\OgreSrc\build\lib\{0}", target),
             };
             var patterns = new string[] { "*.dll", "*.lib", "*.pdb" };
 
             foreach (var binPath in binPaths)
+            {
                 foreach (var pattern in patterns)
+                {
                     foreach (var entry in Directory.GetFiles(binPath, pattern))
-                        File.Move(entry, targetDir + "\\" + Path.GetFileName(entry));
+                    {
+                        string filePath = targetDir + "\\" + Path.GetFileName(entry);
+
+                        if (File.Exists(filePath))
+                            File.Delete(filePath);
+
+                        File.Move(entry, filePath);
+                    }
+                }
+            }
         }
     }
 }

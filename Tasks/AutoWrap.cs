@@ -5,7 +5,7 @@ namespace Mogre.Builder.Tasks
 {
     class AutoWrap : MsBuildTask
     {
-        public AutoWrap(OutputManager outputMgr, MsBuildManager msBuildMgr) : base(outputMgr, msBuildMgr) { }
+        public AutoWrap(IOutputManager outputMgr, MsBuildManager msBuildMgr) : base(outputMgr, msBuildMgr) { }
 
         public override string ID          { get { return "mogre:autowrap"; } }
         public override string Name        { get { return "Autowrapping Ogre classes"; } }
@@ -15,32 +15,32 @@ namespace Mogre.Builder.Tasks
         {
             if (!File.Exists(@"Codegen\cpp2java\build\all.xml"))
             {
-                outputMgr.Info("Running cpp2java to scan Ogre source tree and build meta-data");
-                Cmd("build.bat", @"Codegen\cpp2java");
+                outputManager.Info("Running cpp2java to scan Ogre source tree and build meta-data");
+                Cmd("cmd", "/c build.bat", @"Codegen\cpp2java");
             }
             else
             {
-                outputMgr.Info("cpp2java meta-data appears to aleady been generated, skipping cpp2java");
+                outputManager.Info("cpp2java meta-data appears to aleady been generated, skipping cpp2java");
             }
 
             if (!File.Exists(@"Codegen\AutoWrap\bin\Debug\AutoWrap.exe"))
             {
-                outputMgr.Info("Building Mogre Autowrapper");
+                outputManager.Info("Building Mogre Autowrapper");
                 msBuildMgr.Build(@"Codegen\AutoWrap\AutoWrap_vs2010.sln", "Debug", "Any CPU", "Build");
             }
             else
             {
-                outputMgr.Info("Mogre Autowrapper appears to already exist, skipping");
+                outputManager.Info("Mogre Autowrapper appears to already exist, skipping");
             }
 
             if (!Directory.Exists(@"Main\src\auto"))
             {
-                outputMgr.Info("Running Mogre Autowrapper");
-                Cmd(@"Codegen\AutoWrap\bin\Debug\AutoWrap.exe produce", @"Codegen\AutoWrap\bin\Debug");
+                outputManager.Info("Running Mogre Autowrapper");
+                Cmd(@"Codegen\AutoWrap\bin\Debug\AutoWrap.exe", "produce", @"Codegen\AutoWrap\bin\Debug");
             }
             else
             {
-                outputMgr.Info("Mogre auto-wrapped code appears to have been generated, skipping autowrap");
+                outputManager.Info("Mogre auto-wrapped code appears to have been generated, skipping autowrap");
             }
         }
     }

@@ -6,7 +6,7 @@ namespace Mogre.Builder.Tasks
 {
     class PatchOgreCode : Task
     {
-        public PatchOgreCode(OutputManager outputMgr) : base(outputMgr) { }
+        public PatchOgreCode(IOutputManager outputMgr) : base(outputMgr) { }
 
         public override string ID          { get { return "ogre:patch"; } }
         public override string Name        { get { return "Patching Ogre source tree"; } }
@@ -16,24 +16,31 @@ namespace Mogre.Builder.Tasks
         {
             var patch = '"' + Path.GetDirectoryName(System.Reflection.Assembly.GetExecutingAssembly().Location) + "\\pat-ch.exe\"";
 
-            if (Cmd("hg st --modified", @"Main\OgreSrc\ogre").Output.Trim() != "")
+            if (Cmd("hg", "st --modified", @"Main\OgreSrc\ogre").Output.Trim() != "")
             {
-                outputMgr.Info("Ogre code appears to be already patched, skipping patch");
+                outputManager.Info("Ogre code appears to be already patched, skipping patch");
                 return;
             }
 
             try
             {
-                Cmd(patch + " --version");
+                Cmd(patch, "--version", null);
             }
             catch (Exception)
             {
                 throw new UserException("Can't execute patch.exe");
             }
 
-            var result = Cmd(string.Format(patch + @" -d Main\OgreSrc\ogre -p0 --binary --no-backup -i ""{0}""", Directory.GetCurrentDirectory() + @"\Main\Ogre Patches\58266f25ccd2.patch"));
+            string patchArguments = string.Format(@" -d Main\OgreSrc\ogre -p0 --binary --no-backup -i ""{0}""", 
+                Directory.GetCurrentDirectory() + @"\Main\Ogre Patches\58266f25ccd2.patch");
+
+            var result = Cmd(patch, patchArguments, null);
+
             if (result.ExitCode != 0)
+            {
+                outputManager.Warning(result.Output);
                 throw new UserException("Patch Failed: " + result.Error);
+            }
         }
 
     }

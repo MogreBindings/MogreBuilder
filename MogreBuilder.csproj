@@ -47,13 +47,14 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="ConsoleOutputManager.cs" />
     <Compile Include="Exceptions.cs" />
     <Compile Include="Tasks\AssembleBinaryFiles.cs" />
     <Compile Include="Tasks\BuildOgreTask.cs" />
     <Compile Include="Tasks\CheckEnvironment.cs" />
     <Compile Include="Tasks\CheckTargetDir.cs" />
     <Compile Include="Tasks\MsBuildTask.cs" />
-    <Compile Include="OutputManager.cs" />
+    <Compile Include="IOutputManager.cs" />
     <Compile Include="MsBuildManager.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -69,6 +70,7 @@
   </ItemGroup>
   <ItemGroup />
   <ItemGroup>
+    <Content Include="ReadMe.txt" />
     <Content Include="tools\pat-ch.exe" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

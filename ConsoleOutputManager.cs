@@ -1,8 +1,11 @@
 ﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
 
 namespace Mogre.Builder
 {
-    class OutputManager
+    public class ConsoleOutputManager : IOutputManager
     {
         public void DisplayMessage(string message, ConsoleColor color)
         {
@@ -13,7 +16,12 @@ namespace Mogre.Builder
             Console.WriteLine("");
         }
 
-        public void Warn(string message)
+        public void Error(string message)
+        {
+            DisplayMessage(message, ConsoleColor.Red);
+        }
+
+        public void Warning(string message)
         {
             DisplayMessage(message, ConsoleColor.Yellow);
         }

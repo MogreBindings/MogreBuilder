@@ -10,11 +10,9 @@ namespace Mogre.Builder
     class MsBuildManager : ILogger
     {
         private List<string>  visited;
-        private OutputManager outputMgr;
-
-
-
-        public MsBuildManager(OutputManager outputMgr)
+        private IOutputManager outputMgr;
+        
+        public MsBuildManager(IOutputManager outputMgr)
         {
             this.outputMgr = outputMgr;
         }
@@ -113,7 +111,7 @@ namespace Mogre.Builder
 
         private void OnErrorRaised(object sender, BuildErrorEventArgs e)
         {
-            outputMgr.Warn(e.Message);
+            outputMgr.Warning(e.Message);
         }
 
         private void OnTaskStarted(object sender, TaskStartedEventArgs e)

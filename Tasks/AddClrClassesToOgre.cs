@@ -7,7 +7,7 @@ namespace Mogre.Builder.Tasks
 {
     class AddClrClassesToOgre : Task
     {
-        public AddClrClassesToOgre(OutputManager outputMgr) : base(outputMgr) { }
+        public AddClrClassesToOgre(IOutputManager outputMgr) : base(outputMgr) { }
 
         public override string ID          { get { return "mogre:copy-clr"; } }
         public override string Name        { get { return "Copying additional CLR code to Ogre Source tree"; } }
@@ -18,7 +18,7 @@ namespace Mogre.Builder.Tasks
             if (!File.Exists(@"Main\OgreSrc\ogre\OgreMain\include\CLRConfig.h") ||
                 !File.Exists(@"Main\OgreSrc\build\include\CLRObjects.inc"))
             {
-                outputMgr.Info("Copying Mogre files to Ogre source tree");
+                outputManager.Info("Copying Mogre files to Ogre source tree");
                 foreach (var file in Directory.GetFiles(@"Main\Ogre", "*.h"))
                     File.Copy(file, @"Main\OgreSrc\ogre\OgreMain\include\" + Path.GetFileName(file), true);
                 foreach (var file in Directory.GetFiles(@"Main\Ogre", "*.cpp"))
@@ -27,7 +27,7 @@ namespace Mogre.Builder.Tasks
             }
             else
             {
-                outputMgr.Info("Mogre's additional Ogre source files appear to already have been copied to Ogre source tree, skipping");
+                outputManager.Info("Mogre's additional Ogre source files appear to already have been copied to Ogre source tree, skipping");
             }
 
             var sourceFiles = new Dictionary<string, bool>{
@@ -63,7 +63,7 @@ namespace Mogre.Builder.Tasks
                 if (!included)
                 {
                     if (!projectModified)
-                        outputMgr.Info("Adding Mogre's additional Ogre source files");
+                        outputManager.Info("Adding Mogre's additional Ogre source files");
                     p.AddItem("ClCompile", @"..\..\ogre\OgreMain\src\" + file);
                     projectModified = true;
                 }
@@ -76,7 +76,7 @@ namespace Mogre.Builder.Tasks
                 if (!included)
                 {
                     if (!projectModified)
-                        outputMgr.Info("Adding Mogre's additional Ogre source files");
+                        outputManager.Info("Adding Mogre's additional Ogre source files");
                     p.AddItem("ClInclude", @"..\..\ogre\OgreMain\include\" + file);
                     projectModified = true;
                 }
