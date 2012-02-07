@@ -6,7 +6,10 @@ namespace Mogre.Builder.Tasks
 {
     class PatchOgreCode : Task
     {
-        public PatchOgreCode(IOutputManager outputMgr) : base(outputMgr) { }
+        public PatchOgreCode(InputManager inputManager, IOutputManager outputManager)
+            : base(inputManager, outputManager) 
+        { 
+        }
 
         public override string ID          { get { return "ogre:patch"; } }
         public override string Name        { get { return "Patching Ogre source tree"; } }
@@ -14,9 +17,9 @@ namespace Mogre.Builder.Tasks
 
         public override void Run()
         {
-            var patch = '"' + Path.GetDirectoryName(System.Reflection.Assembly.GetExecutingAssembly().Location) + "\\pat-ch.exe\"";
+            string patchToolPath = '"' + Path.GetDirectoryName(System.Reflection.Assembly.GetExecutingAssembly().Location) + "\\Tools\\pat-ch.exe\"";
 
-            if (Cmd("hg", "st --modified", @"Main\OgreSrc\ogre").Output.Trim() != "")
+            if (RunCommand("hg", "st --modified", inputManager.OgreRootDirectory).Output.Trim() != "")
             {
                 outputManager.Info("Ogre code appears to be already patched, skipping patch");
                 return;
@@ -24,17 +27,17 @@ namespace Mogre.Builder.Tasks
 
             try
             {
-                Cmd(patch, "--version", null);
+                RunCommand(patchToolPath, "--version", null);
             }
-            catch (Exception)
+            catch (Exception ex)
             {
-                throw new UserException("Can't execute patch.exe");
+                throw new Exception("Can't execute patch.exe", ex);
             }
 
-            string patchArguments = string.Format(@" -d Main\OgreSrc\ogre -p0 --binary --no-backup -i ""{0}""", 
-                Directory.GetCurrentDirectory() + @"\Main\Ogre Patches\58266f25ccd2.patch");
+            string patchArguments = string.Format(@" -d {0} -p0 --binary --no-backup -i ""{1}""",
+                inputManager.OgreRootDirectory, Path.Combine(Directory.GetCurrentDirectory(), inputManager.PatchFile));
 
-            var result = Cmd(patch, patchArguments, null);
+            var result = RunCommand(patchToolPath, patchArguments, null);
 
             if (result.ExitCode != 0)
             {

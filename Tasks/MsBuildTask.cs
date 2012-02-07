@@ -2,14 +2,12 @@
 {
     abstract class MsBuildTask : Task
     {
-        protected MsBuildManager msBuildMgr;
+        protected MsBuildManager msBuildManager;
 
-
-
-        public MsBuildTask(IOutputManager outputMgr, MsBuildManager msBuildMgr)
-            : base(outputMgr)
+        public MsBuildTask(InputManager inputManager, IOutputManager outputManager, MsBuildManager msBuildManager)
+            : base(inputManager, outputManager)
         {
-            this.msBuildMgr = msBuildMgr;
+            this.msBuildManager = msBuildManager;
         }
     }
 }

@@ -8,10 +8,12 @@ namespace Mogre.Builder
     abstract class Task
     {
         protected IOutputManager outputManager;
-        
-        public Task(IOutputManager outputManager)
+        protected InputManager inputManager;
+
+        public Task(InputManager inputManager, IOutputManager outputManager)
         {
             this.outputManager = outputManager;
+            this.inputManager = inputManager;
         }
 
         abstract public void Run();
@@ -20,12 +22,7 @@ namespace Mogre.Builder
         abstract public string Name        { get; }
         abstract public string Description { get; }
 
-        //protected CommandResult Cmd(string cmd)
-        //{
-        //    return Cmd(cmd, null);
-        //}
-
-        protected CommandResult Cmd(string command, string arguments, string workingDirectory)
+        protected CommandResult RunCommand(string command, string arguments, string workingDirectory)
         {
             Process process = new System.Diagnostics.Process();
             process.EnableRaisingEvents = false;
@@ -52,13 +49,21 @@ namespace Mogre.Builder
             string output = "";
             process.OutputDataReceived += delegate(object sender, System.Diagnostics.DataReceivedEventArgs e)
             {
-                output += e.Data + "\n";
+                if (e.Data != null)
+                {
+                    outputManager.Info(e.Data);
+                    output += e.Data + "\n";
+                }
             };
 
             string error = "";
             process.ErrorDataReceived += delegate(object sender, System.Diagnostics.DataReceivedEventArgs e)
             {
-                error += e.Data + "\n";
+                if (e.Data != null)
+                {
+                    outputManager.Error(e.Data);
+                    error += e.Data + "\n";
+                }
             };
 
             process.StartInfo.UseShellExecute = false;
@@ -67,7 +72,16 @@ namespace Mogre.Builder
             process.Start();
             process.BeginOutputReadLine();
             process.BeginErrorReadLine();
-            process.WaitForExit();
+
+            bool longTask = false;
+            while (!process.WaitForExit(1000))
+            {
+                outputManager.Progress();
+                longTask = true;
+            }
+
+            if(longTask)
+                outputManager.EndProgress();
 
             var result = new CommandResult(output, error, process.ExitCode);
             process.Dispose();

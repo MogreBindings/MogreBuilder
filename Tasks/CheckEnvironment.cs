@@ -5,7 +5,10 @@ namespace Mogre.Builder.Tasks
 {
     class CheckEnvironment : Task
     {
-        public CheckEnvironment(IOutputManager outputMgr) : base(outputMgr) { }
+        public CheckEnvironment(InputManager inputManager, IOutputManager outputManager) 
+            : base(inputManager, outputManager) 
+        { 
+        }
 
         public override string ID          { get { return "build:check-env"; } }
         public override string Name        { get { return "Checking environment"; } }
@@ -15,8 +18,7 @@ namespace Mogre.Builder.Tasks
         {
             try
             {
-                Cmd(OgreCmake.CMakePath, "--version", null);
-                outputManager.Info("Cmake found");
+                RunCommand(inputManager.CMakeExecutable, "--version", null);
             }
             catch (Exception ex)
             {
@@ -25,12 +27,11 @@ namespace Mogre.Builder.Tasks
 
             try
             {
-                Cmd("hg", null, null);
-                outputManager.Info("Hg found");
+                RunCommand("hg", null, null);
             }
-            catch (Exception)
+            catch (Exception ex)
             {
-                outputManager.Warning("Can't find hg, tasks relying on hg will not run");
+                throw new Exception("Can't find cmake in path. Make sure cmake is installed and available in the system path.", ex);
             }
         }
     }

@@ -10,18 +10,18 @@ namespace Mogre.Builder
     class MsBuildManager : ILogger
     {
         private List<string>  visited;
-        private IOutputManager outputMgr;
+        private IOutputManager outputManager;
         
-        public MsBuildManager(IOutputManager outputMgr)
+        public MsBuildManager(IOutputManager outputManager)
         {
-            this.outputMgr = outputMgr;
+            this.outputManager = outputManager;
         }
 
         public BuildResult Build(string projectFile, string configuration, string platform, string[] targets)
         {
             var buildParams = new BuildParameters(new ProjectCollection());
             buildParams.Loggers = new ILogger[] { this };
-
+            
             var buildResult = BuildManager.DefaultBuildManager.Build(
                 buildParams,
                 new BuildRequestData(
@@ -105,23 +105,23 @@ namespace Mogre.Builder
                     break;
             }
 
-            outputMgr.EndProgress();
-            outputMgr.StartProgress(prefix + project + suffix);
+            outputManager.EndProgress();
+            outputManager.StartProgress(prefix + project + suffix);
         }
 
         private void OnErrorRaised(object sender, BuildErrorEventArgs e)
         {
-            outputMgr.Warning(e.Message);
+            outputManager.Warning(e.Message);
         }
 
         private void OnTaskStarted(object sender, TaskStartedEventArgs e)
         {
-            outputMgr.Progress();
+            outputManager.Progress();
         }
 
         private void OnBuildFinished(object sender, BuildFinishedEventArgs e)
         {
-            outputMgr.EndProgress();
+            outputManager.EndProgress();
         }
 
         public string          Parameters { get { return ""; } set { } }

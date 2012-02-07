@@ -8,12 +8,9 @@ namespace Mogre.Builder.Tasks
     /// </summary>
     class CheckTargetDir : Task
     {
-        private string targetDir;
-
-        public CheckTargetDir(string targetDir, IOutputManager outputManager)
-            : base(outputManager)
+        public CheckTargetDir(InputManager inputManager, IOutputManager outputManager)
+            : base(inputManager, outputManager)
         {
-            this.targetDir = targetDir;
         }
 
         public override string ID          { get { return "build:check-target"; } }
@@ -22,11 +19,11 @@ namespace Mogre.Builder.Tasks
 
         public override void Run()
         {
-            if (targetDir != "")
+            if (inputManager.TargetDirectory != "")
             {
                 try
                 {
-                    Directory.SetCurrentDirectory(targetDir);
+                    Directory.SetCurrentDirectory(inputManager.TargetDirectory);
                 }
                 catch (ArgumentException)
                 {

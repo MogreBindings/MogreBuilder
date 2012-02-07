@@ -4,16 +4,20 @@ namespace Mogre.Builder.Tasks
 {
     abstract class BuildOgreTask : MsBuildTask
     {
-        public BuildOgreTask(IOutputManager outputMgr, MsBuildManager msBuildMgr) : base(outputMgr, msBuildMgr) { }
+        public BuildOgreTask(InputManager inputManager, IOutputManager outputManager, MsBuildManager msBuildMgr)
+            : base(inputManager, outputManager, msBuildMgr) 
+        { 
+        }
         
         protected void BuildOgre(string configuration, bool rebuild, bool linkToMogre)
         {
-            ModifyFile(@"Main\OgreSrc\ogre\OgreMain\include\CLRConfig.h", @"LINK_TO_MOGRE\s+\d+", "LINK_TO_MOGRE " + (linkToMogre ? "1" : "0"));
+            ModifyFile(inputManager.ClrConfigHeaderFile, @"LINK_TO_MOGRE\s+\d+", "LINK_TO_MOGRE " + (linkToMogre ? "1" : "0"));
 
             var targetSuffix = rebuild ? ":Rebuild" : "";
-            msBuildMgr.Build(
-                @"Main\OgreSrc\build\OGRE.sln", configuration, "Win32",
-                new string[] {
+            msBuildManager.Build(
+                inputManager.OgreSolutionFile, configuration, "Win32",
+                new string[] 
+                {
                     "OgreMain"                  + targetSuffix,
                     "OgrePaging"                + targetSuffix,
                     "OgreRTShaderSystem"        + targetSuffix,

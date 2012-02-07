@@ -4,7 +4,10 @@ namespace Mogre.Builder.Tasks
 {
     class BuildOgreWithoutMogreLinking : BuildOgreTask
     {
-        public BuildOgreWithoutMogreLinking(IOutputManager outputMgr, MsBuildManager msBuildMgr) : base(outputMgr, msBuildMgr) { }
+        public BuildOgreWithoutMogreLinking(InputManager inputManager, IOutputManager outputManager, MsBuildManager msBuildMgr)
+            : base(inputManager, outputManager, msBuildMgr) 
+        { 
+        }
 
         public override string ID          { get { return "ogre:build-without-mogre"; } }
         public override string Name        { get { return "Building Ogre without linking back to Mogre"; } }
@@ -12,7 +15,7 @@ namespace Mogre.Builder.Tasks
 
         public override void Run()
         {
-            BuildOgre("Release", true, false);
+            BuildOgre(inputManager.BuildConfiguration, true, false);
         }
     }
 }

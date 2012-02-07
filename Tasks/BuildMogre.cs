@@ -4,7 +4,10 @@ namespace Mogre.Builder.Tasks
 {
     class BuildMogre : MsBuildTask
     {
-        public BuildMogre(IOutputManager outputMgr, MsBuildManager msBuildMgr) : base(outputMgr, msBuildMgr) { }
+        public BuildMogre(InputManager inputManager, IOutputManager outputManager, MsBuildManager msBuildMgr)
+            : base(inputManager, outputManager, msBuildMgr) 
+        { 
+        }
 
         public override string ID          { get { return "mogre:build"; } }
         public override string Name        { get { return "Building Mogre"; } }
@@ -12,7 +15,7 @@ namespace Mogre.Builder.Tasks
 
         public override void Run()
         {
-            msBuildMgr.Build(@"Main\Mogre_vs2010.sln", "Release", "Win32", "Rebuild");
+            msBuildManager.Build(inputManager.MogreSolutionFile, inputManager.BuildConfiguration, "Win32", "Rebuild");
         }
     }
 }

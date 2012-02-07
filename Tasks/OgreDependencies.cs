@@ -8,7 +8,10 @@ namespace Mogre.Builder.Tasks
 {
     class OgreDependencies : MsBuildTask
     {
-        public OgreDependencies(IOutputManager outputMgr, MsBuildManager msBuildMgr) : base(outputMgr, msBuildMgr) { }
+        public OgreDependencies(InputManager inputManager, IOutputManager outputManager, MsBuildManager msBuildMgr) 
+            : base(inputManager, outputManager, msBuildMgr) 
+        { 
+        }
 
         public override string ID          { get { return "ogre:dependencies"; } }
         public override string Name        { get { return "Handling Ogre dependencies"; } }
@@ -17,7 +20,7 @@ namespace Mogre.Builder.Tasks
         public override void Run()
         {
             // Check if the dependencies are present
-            if (!Directory.Exists(@"Main\OgreSrc\ogre\Dependencies"))
+            if (!Directory.Exists(inputManager.DependenciesDirectory))
             {
                 GetOgreDependencies();
             }
@@ -38,18 +41,19 @@ namespace Mogre.Builder.Tasks
             {
                 bool downloadComplete = false;
                 var client = new WebClient();
+
                 client.DownloadProgressChanged += delegate(object sender, DownloadProgressChangedEventArgs e)
                 {
                     Console.Write(".");
                 };
+
                 client.DownloadFileCompleted += delegate(object sender, System.ComponentModel.AsyncCompletedEventArgs e)
                 {
                     Console.WriteLine(".");
                     downloadComplete = true;
                 };
-                client.DownloadFileAsync(
-                    new Uri("http://surfnet.dl.sourceforge.net/project/ogre/ogre-dependencies-vc%2B%2B/1.7/OgreDependencies_MSVC_20100501.zip", UriKind.Absolute),
-                    @"Main\OgreSrc\ogre\Dependencies.zip");
+
+                client.DownloadFileAsync(new Uri(inputManager.DependenciesURL, UriKind.Absolute), inputManager.DependenciesZip);
 
                 while (!downloadComplete)
                     System.Threading.Thread.Sleep(100);
@@ -62,8 +66,8 @@ namespace Mogre.Builder.Tasks
             try
             {
                 outputManager.Info("Unpacking Ogre dependencies");
-                var zipFile = new ZipFile(@"Main\OgreSrc\ogre\Dependencies.zip");
-                zipFile.ExtractAll(@"Main\OgreSrc\ogre");
+                var zipFile = new ZipFile(inputManager.DependenciesZip);
+                zipFile.ExtractAll(inputManager.OgreRootDirectory);
                 zipFile.Dispose();
             }
             catch (Exception e)
@@ -71,15 +75,13 @@ namespace Mogre.Builder.Tasks
                 throw new UserException("Failed to unzip Ogre dependencies: " + e.Message);
             }
 
-            File.Delete(@"Main\OgreSrc\ogre\Dependencies.zip");
+            File.Delete(inputManager.DependenciesZip);
         }
 
         private void BuildOgreDependencies()
         {
-            outputManager.Info("Building Ogre dependencies (Debug)");
-            msBuildMgr.Build(@"Main\OgreSrc\ogre\Dependencies\src\OgreDependencies.VS2010.sln", "Debug", "Win32", "Build");
-            outputManager.Info("Building Ogre dependencies (Release)");
-            msBuildMgr.Build(@"Main\OgreSrc\ogre\Dependencies\src\OgreDependencies.VS2010.sln", "Release", "Win32", "Build");
+            outputManager.Info(string.Format("Building Ogre dependencies ({0})", inputManager.BuildConfiguration));
+            msBuildManager.Build(inputManager.DependenciesSolutionFile, inputManager.BuildConfiguration, "Win32", "Build");
         }
     }
 }

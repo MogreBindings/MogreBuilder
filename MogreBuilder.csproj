@@ -49,9 +49,13 @@
   <ItemGroup>
     <Compile Include="ConsoleOutputManager.cs" />
     <Compile Include="Exceptions.cs" />
+    <Compile Include="InputManager.cs" />
+    <Compile Include="TaskManager.cs" />
     <Compile Include="Tasks\AssembleBinaryFiles.cs" />
     <Compile Include="Tasks\BuildOgreTask.cs" />
     <Compile Include="Tasks\CheckEnvironment.cs" />
+    <Compile Include="Tasks\CloneMogreSource.cs" />
+    <Compile Include="Tasks\CloneOgreSource.cs" />
     <Compile Include="Tasks\CheckTargetDir.cs" />
     <Compile Include="Tasks\MsBuildTask.cs" />
     <Compile Include="IOutputManager.cs" />
@@ -68,10 +72,16 @@
     <Compile Include="Tasks\OgreDependencies.cs" />
     <Compile Include="Tasks\PatchOgreCode.cs" />
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <None Include="Default.cfg">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+  </ItemGroup>
   <ItemGroup>
     <Content Include="ReadMe.txt" />
-    <Content Include="tools\pat-ch.exe" />
+    <Content Include="Tools\pat-ch.exe">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>
