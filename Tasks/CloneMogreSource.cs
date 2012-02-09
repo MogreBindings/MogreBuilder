@@ -15,7 +15,7 @@ namespace Mogre.Builder.Tasks
 
         public override string Name
         {
-            get { return "Checking out the source code of Mogre"; }
+            get { return "Checking out the source code of Mogre (please be patient)"; }
         }
 
         public override string Description

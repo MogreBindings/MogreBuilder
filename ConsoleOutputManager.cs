@@ -41,14 +41,30 @@ namespace Mogre.Builder
             Console.Write(message);
         }
 
+        private int animationIndex = 0;
+        private char[] animationChars = { '-', '\\', '|', '/' };
         public void Progress()
         {
-            Console.Write(".");
+            if (Console.CursorLeft == 0)
+            {
+                Console.CursorVisible = false;
+                Console.Write(animationChars[animationIndex]);
+                Console.SetCursorPosition(Console.CursorLeft - 1, Console.CursorTop);
+                animationIndex++;
+
+                if (animationIndex == animationChars.Length)
+                    animationIndex = 0;
+            }
+            else
+            {
+                Console.Write(".");
+            }
         }
 
         public void EndProgress()
         {
             Console.WriteLine();
+            Console.CursorVisible = true;
         }
     }
 }

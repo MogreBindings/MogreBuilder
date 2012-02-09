@@ -17,31 +17,17 @@ namespace Mogre.Builder.Tasks
 
         public override void Run()
         {
-            string patchToolPath = '"' + Path.GetDirectoryName(System.Reflection.Assembly.GetExecutingAssembly().Location) + "\\Tools\\pat-ch.exe\"";
-
             if (RunCommand("hg", "st --modified", inputManager.OgreRootDirectory).Output.Trim() != "")
             {
                 outputManager.Info("Ogre code appears to be already patched, skipping patch");
                 return;
             }
 
-            try
-            {
-                RunCommand(patchToolPath, "--version", null);
-            }
-            catch (Exception ex)
-            {
-                throw new Exception("Can't execute patch.exe", ex);
-            }
-
-            string patchArguments = string.Format(@" -d {0} -p0 --binary --no-backup -i ""{1}""",
-                inputManager.OgreRootDirectory, Path.Combine(Directory.GetCurrentDirectory(), inputManager.PatchFile));
-
-            var result = RunCommand(patchToolPath, patchArguments, null);
+            var patchFilePath = Path.Combine(Directory.GetCurrentDirectory(), inputManager.PatchFile);
+            var result = RunCommand("hg", string.Format("import --strip 0 --no-commit \"{0}\"", patchFilePath), inputManager.OgreMainDirectory);
 
             if (result.ExitCode != 0)
             {
-                outputManager.Warning(result.Output);
                 throw new UserException("Patch Failed: " + result.Error);
             }
         }

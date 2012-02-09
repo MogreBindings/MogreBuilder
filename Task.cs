@@ -46,43 +46,24 @@ namespace Mogre.Builder
                 process.StartInfo.WorkingDirectory = Directory.GetCurrentDirectory();
             }
             
-            string output = "";
-            process.OutputDataReceived += delegate(object sender, System.Diagnostics.DataReceivedEventArgs e)
-            {
-                if (e.Data != null)
-                {
-                    outputManager.Info(e.Data);
-                    output += e.Data + "\n";
-                }
-            };
-
-            string error = "";
-            process.ErrorDataReceived += delegate(object sender, System.Diagnostics.DataReceivedEventArgs e)
-            {
-                if (e.Data != null)
-                {
-                    outputManager.Error(e.Data);
-                    error += e.Data + "\n";
-                }
-            };
-
+            
             process.StartInfo.UseShellExecute = false;
             process.StartInfo.RedirectStandardOutput = true;
             process.StartInfo.RedirectStandardError = true;
             process.Start();
-            process.BeginOutputReadLine();
-            process.BeginErrorReadLine();
 
-            bool longTask = false;
-            while (!process.WaitForExit(1000))
+            string output = "";
+            string standardOutput;
+            while (!process.WaitForExit(500))
             {
                 outputManager.Progress();
-                longTask = true;
             }
 
-            if(longTask)
-                outputManager.EndProgress();
+            standardOutput = process.StandardOutput.ReadToEnd();
+            outputManager.Info(standardOutput);
+            output += standardOutput;
 
+            string error = process.StandardError.ReadToEnd();
             var result = new CommandResult(output, error, process.ExitCode);
             process.Dispose();
             return result;
