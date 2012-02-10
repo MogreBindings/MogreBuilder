@@ -18,8 +18,7 @@ namespace Mogre.Builder.Tasks
 
         public override void Run()
         {
-            if (!File.Exists(inputManager.ClrConfigHeaderFile) ||
-                !File.Exists(inputManager.ClrObjectsBuildFile))
+            if (!File.Exists(inputManager.ClrConfigHeaderFile) || !File.Exists(inputManager.ClrObjectsBuildFile))
             {
                 outputManager.Info("Copying Mogre files to Ogre source tree");
 

@@ -56,6 +56,9 @@ namespace Mogre.Builder
             string standardOutput;
             while (!process.WaitForExit(500))
             {
+                standardOutput = process.StandardOutput.ReadToEnd();
+                outputManager.Info(standardOutput);
+                output += standardOutput;
                 outputManager.Progress();
             }
 

@@ -17,33 +17,27 @@ namespace Mogre.Builder.Tasks
 
         public override void Run()
         {
-            if (!Directory.Exists(inputManager.OgreBuildDirectory))
+            // we always want to do this otherwise switching between configurations failes (e.g. Debug then Release).
+            Directory.CreateDirectory(inputManager.OgreBuildDirectory);
+            var result = RunCommand(inputManager.CMakeExecutable, 
+                @"-DOGRE_CONFIG_ENABLE_PVRTC:BOOL=ON -OGRE_CONFIG_CONTAINERS_USE_CUSTOM_ALLOCATOR:BOOL=OFF -G ""Visual Studio 10"" ..\ogre",
+                inputManager.OgreBuildDirectory);
+
+            if (result.ExitCode != 0)
+                throw new UserException("Failed running CMake on Ogre source tree: " + result.Error);
+
+            // Hack resulting solution file remove CMake's "Zero Check" project reference.
+            var cmakeCache = File.ReadAllText(inputManager.CMakeCachePath);
+            var match = Regex.Match(cmakeCache, @"ZERO_CHECK_GUID_CMAKE:\w+=(\S+)");
+
+            if (!match.Success)
             {
-                Directory.CreateDirectory(inputManager.OgreBuildDirectory);
-                var result = RunCommand(inputManager.CMakeExecutable, 
-                    @"-DOGRE_CONFIG_ENABLE_PVRTC:BOOL=ON -OGRE_CONFIG_CONTAINERS_USE_CUSTOM_ALLOCATOR:BOOL=OFF -G ""Visual Studio 10"" ..\ogre",
-                    inputManager.OgreBuildDirectory);
-
-                if (result.ExitCode != 0)
-                    throw new UserException("Failed running CMake on Ogre source tree: " + result.Error);
-
-                // Hack resulting solution file remove CMake's "Zero Check" project reference.
-                var cmakeCache = File.ReadAllText(inputManager.CMakeCachePath);
-                var match = Regex.Match(cmakeCache, @"ZERO_CHECK_GUID_CMAKE:\w+=(\S+)");
-
-                if (!match.Success)
-                {
-                    outputManager.Warning("Failed to find CMake zero check GUID, compilation might fail with unknown GUID error");
-                    return;
-                }
-                var zeroCheckGuid = match.Groups[1].Value;
-
-                ModifyFile(inputManager.OgreSolutionFile, "^\\s*\\{" + zeroCheckGuid + "\\}.*$\\n", "", RegexOptions.Multiline);
+                outputManager.Warning("Failed to find CMake zero check GUID, compilation might fail with unknown GUID error");
+                return;
             }
-            else
-            {
-                outputManager.Info("Ogre build directory already exists - skipping cmake.");
-            }
+            var zeroCheckGuid = match.Groups[1].Value;
+
+            ModifyFile(inputManager.OgreSolutionFile, "^\\s*\\{" + zeroCheckGuid + "\\}.*$\\n", "", RegexOptions.Multiline);
         }
     }
 }
