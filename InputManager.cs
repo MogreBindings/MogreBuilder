@@ -33,6 +33,7 @@ namespace Mogre.Builder
         public string ClrObjectsAutoFile { get; private set; }
 
         // mogre
+        public string MogreAssemblyInfoFile { get; private set; }
         public string MogreSolutionFile { get; private set; }
         public string MogreRepository { get; private set; }
         public string MogreBranch { get; private set; }
@@ -43,6 +44,7 @@ namespace Mogre.Builder
         public string OgreMainDirectory { get; private set; }
         public string OgreIncludeDirectory { get; private set; }
         public string OgreSourceDirectory { get; private set; }
+        public string OgrePrequisitesFile { get; private set; }
         public string OgreProjectFile { get; private set; }
         public string OgreSolutionFile { get; private set; }
         public string OgreRepository { get; private set; }
@@ -84,6 +86,7 @@ namespace Mogre.Builder
             ClrObjectsAutoFile = @"Main\include\auto\CLRObjects.inc";
 
             // mogre
+            MogreAssemblyInfoFile = @"Main\AssemblyInfo.cpp";
             MogreSolutionFile = @"Main\Mogre_vs2010.sln";
             MogreRepository = @"https://bitbucket.org/mogre/mogre/";
             MogreBranch = @"default";
@@ -94,6 +97,7 @@ namespace Mogre.Builder
             OgreMainDirectory = @"Main\OgreSrc\ogre\OgreMain\";
             OgreIncludeDirectory = @"Main\OgreSrc\ogre\OgreMain\include\";
             OgreSourceDirectory = @"Main\OgreSrc\ogre\OgreMain\src\";
+            OgrePrequisitesFile = @"Main\OgreSrc\ogre\OgreMain\include\OgrePrerequisites.h";
             OgreProjectFile = @"Main\OgreSrc\build\OgreMain\OgreMain.vcxproj";
             OgreSolutionFile = @"Main\OgreSrc\build\OGRE.sln";
             OgreRepository = @"https://bitbucket.org/sinbad/ogre/";
@@ -173,6 +177,6 @@ namespace Mogre.Builder
             {
                 throw new Exception(string.Format("Error loading config file {0}", configFile), ex);
             }
-        }
+        }        
     }
 }

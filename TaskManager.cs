@@ -21,7 +21,7 @@ namespace Mogre.Builder
         {
             var tasks = new List<Task>(20);
             var msBuildManager = new MsBuildManager(outputManager);
-
+                        
             tasks.Add(new CloneMogreSource(inputManager, outputManager));
 
             tasks.Add(new CheckTargetDir(inputManager, outputManager));            
@@ -37,6 +37,7 @@ namespace Mogre.Builder
             tasks.Add(new AddClrClassesToOgre(inputManager, outputManager));
             // Building
             tasks.Add(new BuildOgreWithoutMogreLinking(inputManager, outputManager, msBuildManager));
+            tasks.Add(new UpdateMogreVersion(inputManager, outputManager));
             tasks.Add(new BuildMogre(inputManager, outputManager, msBuildManager));
             tasks.Add(new BuildOgreWithMogreLinking(inputManager, outputManager, msBuildManager));
             // Organizing the result

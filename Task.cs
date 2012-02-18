@@ -72,27 +72,20 @@ namespace Mogre.Builder
             return result;
         }
 
-        protected void ModifyFile(string file, string pattern, string replacement)
+        protected void ModifyFile(string filePath, string pattern, string replacement)
         {
-            File.WriteAllText(
-                file,
-                Regex.Replace(
-                    File.ReadAllText(file),
-                    pattern,
-                    replacement)
-            );
+            string text = File.ReadAllText(filePath);
+            string modifiedText = Regex.Replace(text, pattern, replacement);
+
+            File.WriteAllText(filePath, modifiedText);
         }
 
-        protected void ModifyFile(string file, string pattern, string replacement, RegexOptions regexOptions)
+        protected void ModifyFile(string filePath, string pattern, string replacement, RegexOptions regexOptions)
         {
-            File.WriteAllText(
-                file,
-                Regex.Replace(
-                    File.ReadAllText(file),
-                    pattern,
-                    replacement,
-                    regexOptions)
-            );
+            string text = File.ReadAllText(filePath);
+            string modifiedText = Regex.Replace(text, pattern, replacement, regexOptions);
+
+            File.WriteAllText(filePath, modifiedText);
         }
     }
 
