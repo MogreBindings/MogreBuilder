@@ -21,12 +21,12 @@ namespace Mogre.Builder
         {
             var taskList = new List<Task>();
             var msBuildManager = new MsBuildManager(outputManager);
-                        
+
             taskList.Add(new CloneMogreSource(inputManager, outputManager));
 
             taskList.Add(new CheckTargetDir(inputManager, outputManager));            
             taskList.Add(new CheckEnvironment(inputManager, outputManager));
-            
+
             taskList.Add(new CloneOgreSource(inputManager, outputManager));
 
             // patch
@@ -38,6 +38,9 @@ namespace Mogre.Builder
             taskList.Add(new AutoWrap(inputManager, outputManager, msBuildManager));
             taskList.Add(new AddClrClassesToOgre(inputManager, outputManager));
 
+            // apply cygon patch
+            taskList.Add(new ApplyCygonPatch(inputManager, outputManager));
+            
             // Building
             taskList.Add(new BuildOgreWithoutMogreLinking(inputManager, outputManager, msBuildManager));
             taskList.Add(new UpdateMogreVersion(inputManager, outputManager));

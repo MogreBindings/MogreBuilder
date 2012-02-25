@@ -47,6 +47,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Tasks\ApplyCygonPatch.cs" />
     <Compile Include="ConsoleOutputManager.cs" />
     <Compile Include="Exceptions.cs" />
     <Compile Include="InputManager.cs" />

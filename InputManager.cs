@@ -62,6 +62,7 @@ namespace Mogre.Builder
 
         // patch
         public string PatchFile { get; private set; }
+        public string CygonPatchFile { get; private set; }
 
         // cpp2java
         public string Cpp2JavaDirectory { get; private set; }
@@ -113,7 +114,8 @@ namespace Mogre.Builder
             DependenciesSolutionFile = @"Main\OgreSrc\ogre\Dependencies\src\OgreDependencies.VS2010.sln";
 
             // patch
-            PatchFile = @"Main\Ogre Patches\mogre-1.7.3-clrobject.patch";
+            ClrPatchFile = @"Main\Ogre Patches\mogre-1.7.3-clrobject.patch";
+            CygonPatchFile = @"Main\Ogre Patches\mogre-1.7.3-cygon.patch";
 
             // cpp2java
             Cpp2JavaDirectory = @"Codegen\cpp2java";
@@ -175,6 +177,8 @@ namespace Mogre.Builder
             {
                 throw new Exception(string.Format("Error loading config file {0}", configFile), ex);
             }
-        }        
+        }
+
+        public string ClrPatchFile { get; set; }
     }
 }
