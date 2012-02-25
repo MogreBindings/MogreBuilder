@@ -61,7 +61,7 @@ namespace Mogre.Builder
         public string DependenciesSolutionFile { get; private set; }
 
         // patch
-        public string PatchFile { get; private set; }
+        public string ClrPatchFile { get; private set; }
         public string CygonPatchFile { get; private set; }
 
         // cpp2java
@@ -178,7 +178,5 @@ namespace Mogre.Builder
                 throw new Exception(string.Format("Error loading config file {0}", configFile), ex);
             }
         }
-
-        public string ClrPatchFile { get; set; }
     }
 }

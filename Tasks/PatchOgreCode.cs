@@ -25,7 +25,7 @@ namespace Mogre.Builder.Tasks
             }
 
             string patchExe = Path.Combine(Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location), "patch.exe");
-            var patchFilePath = Path.Combine(Directory.GetCurrentDirectory(), inputManager.PatchFile);
+            var patchFilePath = Path.Combine(Directory.GetCurrentDirectory(), inputManager.ClrPatchFile);
             var result = RunCommand(patchExe, string.Format("-p0 -i \"{0}\"", patchFilePath), inputManager.OgreRootDirectory);
 
             if (result.ExitCode != 0)
