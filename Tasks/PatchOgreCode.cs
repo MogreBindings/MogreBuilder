@@ -1,6 +1,7 @@
 ﻿using System;
 using System.IO;
 using Mogre.Builder;
+using System.Reflection;
 
 namespace Mogre.Builder.Tasks
 {
@@ -23,8 +24,9 @@ namespace Mogre.Builder.Tasks
                 return;
             }
 
+            string patchExe = Path.Combine(Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location), "patch.exe");
             var patchFilePath = Path.Combine(Directory.GetCurrentDirectory(), inputManager.PatchFile);
-            var result = RunCommand("hg", string.Format("import --strip 0 --no-commit \"{0}\"", patchFilePath), inputManager.OgreMainDirectory);
+            var result = RunCommand(patchExe, string.Format("-p0 -i \"{0}\"", patchFilePath), inputManager.OgreRootDirectory);
 
             if (result.ExitCode != 0)
             {

@@ -61,7 +61,6 @@ namespace Mogre.Builder
         public string DependenciesSolutionFile { get; private set; }
 
         // patch
-        public string PatchExecutable { get; private set; }
         public string PatchFile { get; private set; }
 
         // cpp2java
@@ -114,8 +113,7 @@ namespace Mogre.Builder
             DependenciesSolutionFile = @"Main\OgreSrc\ogre\Dependencies\src\OgreDependencies.VS2010.sln";
 
             // patch
-            PatchExecutable = "pat-ch.exe";
-            PatchFile = @"Main\Ogre Patches\58266f25ccd2.patch";
+            PatchFile = @"Main\Ogre Patches\mogre-1.7.3-clrobject.patch";
 
             // cpp2java
             Cpp2JavaDirectory = @"Codegen\cpp2java";

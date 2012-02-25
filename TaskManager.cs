@@ -19,31 +19,35 @@ namespace Mogre.Builder
         
         private static List<Task> BuildTaskList(InputManager inputManager, IOutputManager outputManager)
         {
-            var tasks = new List<Task>(20);
+            var taskList = new List<Task>();
             var msBuildManager = new MsBuildManager(outputManager);
                         
-            tasks.Add(new CloneMogreSource(inputManager, outputManager));
+            taskList.Add(new CloneMogreSource(inputManager, outputManager));
 
-            tasks.Add(new CheckTargetDir(inputManager, outputManager));            
-            tasks.Add(new CheckEnvironment(inputManager, outputManager));
+            taskList.Add(new CheckTargetDir(inputManager, outputManager));            
+            taskList.Add(new CheckEnvironment(inputManager, outputManager));
             
-            tasks.Add(new CloneOgreSource(inputManager, outputManager));
-            // patch
-            tasks.Add(new PatchOgreCode(inputManager, outputManager));
-            tasks.Add(new OgreDependencies(inputManager, outputManager, msBuildManager));
-            tasks.Add(new OgreCmake(inputManager, outputManager));
-            // Auto-wrapping
-            tasks.Add(new AutoWrap(inputManager, outputManager, msBuildManager));
-            tasks.Add(new AddClrClassesToOgre(inputManager, outputManager));
-            // Building
-            tasks.Add(new BuildOgreWithoutMogreLinking(inputManager, outputManager, msBuildManager));
-            tasks.Add(new UpdateMogreVersion(inputManager, outputManager));
-            tasks.Add(new BuildMogre(inputManager, outputManager, msBuildManager));
-            tasks.Add(new BuildOgreWithMogreLinking(inputManager, outputManager, msBuildManager));
-            // Organizing the result
-            tasks.Add(new AssembleBinaryFiles(inputManager, outputManager));
+            taskList.Add(new CloneOgreSource(inputManager, outputManager));
 
-            return tasks;
+            // patch
+            taskList.Add(new PatchOgreCode(inputManager, outputManager));
+            taskList.Add(new OgreDependencies(inputManager, outputManager, msBuildManager));
+            taskList.Add(new OgreCmake(inputManager, outputManager));
+
+            // Auto-wrapping
+            taskList.Add(new AutoWrap(inputManager, outputManager, msBuildManager));
+            taskList.Add(new AddClrClassesToOgre(inputManager, outputManager));
+
+            // Building
+            taskList.Add(new BuildOgreWithoutMogreLinking(inputManager, outputManager, msBuildManager));
+            taskList.Add(new UpdateMogreVersion(inputManager, outputManager));
+            taskList.Add(new BuildMogre(inputManager, outputManager, msBuildManager));
+            taskList.Add(new BuildOgreWithMogreLinking(inputManager, outputManager, msBuildManager));
+
+            // Organizing the result
+            taskList.Add(new AssembleBinaryFiles(inputManager, outputManager));
+
+            return taskList;
         }
 
         public bool Run()

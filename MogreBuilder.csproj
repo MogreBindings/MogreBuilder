@@ -79,6 +79,9 @@
     </None>
   </ItemGroup>
   <ItemGroup>
+    <Content Include="patch.exe">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
     <Content Include="ReadMe.txt" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

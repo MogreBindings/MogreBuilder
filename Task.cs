@@ -2,6 +2,8 @@
 using System.IO;
 using System.Text.RegularExpressions;
 using System.Diagnostics;
+using System.Text;
+using System.Threading;
 
 namespace Mogre.Builder
 {
@@ -45,31 +47,66 @@ namespace Mogre.Builder
             {
                 process.StartInfo.WorkingDirectory = Directory.GetCurrentDirectory();
             }
-            
-            
+
+            // http://stackoverflow.com/questions/139593/processstartinfo-hanging-on-waitforexit-why
             process.StartInfo.UseShellExecute = false;
             process.StartInfo.RedirectStandardOutput = true;
             process.StartInfo.RedirectStandardError = true;
-            process.Start();
+                        
+            StringBuilder output = new StringBuilder();
+            StringBuilder error = new StringBuilder();
 
-            string output = "";
-            string standardOutput;
-            while (!process.WaitForExit(500))
+            using (AutoResetEvent outputWaitHandle = new AutoResetEvent(false))
+            using (AutoResetEvent errorWaitHandle = new AutoResetEvent(false))
             {
-                standardOutput = process.StandardOutput.ReadToEnd();
-                outputManager.Info(standardOutput);
-                output += standardOutput;
-                outputManager.Progress();
+                process.OutputDataReceived += (sender, e) =>
+                {
+                    if (e.Data == null)
+                    {
+                        outputWaitHandle.Set();
+                    }
+                    else
+                    {
+                        if (!string.IsNullOrWhiteSpace(e.Data))
+                            outputManager.Info(e.Data);
+
+                        output.AppendLine(e.Data);
+                    }
+                };
+                process.ErrorDataReceived += (sender, e) =>
+                {
+                    if (e.Data == null)
+                    {
+                        errorWaitHandle.Set();
+                    }
+                    else
+                    {
+                        if(!string.IsNullOrWhiteSpace(e.Data))
+                            outputManager.Error(e.Data);
+
+                        error.AppendLine(e.Data);
+                    }
+                };
+
+                process.Start();
+
+                process.BeginOutputReadLine();
+                process.BeginErrorReadLine();
+                process.WaitForExit();
             }
 
-            standardOutput = process.StandardOutput.ReadToEnd();
-            outputManager.Info(standardOutput);
-            output += standardOutput;
-
-            string error = process.StandardError.ReadToEnd();
-            var result = new CommandResult(output, error, process.ExitCode);
+            var result = new CommandResult(output.ToString(), error.ToString(), process.ExitCode);
             process.Dispose();
             return result;
+        }
+
+        private string OutputAndCapture(Process process)
+        {
+            outputManager.Error(process.StandardError.ReadToEnd());
+
+            string output = process.StandardOutput.ReadToEnd();
+            outputManager.Info(output);
+            return output;
         }
 
         protected void ModifyFile(string filePath, string pattern, string replacement)
