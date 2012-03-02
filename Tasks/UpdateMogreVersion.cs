@@ -47,7 +47,7 @@ namespace Mogre.Builder.Tasks
 
             reader.Close();
 
-            string mogreVersion = string.Format("{0}.{1}.{2}", major, minor, patch);
+            string mogreVersion = string.Format("{0}.{1}.{2}.*", major, minor, patch);
 
             if (!string.IsNullOrWhiteSpace(mogreVersion))
                 ModifyFile(inputManager.MogreAssemblyInfoFile, "AssemblyVersionAttribute.*", string.Format("AssemblyVersionAttribute(\"{0}\")];", mogreVersion));

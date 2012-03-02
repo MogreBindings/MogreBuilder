@@ -4,6 +4,7 @@ using System.Text.RegularExpressions;
 using System.Diagnostics;
 using System.Text;
 using System.Threading;
+using System.Collections.Generic;
 
 namespace Mogre.Builder
 {
@@ -111,10 +112,28 @@ namespace Mogre.Builder
 
         protected void ModifyFile(string filePath, string pattern, string replacement)
         {
-            string text = File.ReadAllText(filePath);
-            string modifiedText = Regex.Replace(text, pattern, replacement);
+            List<string> lineList = new List<string>();
 
-            File.WriteAllText(filePath, modifiedText);
+            using (StreamReader reader = new StreamReader(filePath))
+            {                
+                string line = reader.ReadLine();
+
+                while (line != null)
+                {
+                    lineList.Add(Regex.Replace(line, pattern, replacement));
+                    line = reader.ReadLine();
+                }
+
+                reader.Close();
+            }
+
+            using(StreamWriter writer = new StreamWriter(filePath))
+            {
+                foreach (string line in lineList)
+                    writer.WriteLine(line);
+
+                writer.Close();
+            }
         }
 
         protected void ModifyFile(string filePath, string pattern, string replacement, RegexOptions regexOptions)
