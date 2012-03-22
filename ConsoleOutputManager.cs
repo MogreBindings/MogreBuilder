@@ -7,7 +7,7 @@ namespace Mogre.Builder
 {
     public class ConsoleOutputManager : IOutputManager
     {
-        private void DisplayMessage(string message, ConsoleColor color)
+        public static void DisplayMessage(string message, ConsoleColor color)
         {
             Console.ResetColor();
             Console.ForegroundColor = color;

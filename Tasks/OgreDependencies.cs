@@ -41,15 +41,17 @@ namespace Mogre.Builder.Tasks
             {
                 bool downloadComplete = false;
                 var client = new WebClient();
+                Int32 counter = 0;
 
                 client.DownloadProgressChanged += delegate(object sender, DownloadProgressChangedEventArgs e)
                 {
-                    Console.Write(".");
+                    if (counter++ % 10 == 0)
+                        Console.Write(".");
                 };
 
                 client.DownloadFileCompleted += delegate(object sender, System.ComponentModel.AsyncCompletedEventArgs e)
                 {
-                    Console.WriteLine(".");
+                    Console.WriteLine(" ready");
                     downloadComplete = true;
                 };
 
