@@ -7,7 +7,7 @@ namespace Mogre.Builder
 {
     public class ConsoleOutputManager : IOutputManager
     {
-        public static void DisplayMessage(string message, ConsoleColor color)
+        public void DisplayMessage(string message, ConsoleColor color)
         {
             Console.ResetColor();
             Console.ForegroundColor = color;
@@ -43,6 +43,7 @@ namespace Mogre.Builder
 
         private int animationIndex = 0;
         private char[] animationChars = { '-', '\\', '|', '/' };
+        
         public void Progress()
         {
             if (Console.CursorLeft == 0)

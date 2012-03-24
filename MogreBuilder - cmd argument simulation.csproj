@@ -47,6 +47,8 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="ParseCommandLine.cs" />
+    <Compile Include="ProcessPriorityControl.cs" />
     <Compile Include="Tasks\ApplyCygonPatch.cs" />
     <Compile Include="ConsoleOutputManager.cs" />
     <Compile Include="Exceptions.cs" />
