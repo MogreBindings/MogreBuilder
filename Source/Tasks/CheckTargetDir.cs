@@ -31,7 +31,7 @@ namespace Mogre.Builder.Tasks
                 }
             }
 
-            var found = Array.FindAll<string>(
+            Int32 found = Array.FindAll<String>(
                 Directory.GetFileSystemEntries("."),
                 delegate(string entry)
                 {

@@ -1,0 +1,30 @@
+
+Overview of the DIRECTORIES
+---------------------------------------------
+
+bin_Debug
+bin_Release
+  -->  Output directories for the compiled MogreBuilder
+
+Source  
+  -->  Source code files of the MogreBuilder
+
+Source_additions
+  -->  These files will be copied to the binary output directories
+
+
+
+Overview of the FILES
+---------------------------------------------
+
+MogreBuilder.sln
+  --> For everybody who just want to compile and use the MogreBuilder
+
+MogreBuilder - for developers.sln
+  --> For MogreBuilder developers. 
+      It opens a project file, where you can add arguments to the 
+      project properties for easy testing. 
+      By usage of a seperate project/solution file, the "normal" files
+      will stay "clean".
+      
+

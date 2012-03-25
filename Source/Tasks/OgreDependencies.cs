@@ -40,7 +40,7 @@ namespace Mogre.Builder.Tasks
             try
             {
                 bool downloadComplete = false;
-                var client = new WebClient();
+                WebClient client = new WebClient();
                 Int32 counter = 0;
 
                 client.DownloadProgressChanged += delegate(object sender, DownloadProgressChangedEventArgs e)
@@ -68,7 +68,7 @@ namespace Mogre.Builder.Tasks
             try
             {
                 outputManager.Info("Unpacking Ogre dependencies");
-                var zipFile = new ZipFile(inputManager.DependenciesZip);
+                ZipFile zipFile = new ZipFile(inputManager.DependenciesZip);
                 zipFile.ExtractAll(inputManager.OgreRootDirectory);
                 zipFile.Dispose();
             }

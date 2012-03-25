@@ -22,12 +22,18 @@ namespace Mogre.Builder
         static void Main(string[] cmdLineArgs)
         {
             Int64 startTime = DateTime.Now.Ticks;
-            var outputManager = new ConsoleOutputManager();
+            Console.BufferHeight = 9999;  // keep all messages visble 
+            Console.Title = "MogreBuilder";
+            ConsoleOutputManager outputManager = new ConsoleOutputManager();
+
 
             try
             {
                 if (cmdLineArgs.Length == 0)
+                {
+                    outputManager.Warning("\nYou need some arguments to run MogreBuilder! ");
                     ShowHelp();
+                }
                 else
                 {
                     // Properties of successfully assigned arguments
@@ -36,26 +42,39 @@ namespace Mogre.Builder
                     // Default priority for worker processes.
                     parsedArgs.priority = ProcessPriorityClass.BelowNormal;
 
-
                     ParseCommandLine(cmdLineArgs, outputManager, ref parsedArgs);
-                    var inputManager = new InputManager(parsedArgs.TargetDir, parsedArgs.ConfigFile);
-                    var taskManager = new TaskManager(inputManager, outputManager);
+                    InputManager inputManager = new InputManager(parsedArgs.TargetDir, parsedArgs.ConfigFile);
+                    TaskManager taskManager = new TaskManager(inputManager, outputManager);
 
                     VerifyTargetDirectory(inputManager.TargetDirectory, outputManager);
+                    VerifyMore(inputManager, outputManager);
 
                     // apply priority setting
                     if (parsedArgs.priority != ProcessPriorityClass.Normal)
                         ProcessPriorityControl.StartController(parsedArgs.priority, outputManager);
 
+                    // do tasks
                     taskManager.Run();
+
+                    // print summary
+                    outputManager.PrintSummary();
+
+                    
                 }
             }
             catch (Exception ex)
             {
-                Console.WriteLine(ex.Message);
+                outputManager.Error(ex.Message);
             }
 
+
+            // print duration time
             PrintDurationTime(startTime, outputManager);
+
+            // highlight window in taskbar
+            HighlightInTaskbar(startTime);
+
+            
 
 #if DEBUG
             Console.WriteLine("\nPress any key to continue...");
@@ -69,8 +88,8 @@ namespace Mogre.Builder
 
         private static void ShowHelp()
         {
-            Console.WriteLine("You have to define the target directory as first argument! \n\n");
-            
+            Console.WriteLine("Define the target directory as first argument! \n\n");
+
             // TODO:  Write help file and load it here.
 
         }
@@ -81,19 +100,45 @@ namespace Mogre.Builder
 
         private static void PrintDurationTime(Int64 startTime, ConsoleOutputManager outputManager)
         {
-            DateTime duration = new DateTime(DateTime.Now.Ticks - startTime);
+            TimeSpan duration = TimeSpan.FromTicks((DateTime.Now.Ticks - startTime));
+
             String hourString = "hours";
             String minuteString = "minutes";
-            if (duration.Hour == 1)
+            if (duration.Hours == 1)
                 hourString = "hour"; // singular
-            if (duration.Minute == 1)
+            if (duration.Minutes == 1)
                 minuteString = "minute";
 
             outputManager.DisplayMessage(String.Format(
-                "\nDuration:  {0} {1} {2} {3} ", duration.Hour, hourString, duration.Minute, minuteString),
+                "\nDuration:  {0} {1} {2} {3} ", duration.Hours, hourString, duration.Minutes, minuteString),
                 ConsoleColor.White);
         } // PrintDurationTime()
 
+
+
+
+
+        /// <summary>
+        /// Highlight the window in the taskbar. 
+        /// When window is in background, blink until it gets the focus. 
+        /// When window is in foreground, highlight it forever without blinking.
+        /// When the application was just started, do nothing.
+        /// </summary>
+        /// <param name="startTime">Start time of the application</param>
+        private static void HighlightInTaskbar(Int64 startTime)
+        {
+            TimeSpan duration = TimeSpan.FromTicks((DateTime.Now.Ticks - startTime));
+
+            // do nothing if just started
+            if (duration.TotalSeconds > 10)
+            {
+                if (TaskbarHighlight.WindowIsInForeground())
+                    TaskbarHighlight.StaticHighlight();
+                else
+                    TaskbarHighlight.BlinkUntilFocus();
+            }
+
+        } // HighlightInTaskbar()
 
 
     } // class Program

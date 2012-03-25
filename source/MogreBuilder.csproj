@@ -20,7 +20,7 @@
     <DebugSymbols>true</DebugSymbols>
     <DebugType>full</DebugType>
     <Optimize>false</Optimize>
-    <OutputPath>bin_Debug\</OutputPath>
+    <OutputPath>..\bin_Debug\</OutputPath>
     <DefineConstants>DEBUG;TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
@@ -29,7 +29,7 @@
     <PlatformTarget>x86</PlatformTarget>
     <DebugType>pdbonly</DebugType>
     <Optimize>true</Optimize>
-    <OutputPath>bin_Release\</OutputPath>
+    <OutputPath>..\bin_Release\</OutputPath>
     <DefineConstants>TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
@@ -37,7 +37,7 @@
   <ItemGroup>
     <Reference Include="Ionic.Zip, Version=1.9.1.5, Culture=neutral, PublicKeyToken=edbe51ad942a3f5c, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>.\Ionic.Zip.dll</HintPath>
+      <HintPath>..\Source_additions\Ionic.Zip.dll</HintPath>
     </Reference>
     <Reference Include="Microsoft.Build" />
     <Reference Include="Microsoft.Build.Framework" />
@@ -49,6 +49,7 @@
   <ItemGroup>
     <Compile Include="ParseCommandLine.cs" />
     <Compile Include="ProcessPriorityControl.cs" />
+    <Compile Include="TaskbarBlink.cs" />
     <Compile Include="Tasks\ApplyCygonPatch.cs" />
     <Compile Include="ConsoleOutputManager.cs" />
     <Compile Include="Exceptions.cs" />
@@ -77,18 +78,24 @@
     <Compile Include="Tasks\UpdateMogreVersion.cs" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="Default.cfg">
+    <None Include="..\Source_additions\Default.cfg">
+      <Link>Default.cfg</Link>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Include="GO_example.bat">
+    <None Include="..\Source_additions\GO_example.bat">
+      <Link>GO_example.bat</Link>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
   </ItemGroup>
   <ItemGroup>
-    <Content Include="patch.exe">
+    <Content Include="..\Source_additions\Ionic.Zip.dll">
+      <Link>Ionic.Zip.dll</Link>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="ReadMe.txt" />
+    <Content Include="..\Source_additions\patch.exe">
+      <Link>patch.exe</Link>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>

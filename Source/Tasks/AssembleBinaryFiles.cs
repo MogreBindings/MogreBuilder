@@ -16,27 +16,27 @@ namespace Mogre.Builder.Tasks
 
         public override void Run()
         {            
-            var targetDir = string.Format(@"bin\{0}.NET4", inputManager.BuildConfiguration);
+            String targetDir = String.Format(@"bin\{0}.NET4", inputManager.BuildConfiguration);
 
             if (!Directory.Exists(targetDir))
                 Directory.CreateDirectory(targetDir);
 
-            var binPaths = new string[] 
+            String[] binPaths = new String[] 
             {
-                string.Format(@"Main\lib\{0}", inputManager.BuildConfiguration),
-                string.Format(@"Main\OgreSrc\build\bin\{0}", inputManager.BuildConfiguration),
-                string.Format(@"Main\OgreSrc\build\lib\{0}", inputManager.BuildConfiguration),
+                String.Format(@"Main\lib\{0}", inputManager.BuildConfiguration),
+                String.Format(@"Main\OgreSrc\build\bin\{0}", inputManager.BuildConfiguration),
+                String.Format(@"Main\OgreSrc\build\lib\{0}", inputManager.BuildConfiguration),
             };
 
-            var patterns = new string[] { "*.dll", "*.lib", "*.pdb" };
+            String[] patterns = new String[] { "*.dll", "*.lib", "*.pdb" };
 
-            foreach (var binPath in binPaths)
+            foreach (String binPath in binPaths)
             {
-                foreach (var pattern in patterns)
+                foreach (String pattern in patterns)
                 {
-                    foreach (var entry in Directory.GetFiles(binPath, pattern))
+                    foreach (String entry in Directory.GetFiles(binPath, pattern))
                     {
-                        string filePath = targetDir + "\\" + Path.GetFileName(entry);
+                        String filePath = targetDir + "\\" + Path.GetFileName(entry);
 
                         if (File.Exists(filePath))
                             File.Delete(filePath);
@@ -44,7 +44,9 @@ namespace Mogre.Builder.Tasks
                         File.Move(entry, filePath);
                     }
                 }
-            }
-        }
-    }
-}
+            } // foreach
+
+        } // Run()
+
+    } // class AssembleBinaryFiles
+} // namespace

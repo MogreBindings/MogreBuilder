@@ -19,8 +19,8 @@ namespace Mogre.Builder
         
         private static List<Task> BuildTaskList(InputManager inputManager, IOutputManager outputManager)
         {
-            var taskList = new List<Task>();
-            var msBuildManager = new MsBuildManager(outputManager);
+            List<Task> taskList = new List<Task>();
+            MsBuildManager msBuildManager = new MsBuildManager(outputManager);
 
             taskList.Add(new CloneMogreSource(inputManager, outputManager));
 
@@ -57,9 +57,9 @@ namespace Mogre.Builder
         {
             try
             {
-                var tasksToRun = BuildTaskList(_inputManager, _outputManager);
+                List<Task> tasksToRun = BuildTaskList(_inputManager, _outputManager);
 
-                foreach (var task in tasksToRun)
+                foreach (Task task in tasksToRun)
                 {
                     _outputManager.Action(task.Name);
                     task.Run();

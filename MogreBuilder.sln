@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 11.00
 # Visual Studio 2010
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MogreBuilder", "MogreBuilder.csproj", "{FC5D6B1F-114F-40EE-B515-BECF3E2DD5BA}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MogreBuilder", "Source\MogreBuilder.csproj", "{FC5D6B1F-114F-40EE-B515-BECF3E2DD5BA}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

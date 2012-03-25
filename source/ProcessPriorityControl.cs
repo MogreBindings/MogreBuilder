@@ -12,6 +12,10 @@ namespace Mogre.Builder
     /// </summary>
     class ProcessPriorityControl
     {
+        private static Boolean printPriorityMessages = false;  // if true, messages for many processes will be printed
+
+
+
         // name of extensive worker threads which to control
         static String[] threadNames = { "cmake", "cl", "doxygen", "link", "mspdbsrv" };
         //                              NOTE: Process "hg" is not in list, because it causes only low CPU load
@@ -23,6 +27,8 @@ namespace Mogre.Builder
             Thread controllerThread = new Thread(new ParameterizedThreadStart(ControlThread.DoWork));
             controllerThread.IsBackground = true; // stop thread when main thread stops
             controllerThread.Start(threadParams);
+
+            outputManager.Info("Priority for worker processes:  " + priority.ToString());
         }
 
 
@@ -49,18 +55,21 @@ namespace Mogre.Builder
                                 {
                                     process.PriorityClass = p.priority;
 
-                                    // create message
-                                    String message = String.Format("Changed process priority:  {0}.exe -> {1}", name, p.priority);
-                                    
-                                    // move to new line if needed
-                                    if (Console.CursorLeft > 0)
-                                        message = "\n" + message;
+                                    if (printPriorityMessages == true)
+                                    {
+                                        // create message
+                                        String message = String.Format("Changed process priority:  {0}.exe -> {1}", name, p.priority);
 
-                                    // print
-                                    p.outputManager.DisplayMessage(message, ConsoleColor.White);
+                                        // move to new line if needed
+                                        if (Console.CursorLeft > 0)
+                                            message = "\n" + message;
 
-                                    // TODO: Maybe add LOCK for call of outputManager.DisplayMessage()
-                                    //       Because more than 1 thread call it.
+                                        // print
+                                        p.outputManager.DisplayMessage(message, ConsoleColor.White);
+
+                                        // TODO: Maybe add LOCK for call of outputManager.DisplayMessage()
+                                        //       Because more than 1 thread call it.
+                                    }
                                 }
                             }
                             catch (InvalidOperationException)

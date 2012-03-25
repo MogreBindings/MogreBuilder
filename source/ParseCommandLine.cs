@@ -12,7 +12,7 @@ namespace Mogre.Builder
 
         /// <summary>
         /// Process all input arguments from the command line. 
-        /// The first argument is assumed to be the target path. (Optional, because maybe in the future it can also be defined by a config file). 
+        /// The first argument is assumed to be the target pathVar. (Optional, because maybe in the future it can also be defined by a config file). 
         /// For all other arguments it will tried to associate the wanted option. 
         /// </summary>
         private static CommandLineArgs ParseCommandLine(String[] cmdLineArgs, ConsoleOutputManager outputManager, ref CommandLineArgs parsedArgs)
@@ -24,7 +24,7 @@ namespace Mogre.Builder
             
             //--- PATH ---
 
-            // check if first argument could be a path
+            // check if first argument could be a pathVar
             if ((inputList.Count > 0) && (inputList[0].StartsWith("-") == false))
             {
                 String directory = inputList[0];
@@ -151,14 +151,14 @@ namespace Mogre.Builder
         /// Check if target directory exists. If not, it will tried to create it. 
         /// Messages should help the user with problems. 
         /// </summary>
-        /// <param name="path">path of target directory</param>
+        /// <param name="pathVar">pathVar of target directory</param>
         /// <param name="outputManager">Used to created coloured console outputs.</param>
         private static void VerifyTargetDirectory(String path, ConsoleOutputManager outputManager)
         {
             // check if exists
             if (Directory.Exists(path) == false)
             {
-                // check if seems to be a valid path parameter
+                // check if seems to be a valid pathVar parameter
                 if (Regex.IsMatch(path, @"^[A-Za-z]:\\."))  // true e.g. for "C:\myTarget"
                 {
                     outputManager.Action(String.Format(
@@ -179,7 +179,7 @@ namespace Mogre.Builder
                 }
                 else
                 {
-                    // show info if path arguments seems to be invalid
+                    // show info if pathVar arguments seems to be invalid
                     outputManager.Warning(String.Format(
                         "NOTE: \n" + 
                         "The first argument has to be the path of the target directory. \n\n" +
@@ -196,6 +196,45 @@ namespace Mogre.Builder
         } // VerifyTargetDirectory()
 
 
+
+
+
+        private static void VerifyMore(InputManager inputManager, ConsoleOutputManager outputManager)
+        {
+
+//            // Try to find in environment variable "pathVar"
+//
+//            String pathVar = System.Environment.GetEnvironmentVariable("path");
+//            //String[] pathList = Regex.Split(pathVar, ";");
+//
+//            String[] pathList = {"c:\\ddd", "c:\\ddd\\", "b:\\bb"}; // TEST
+//
+//            foreach (String path in pathList)
+//            {
+//                String fullPath = Path.Combine(path, "cmake.exe");  // with Combine() it doesn't care if the path has a backslash at the end
+//                Console.WriteLine(fullPath);
+//
+//                //if (File.Exists())
+//            }
+//            throw new NotImplementedException("CONTINUE HERE");
+//            return; // TEST
+
+
+
+            if (File.Exists(inputManager.CMakeExecutable) == false)
+            {
+                outputManager.Error(String.Format(
+                    "Aborted, because the CMake path seems to be wrong! \n" +
+                    "Currently it's: '{0}' \n" + 
+                    "Enter the correct path into your config file.", inputManager.CMakeExecutable));
+
+                throw new Exception("Application stopped");  // force an exit
+
+
+            }
+
+
+        } // VerifyMore()
 
 
 

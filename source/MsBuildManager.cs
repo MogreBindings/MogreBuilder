@@ -19,10 +19,10 @@ namespace Mogre.Builder
 
         public BuildResult Build(string projectFile, string configuration, string platform, string[] targets)
         {
-            var buildParams = new BuildParameters(new ProjectCollection());
+            BuildParameters buildParams = new BuildParameters(new ProjectCollection());
             buildParams.Loggers = new ILogger[] { this };
             
-            var buildResult = BuildManager.DefaultBuildManager.Build(
+            BuildResult buildResult = BuildManager.DefaultBuildManager.Build(
                 buildParams,
                 new BuildRequestData(
                     projectFile,

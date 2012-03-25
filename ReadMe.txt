@@ -24,7 +24,7 @@ Note: Some Ogre depencies will be downloaded automatically.
 1. Download MogreBuilder source and compile.
    https://bitbucket.org/mogre/mogrebuilder
 
-2. Enter directory "bin_debug", open file "GO_example.bat",
+2. Enter directory "bin_Debug", open file "GO_example.bat",
    and type in your wanted target directory.
  
 3. Setup the config file if required. There is a Default.cfg as an example. 
@@ -36,16 +36,7 @@ Note: Some Ogre depencies will be downloaded automatically.
 
 The auto-builder should now ran successfully.
 (Be patient during the repository cloning tasks at the first usage.)
-
-
-
---- WARNING ---
-
-Always use an empty target directory !!
-
-Reason: Currently there is a bug with reuse of (non-empty) target directories. 
-Yes, downloading everything again is time-consuming, but otherwise you will 
-get trouble. We hope we can fix this bug soon. 
+After the downloads are finished, it needs about 1 hour for building Mogre.
 
 
 

@@ -22,10 +22,10 @@ namespace Mogre.Builder.Tasks
             {
                 outputManager.Info("Copying Mogre files to Ogre source tree");
 
-                foreach (var file in Directory.GetFiles(inputManager.ClrDirectory, "*.h"))
+                foreach (String file in Directory.GetFiles(inputManager.ClrDirectory, "*.h"))
                     File.Copy(file, inputManager.OgreIncludeDirectory + Path.GetFileName(file), true);
 
-                foreach (var file in Directory.GetFiles(inputManager.ClrDirectory, "*.cpp"))
+                foreach (String file in Directory.GetFiles(inputManager.ClrDirectory, "*.cpp"))
                     File.Copy(file, inputManager.OgreSourceDirectory + Path.GetFileName(file), true);
 
                 File.Copy(inputManager.ClrObjectsAutoFile, inputManager.ClrObjectsBuildFile, true);
@@ -35,40 +35,40 @@ namespace Mogre.Builder.Tasks
                 outputManager.Info("Mogre's additional Ogre source files appear to already have been copied to Ogre source tree, skipping");
             }
 
-            var sourceFiles = new Dictionary<string, bool>{
+            Dictionary<String, Boolean> sourceFiles = new Dictionary<String, Boolean>{
                 {"CLRHandle.cpp", false},
                 {"CLRObject.cpp", false}
             };
 
-            var includeFiles = new Dictionary<string, bool>{
+            Dictionary<String, Boolean> includeFiles = new Dictionary<String, Boolean>{
                 {"CLRConfig.h", false},
                 {"CLRHandle.h", false},
                 {"CLRObject.h", false}
             };
 
-            var p = new Project(inputManager.OgreProjectFile);
+            Project p = new Project(inputManager.OgreProjectFile);
 
-            foreach (var item in p.GetItems("ClCompile"))
+            foreach (ProjectItem item in p.GetItems("ClCompile"))
             {
-                var file = Path.GetFileName(item.EvaluatedInclude);
+                String file = Path.GetFileName(item.EvaluatedInclude);
 
                 if (sourceFiles.ContainsKey(file))
                     sourceFiles[file] = true;
             }
 
-            foreach (var item in p.GetItems("ClInclude"))
+            foreach (ProjectItem item in p.GetItems("ClInclude"))
             {
-                var file = Path.GetFileName(item.EvaluatedInclude);
+                String file = Path.GetFileName(item.EvaluatedInclude);
 
                 if (includeFiles.ContainsKey(file))
                     includeFiles[file] = true;
             }
 
-            var projectModified = false;
-            foreach (var pair in sourceFiles)
+            Boolean projectModified = false;
+            foreach (KeyValuePair<String, Boolean> pair in sourceFiles)
             {
-                var file = pair.Key;
-                var included = pair.Value;
+                String file = pair.Key;
+                Boolean included = pair.Value;
                 if (!included)
                 {
                     if (!projectModified)
@@ -79,10 +79,10 @@ namespace Mogre.Builder.Tasks
                 }
             }
 
-            foreach (var pair in includeFiles)
+            foreach (KeyValuePair<String, Boolean> pair in includeFiles)
             {
-                var file = pair.Key;
-                var included = pair.Value;
+                String file = pair.Key;
+                Boolean included = pair.Value;
                 if (!included)
                 {
                     if (!projectModified)

@@ -37,7 +37,7 @@ namespace Mogre.Builder
             if (workingDirectory != null)
             {
                 if(!Directory.Exists(workingDirectory))
-                    throw new Exception(string.Format("{0} does not exist", workingDirectory));
+                    throw new Exception(String.Format("{0} does not exist", workingDirectory));
 
                 if (Path.IsPathRooted(workingDirectory))
                     process.StartInfo.WorkingDirectory = workingDirectory;
@@ -96,7 +96,7 @@ namespace Mogre.Builder
                 process.WaitForExit();
             }
 
-            var result = new CommandResult(output.ToString(), error.ToString(), process.ExitCode);
+            CommandResult result = new CommandResult(output.ToString(), error.ToString(), process.ExitCode);
             process.Dispose();
             return result;
         }

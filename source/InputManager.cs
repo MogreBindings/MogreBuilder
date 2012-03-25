@@ -104,7 +104,7 @@ namespace Mogre.Builder
             OgreBranch = @"v1-7";
 
             // cmake
-            CMakeExecutable = @"C:\Program Files (x86)\CMake 2.8\bin\cmake.exe"; ;
+            CMakeExecutable = @"C:\Program Files (x86)\CMake 2.8\bin\cmake.exe"; 
             CMakeCachePath = @"Main\OgreSrc\build\CMakeCache.txt";
 
             // dependencies

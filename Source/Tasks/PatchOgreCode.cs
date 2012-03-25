@@ -24,15 +24,27 @@ namespace Mogre.Builder.Tasks
                 return;
             }
 
-            string patchExe = Path.Combine(Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location), "patch.exe");
-            var patchFilePath = Path.Combine(Directory.GetCurrentDirectory(), inputManager.ClrPatchFile);
-            var result = RunCommand(patchExe, string.Format("-p0 -i \"{0}\"", patchFilePath), inputManager.OgreRootDirectory);
+            String patchExe = Path.Combine(Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location), "patch.exe");
+            String patchFilePath = Path.Combine(Directory.GetCurrentDirectory(), inputManager.ClrPatchFile);
+            CommandResult result = RunCommand(patchExe, String.Format("-p0 -i \"{0}\"", patchFilePath), inputManager.OgreRootDirectory);
 
             if (result.ExitCode != 0)
             {
-                throw new UserException("Patch Failed: " + result.Error);
+
+                // throw new UserException("Ogre patch Failed: " + result.Error);
+
+                // prepare message
+                String message = "Ogre patch failed";
+                if (result.Error == "")
+                    message += "!    (Happens when the files are still patched by a previous run.)";
+                else
+                    message += ":  " + result.Error;
+
+                // print message
+                outputManager.Warning(message);
+
             }
-        }
+        } // Run()
 
     }
 }

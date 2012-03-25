@@ -35,15 +35,27 @@ namespace Mogre.Builder
 
         public override void Run()
         {
-            string patchExe = Path.Combine(Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location), "patch.exe");
-            var patchFilePath = Path.Combine(Directory.GetCurrentDirectory(), inputManager.CygonPatchFile);
-            var result = RunCommand(patchExe, string.Format("-p0 -i \"{0}\"", patchFilePath), inputManager.TargetDirectory);
+            String patchExe = Path.Combine(Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location), "patch.exe");
+            String patchFilePath = Path.Combine(Directory.GetCurrentDirectory(), inputManager.CygonPatchFile);
+            CommandResult result = RunCommand(patchExe, String.Format("-p0 -i \"{0}\"", patchFilePath), inputManager.TargetDirectory);
 
             if (result.ExitCode != 0)
             {
                 // it's often not so bad if this patch fails so lets just produce a warning
-                outputManager.Warning("Patch Failed: " + result.Error);
+
+                // prepare message
+                String message = "Cygon patch failed";
+                if (result.Error == "")
+                    message += "!    (Happens when the files are still patched by a previous run.)";
+                else
+                    message += ":  " + result.Error;
+
+                // print message
+                outputManager.Warning(message);
             }
-        }
-    }
-}
+
+        } // Run()
+
+
+    } // class ApplyCygonPatch
+} // namespace
