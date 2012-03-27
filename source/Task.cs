@@ -31,6 +31,11 @@ namespace Mogre.Builder
             process.EnableRaisingEvents = false;
             process.StartInfo.FileName = command;
 
+            process.StartInfo.EnvironmentVariables["Path"] = inputManager.PathEnvironmentVariable;
+            process.StartInfo.UseShellExecute = true;  // needed to apply the modified path
+                                                       // NOTE:  Maybe "true" causes problems. Look to MSDN for details:
+                                                       //        http://msdn.microsoft.com/en-us/library/system.diagnostics.processstartinfo.useshellexecute.aspx
+
             if (arguments != null)
                 process.StartInfo.Arguments = arguments;
 
@@ -69,7 +74,34 @@ namespace Mogre.Builder
                     else
                     {
                         if (!string.IsNullOrWhiteSpace(e.Data))
-                            outputManager.Info(e.Data);
+                        {
+                            if (ConsoleOutputManager.ContainsWarningKeyword(e.Data))
+                                // contains warning keyword
+                                outputManager.Warning(e.Data);
+                            else
+                                // normal message
+                                outputManager.Info(e.Data);
+                        }
+
+                        //-- catch Ogre features --
+
+                        //     NOTE: The information is printed line by line. (not a single message)
+                        //           So catch every line (of following outputs) between the 2 following rulers "----------------"
+
+                        // check:  disable logging?
+                        if (e.Data.Contains("----------------") 
+                            && (outputManager.FeatureSummary.Length > 0))  // ignore fist line of "-" symbols
+                        {
+                            outputManager.FeatureLoggingIsEnabled = false;
+                        }
+
+                        // do logging
+                        if (outputManager.FeatureLoggingIsEnabled && (e.Data.Contains("----------------") == false))
+                            outputManager.FeatureSummary += e.Data + " \n";
+
+                        // check:  enable logging?
+                        if (e.Data.Contains("FEATURE SUMMARY"))
+                            outputManager.FeatureLoggingIsEnabled = true;
 
                         output.AppendLine(e.Data);
                     }

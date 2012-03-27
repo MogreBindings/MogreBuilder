@@ -7,6 +7,7 @@ using System.Diagnostics;
 
 namespace Mogre.Builder
 {
+
     partial class Program
     {
 
@@ -86,6 +87,20 @@ namespace Mogre.Builder
             } // for
 
 
+            //--- DISABLE BOOST ---
+
+            // check if users wants to disable boost
+            // --> 1 argument
+            for (Int16 i = 0;   i < inputList.Count;   i++)
+            {
+                if (inputList[i].ToLower() == "-noboost")
+                {
+                    Misc.ModifyEnvironmentPath(ref parsedArgs, outputManager, Misc.PathRemove.Boost);
+                    Misc.ModifyEnvironmentPath(ref parsedArgs, outputManager, Misc.PathRemove.Test);  // TEST
+                    inputList.RemoveAt(i);
+                    break;
+                }
+            }
 
 
 
@@ -106,18 +121,6 @@ namespace Mogre.Builder
                 foreach (String unknown in inputList)
                     unknownArguments += unknown + " ";
                 outputManager.DisplayMessage(unknownArguments + "\n", ConsoleColor.White);
-
-#if DEBUG
-                // quote all arguments
-                // --> Useful if you run the MogreBuilder by Visual Studio (Then you don't see the arguments.)
-                outputManager.DisplayMessage(
-                    "Just to remember - Here are all arguments which you used: ", ConsoleColor.Gray);
-
-                String all = "";
-                foreach (String arg in cmdLineArgs)
-                    all += arg + " ";
-                outputManager.DisplayMessage(all + "\n", ConsoleColor.White);
-#endif
 
                 outputManager.DisplayMessage(
                     "Perhaps your target path has spaces? \n" +
@@ -155,6 +158,9 @@ namespace Mogre.Builder
         /// <param name="outputManager">Used to created coloured console outputs.</param>
         private static void VerifyTargetDirectory(String path, ConsoleOutputManager outputManager)
         {
+            if (path == null)
+                path = "";
+
             // check if exists
             if (Directory.Exists(path) == false)
             {
@@ -239,5 +245,29 @@ namespace Mogre.Builder
 
 
     } // class Program
+
+
+
+    struct CommandLineArgs
+    {
+        public string TargetDir { get; set; }
+        public string ConfigFile { get; set; }
+        public ProcessPriorityClass priority { get; set; }
+
+        public String PathEnvironmentVariable 
+        {
+            get 
+            { 
+                if (pathEnvironmentVariable == null) 
+                    pathEnvironmentVariable = Environment.GetEnvironmentVariable("path");  // system default
+                return pathEnvironmentVariable;
+            }
+            set { pathEnvironmentVariable = value; }
+        }
+
+        private String pathEnvironmentVariable;
+
+    } // struct CommandLineArgs
+
 
 } // namespace

@@ -11,5 +11,8 @@ namespace Mogre.Builder
         void StartProgress(string message);
         void Progress();
         void EndProgress();
+
+        String FeatureSummary { get; set; }
+        Boolean FeatureLoggingIsEnabled { get; set; }
     }
 }

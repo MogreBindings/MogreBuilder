@@ -46,7 +46,7 @@ namespace Mogre.Builder
                 // prepare message
                 String message = "Cygon patch failed";
                 if (result.Error == "")
-                    message += "!    (Happens when the files are still patched by a previous run.)";
+                    message += "!    \n --> Happens when the files are still patched by a previous run.";
                 else
                     message += ":  " + result.Error;
 

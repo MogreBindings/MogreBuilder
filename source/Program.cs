@@ -10,22 +10,12 @@ namespace Mogre.Builder
     partial class Program
     {
         
-        struct CommandLineArgs
-        {
-            public string TargetDir { get; set; }
-            public string ConfigFile { get; set; }
-            public ProcessPriorityClass priority { get; set; }
-        }
-
-
-
         static void Main(string[] cmdLineArgs)
         {
             Int64 startTime = DateTime.Now.Ticks;
             Console.BufferHeight = 9999;  // keep all messages visble 
             Console.Title = "MogreBuilder";
             ConsoleOutputManager outputManager = new ConsoleOutputManager();
-
 
             try
             {
@@ -36,6 +26,9 @@ namespace Mogre.Builder
                 }
                 else
                 {
+                    // print information if started from Visual Studio
+                    PrintIfVisualStudio(cmdLineArgs, outputManager);
+
                     // Properties of successfully assigned arguments
                     CommandLineArgs parsedArgs = new CommandLineArgs();
 
@@ -43,7 +36,8 @@ namespace Mogre.Builder
                     parsedArgs.priority = ProcessPriorityClass.BelowNormal;
 
                     ParseCommandLine(cmdLineArgs, outputManager, ref parsedArgs);
-                    InputManager inputManager = new InputManager(parsedArgs.TargetDir, parsedArgs.ConfigFile);
+
+                    InputManager inputManager = new InputManager(parsedArgs.TargetDir, parsedArgs.ConfigFile, parsedArgs.PathEnvironmentVariable);
                     TaskManager taskManager = new TaskManager(inputManager, outputManager);
 
                     VerifyTargetDirectory(inputManager.TargetDirectory, outputManager);
@@ -55,6 +49,9 @@ namespace Mogre.Builder
 
                     // do tasks
                     taskManager.Run();
+
+                    // print success message
+                    outputManager.DisplayMessage("\nThe build process seems to be finished successfully (-:", ConsoleColor.Green);
 
                     // print summary
                     outputManager.PrintSummary();
@@ -139,6 +136,31 @@ namespace Mogre.Builder
             }
 
         } // HighlightInTaskbar()
+
+
+
+
+        /// <summary>
+        /// If started by Visual Studio, the arguments will be printed. (Otherwise you can't see it.)
+        /// </summary>
+        private static void PrintIfVisualStudio(String[] cmdLineArgs, ConsoleOutputManager outputManager)
+        {
+            // print nothing if started by console or Windows Explorer
+            if ((Console.CursorLeft != 0) || (Console.CursorTop != 0))
+                return;
+
+            // print directory
+            outputManager.DisplayMessage("Current directory:  ", ConsoleColor.Gray);
+            outputManager.DisplayMessage(Directory.GetCurrentDirectory(), ConsoleColor.White);
+
+            // print arguments
+            outputManager.DisplayMessage("Used arguments:  ", ConsoleColor.Gray);
+
+            String all = "";
+            foreach (String arg in cmdLineArgs)
+                all += arg + " ";
+            outputManager.DisplayMessage(all + "\n", ConsoleColor.White);
+        }
 
 
     } // class Program

@@ -15,13 +15,25 @@ namespace Mogre.Builder
             LoadDefaults();
         }
 
-        public InputManager(string targetDirectory, string configFile)
+        public InputManager(string targetDirectory, string configFile, String pathEnvironmentVariable)
             : this(targetDirectory)
         {
+            // copy possibly modified PATH variable
+            this.PathEnvironmentVariable = pathEnvironmentVariable;
+
             if(configFile != null)
                 LoadConfig(configFile);
         }
         
+        // environment variable PATH
+        public String PathEnvironmentVariable
+        {
+            get { return pathEnvironmentVariable; }
+            set { pathEnvironmentVariable = value; }
+        }
+        private String pathEnvironmentVariable = Environment.GetEnvironmentVariable("path");  // system default
+
+
         // build
         public string TargetDirectory { get; private set; }
         public string BuildConfiguration { get; private set; }
@@ -76,6 +88,7 @@ namespace Mogre.Builder
 
         private void LoadDefaults()
         {
+
             // build
             BuildConfiguration = "Release";
 
@@ -143,6 +156,10 @@ namespace Mogre.Builder
 
         private Dictionary<string, string> LoadKeyValueDictionary(string configFile)
         {
+            // check if file exists
+            if ((configFile == null) || (File.Exists(configFile) == false))
+                throw new Exception(String.Format("Config file not found:  {0}", configFile));
+
             try
             {
                 Dictionary<string, string> dictionary = new Dictionary<string, string>();
@@ -175,8 +192,11 @@ namespace Mogre.Builder
             }
             catch (Exception ex)
             {
-                throw new Exception(string.Format("Error loading config file {0}", configFile), ex);
+                throw new Exception(String.Format(
+                    "Error loading config file '{0}' \n" +
+                    "    Reason: {1}", configFile, ex.Message));
             }
-        }
-    }
+        } // LoadKeyValueDictionary()
+
+    } // class InputManager
 }
