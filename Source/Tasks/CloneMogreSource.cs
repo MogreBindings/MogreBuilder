@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Text.RegularExpressions;
 using System.IO;
 
 namespace Mogre.Builder.Tasks
@@ -37,8 +38,12 @@ namespace Mogre.Builder.Tasks
             }
             else
             {
+                // make paths bullet-proof  (needed if they contain directories with a space symbol)
+                String repositoryPath = Misc.HgPathSecurity(inputManager.MogreRepository);
+                String targetPath = Misc.HgPathSecurity(inputManager.TargetDirectory);
+
                 RunCommand("hg", string.Format("clone --verbose {0} -u {1} {2}",
-                    inputManager.MogreRepository, inputManager.MogreBranch, inputManager.TargetDirectory), null);
+                    repositoryPath, inputManager.MogreBranch, targetPath), null);
             }
         }
     }

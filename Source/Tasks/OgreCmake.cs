@@ -24,7 +24,13 @@ namespace Mogre.Builder.Tasks
                 inputManager.OgreBuildDirectory);
 
             if (result.ExitCode != 0)
-                throw new UserException("Failed running CMake on Ogre source tree: " + result.Error);
+            {
+                // check for problem "directory changed"
+                if (Regex.IsMatch(result.Error, @"The current CMakeCache\.txt directory .* is different than the directory"))
+                    outputManager.Warning("Suggestion for this CMake error:  Delete the target directory and try again.");
+
+                throw new UserException("\nFailed running CMake on Ogre source tree: \n" + result.Error);
+            }
 
             // Hack resulting solution file remove CMake's "Zero Check" project reference.
             String cmakeCache = File.ReadAllText(inputManager.CMakeCachePath);

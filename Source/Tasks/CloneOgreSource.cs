@@ -38,8 +38,23 @@ namespace Mogre.Builder.Tasks
             }
             else
             {
-                RunCommand("hg", string.Format("clone --verbose {0} -u {1} {2}",
-                    inputManager.OgreRepository, inputManager.OgreBranch, inputManager.OgreRootDirectory), null);
+                // make paths bullet-proof  (needed if they contain directories with a space symbol)
+                String repositoryPath = Misc.HgPathSecurity(inputManager.OgreRepository);
+                String targetPath = Misc.HgPathSecurity(inputManager.OgreRootDirectory);
+
+                CommandResult result = RunCommand("hg", String.Format("clone --verbose {0} -u {1} {2}",
+                    repositoryPath, inputManager.OgreBranch, targetPath), null);
+
+                // show warning if error and directory with space symbol
+                if ((result.ExitCode != 0) 
+                    && (repositoryPath.Contains(" ") || targetPath.Contains(" ")))
+                {
+                    outputManager.Warning(
+                        "Note:  You use a path which contains a space symbol. \n" + 
+                        "       Be shure that you use Mercurial version 2.1.1 or newer. \n" +  
+                        "       Check it by calling 'hg version' from the command line."
+                        );
+                }
             }
         }
     }

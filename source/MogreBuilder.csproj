@@ -47,6 +47,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Misc.cs" />
     <Compile Include="ParseCommandLine.cs" />
     <Compile Include="ProcessPriorityControl.cs" />
     <Compile Include="TaskbarBlink.cs" />
