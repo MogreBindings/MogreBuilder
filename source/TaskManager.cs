@@ -17,42 +17,80 @@ namespace Mogre.Builder
             _outputManager = outputManager;
         }
         
+
+
+        /// <summary>
+        /// Create a list of all needed tasks (related to the choosed options).
+        /// </summary>
         private static List<Task> BuildTaskList(InputManager inputManager, IOutputManager outputManager)
         {
             List<Task> taskList = new List<Task>();
             MsBuildManager msBuildManager = new MsBuildManager(outputManager);
 
-            taskList.Add(new CloneMogreSource(inputManager, outputManager));
+            if (inputManager.Option_OnlyAddons == false)
+            {
+                //--- tasks to build Ogre/Mogre ---
 
-            taskList.Add(new CheckTargetDir(inputManager, outputManager));            
-            taskList.Add(new CheckEnvironment(inputManager, outputManager));
+                taskList.Add(new CloneMogreSource(inputManager, outputManager));
 
-            taskList.Add(new CloneOgreSource(inputManager, outputManager));
+                taskList.Add(new CheckTargetDir(inputManager, outputManager));
+                taskList.Add(new CheckEnvironment(inputManager, outputManager));
 
-            // patch
-            taskList.Add(new PatchOgreCode(inputManager, outputManager));
-            taskList.Add(new OgreDependencies(inputManager, outputManager, msBuildManager));
-            taskList.Add(new OgreCmake(inputManager, outputManager));
+                taskList.Add(new CloneOgreSource(inputManager, outputManager));
 
-            // Auto-wrapping
-            taskList.Add(new AutoWrap(inputManager, outputManager, msBuildManager));
-            taskList.Add(new AddClrClassesToOgre(inputManager, outputManager));
+                // patch
+                taskList.Add(new PatchOgreCode(inputManager, outputManager));
+                taskList.Add(new OgreDependencies(inputManager, outputManager, msBuildManager));
+                taskList.Add(new OgreCmake(inputManager, outputManager));
 
-            // apply cygon patch
-            taskList.Add(new ApplyCygonPatch(inputManager, outputManager));
-            
-            // Building
-            taskList.Add(new BuildOgreWithoutMogreLinking(inputManager, outputManager, msBuildManager));
-            taskList.Add(new UpdateMogreVersion(inputManager, outputManager));
-            taskList.Add(new BuildMogre(inputManager, outputManager, msBuildManager));
-            taskList.Add(new BuildOgreWithMogreLinking(inputManager, outputManager, msBuildManager));
+                // Auto-wrapping
+                taskList.Add(new AutoWrap(inputManager, outputManager, msBuildManager));
+                taskList.Add(new AddClrClassesToOgre(inputManager, outputManager));
 
-            // Organizing the result
-            taskList.Add(new AssembleBinaryFiles(inputManager, outputManager));
+                // apply cygon patch
+                taskList.Add(new ApplyCygonPatch(inputManager, outputManager));
+
+                // Building
+                taskList.Add(new BuildOgreWithoutMogreLinking(inputManager, outputManager, msBuildManager));
+                taskList.Add(new UpdateMogreVersion(inputManager, outputManager));
+                taskList.Add(new BuildMogre(inputManager, outputManager, msBuildManager));
+                taskList.Add(new BuildOgreWithMogreLinking(inputManager, outputManager, msBuildManager));
+
+                // Organizing the result
+                taskList.Add(new AssembleBinaryFiles(inputManager, outputManager));
+
+            }
+
+
+            //--- optional add-on tasks ---
+
+            // clone official Mogre-addons repository   (if one of the included add-ons is needed)
+            if (inputManager.Option_MogreNewt || inputManager.Option_Hikari || inputManager.Option_Makuri ||
+                inputManager.Option_MogreDesignSupport || inputManager.Option_MogreFreeSL)
+            {
+                taskList.Add(new CloneAddonsRepository(inputManager, outputManager));
+            }
+
+
+            // build MogreNewt
+            if (inputManager.Option_MogreNewt)
+            {
+                taskList.Add(new NewtonLibraryDownload(inputManager, outputManager));
+                taskList.Add(new NewtonPrepatation(inputManager, outputManager));
+
+            }
+
 
             return taskList;
-        }
+        } // BuildTaskList()
 
+
+
+
+        /// <summary>
+        /// Process the task.
+        /// </summary>
+        /// <returns>Returns false if aborted by an exception.</returns>
         public bool Run()
         {
             try
@@ -72,6 +110,8 @@ namespace Mogre.Builder
             }
 
             return true;
-        }
+        } // Run()
+
+
     }
 }

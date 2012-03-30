@@ -16,7 +16,8 @@ namespace Mogre.Builder.Tasks
 
         public override void Run()
         {            
-            String targetDir = String.Format(@"bin\{0}.NET4", inputManager.BuildConfiguration);
+            //String targetDir = String.Format(@"bin\{0}.NET4", inputManager.BuildConfiguration);
+            String targetDir = inputManager.BuildOutputDirectory;
 
             if (!Directory.Exists(targetDir))
                 Directory.CreateDirectory(targetDir);
@@ -34,17 +35,21 @@ namespace Mogre.Builder.Tasks
             {
                 foreach (String pattern in patterns)
                 {
-                    foreach (String entry in Directory.GetFiles(binPath, pattern))
+                    foreach (String file in Directory.GetFiles(binPath, pattern))
                     {
-                        String filePath = targetDir + "\\" + Path.GetFileName(entry);
+                        String filePath = targetDir + "\\" + Path.GetFileName(file);
 
                         if (File.Exists(filePath))
                             File.Delete(filePath);
 
-                        File.Move(entry, filePath);
+                        File.Move(file, filePath);
                     }
                 }
             } // foreach
+
+            // print success message
+            outputManager.DisplayMessage("\nThe Ogre/Mogre build process seems to be finished successfully (-:", ConsoleColor.Green);
+            outputManager.Info("You find the created binary files in: \n    " + inputManager.TargetDirectory);
 
         } // Run()
 

@@ -57,7 +57,7 @@ namespace Mogre.Builder
 
             // check for process priority option
             // --> 2 arguments
-            for (Int16 i = 0; i < inputList.Count - 1; i++)
+            for (Int16 i = 0;   i < inputList.Count - 1;   i++)
             {
                 if (inputList[i] == "-priority")
                 {
@@ -89,7 +89,7 @@ namespace Mogre.Builder
 
             //--- DISABLE BOOST ---
 
-            // check if users wants to disable boost
+            // check if user wants to disable boost
             // --> 1 argument
             for (Int16 i = 0;   i < inputList.Count;   i++)
             {
@@ -104,12 +104,50 @@ namespace Mogre.Builder
 
 
 
-            // ... more option here ...
+            //--- ADD-ON MogreNewt   TEST ---
 
+            // check if user wants to disable boost
+            // --> 1 argument
+            for (Int16 i = 0;   i < inputList.Count;   i++)
+            {
+                if (inputList[i].ToLower() == "-mogrenewt")
+                {
+                    parsedArgs.MogreNewt = true;
+                    inputList.RemoveAt(i);
+                    break;
+                }
+            }
+
+
+
+            //--- ONLY ADD-ONS ---
+
+            // check if user wants to skip the Mogre/Ogre build 
+            // --> 1 argument
+            for (Int16 i = 0;   i < inputList.Count;   i++)
+            {
+                if (inputList[i].ToLower() == "-onlyaddons")
+                {
+                    parsedArgs.OnlyAddons = true;
+                    inputList.RemoveAt(i);
+                    break;
+                }
+            }
+
+
+
+
+
+
+
+
+
+            //------------------>>>>>>> ... more option here ...  <<<<<<<<------------------
+            
 
             //--- UNKNOWN ARGUMENTS ---
 
-            // check if all arguments are processed
+            // show a warning for all arguments, which are not processed
             if (inputList.Count > 0)
             {
                 outputManager.Warning(
@@ -248,11 +286,13 @@ namespace Mogre.Builder
 
 
 
-    struct CommandLineArgs
+    public struct CommandLineArgs
     {
         public string TargetDir { get; set; }
         public string ConfigFile { get; set; }
         public ProcessPriorityClass priority { get; set; }
+        public Boolean MogreNewt { get; set; }
+        public Boolean OnlyAddons { get; set; }
 
         public String PathEnvironmentVariable 
         {

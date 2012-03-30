@@ -13,8 +13,23 @@ namespace Mogre.Builder
         static void Main(string[] cmdLineArgs)
         {
             Int64 startTime = DateTime.Now.Ticks;
+
             Console.BufferHeight = 9999;  // keep all messages visble 
             Console.Title = "MogreBuilder";
+            
+            // enlarge console window width
+            Int32 width = 120;  // --> 1000 pixels  (with default settings of Windows 7)
+            if (Console.WindowWidth < width)
+            {
+                // be shure that it fits to the monitor
+                if (width > Console.LargestWindowWidth)
+                    width = Console.LargestWindowWidth;
+
+                Console.BufferWidth = width;
+                Console.WindowWidth = width;
+            }
+
+
             ConsoleOutputManager outputManager = new ConsoleOutputManager();
 
             try
@@ -37,11 +52,14 @@ namespace Mogre.Builder
 
                     ParseCommandLine(cmdLineArgs, outputManager, ref parsedArgs);
 
-                    InputManager inputManager = new InputManager(parsedArgs.TargetDir, parsedArgs.ConfigFile, parsedArgs.PathEnvironmentVariable);
+                    InputManager inputManager = new InputManager(parsedArgs.TargetDir, parsedArgs);
                     TaskManager taskManager = new TaskManager(inputManager, outputManager);
 
                     VerifyTargetDirectory(inputManager.TargetDirectory, outputManager);
                     VerifyMore(inputManager, outputManager);
+
+                    inputManager.GeneratePathVariables();
+
 
                     // apply priority setting
                     if (parsedArgs.priority != ProcessPriorityClass.Normal)
@@ -49,9 +67,6 @@ namespace Mogre.Builder
 
                     // do tasks
                     taskManager.Run();
-
-                    // print success message
-                    outputManager.DisplayMessage("\nThe build process seems to be finished successfully (-:", ConsoleColor.Green);
 
                     // print summary
                     outputManager.PrintSummary();

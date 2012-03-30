@@ -11,6 +11,7 @@ namespace Mogre.Builder
         void StartProgress(string message);
         void Progress();
         void EndProgress();
+        void DisplayMessage(string message, ConsoleColor color);
 
         String FeatureSummary { get; set; }
         Boolean FeatureLoggingIsEnabled { get; set; }

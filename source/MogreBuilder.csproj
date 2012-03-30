@@ -47,6 +47,8 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="FileCopyTask.cs" />
+    <Compile Include="InputManager.Defaults.cs" />
     <Compile Include="Misc.cs" />
     <Compile Include="ParseCommandLine.cs" />
     <Compile Include="ProcessPriorityControl.cs" />
@@ -59,9 +61,13 @@
     <Compile Include="Tasks\AssembleBinaryFiles.cs" />
     <Compile Include="Tasks\BuildOgreTask.cs" />
     <Compile Include="Tasks\CheckEnvironment.cs" />
+    <Compile Include="Tasks\CloneAddonsRepository.cs" />
     <Compile Include="Tasks\CloneMogreSource.cs" />
     <Compile Include="Tasks\CloneOgreSource.cs" />
     <Compile Include="Tasks\CheckTargetDir.cs" />
+    <Compile Include="Tasks\MogreNewt\Newt_Compilaton.cs" />
+    <Compile Include="Tasks\MogreNewt\Newt_LibraryDownload.cs" />
+    <Compile Include="Tasks\MogreNewt\Newt_Preparation.cs" />
     <Compile Include="Tasks\MsBuildTask.cs" />
     <Compile Include="IOutputManager.cs" />
     <Compile Include="MsBuildManager.cs" />
@@ -98,6 +104,7 @@
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>
     <PostBuildEvent>

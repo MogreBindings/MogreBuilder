@@ -7,7 +7,7 @@ using System.Reflection;
 
 namespace Mogre.Builder
 {
-    public class InputManager
+    public partial class InputManager
     {
         public InputManager(string targetDirectory)
         {
@@ -15,34 +15,56 @@ namespace Mogre.Builder
             LoadDefaults();
         }
 
-        public InputManager(string targetDirectory, string configFile, String pathEnvironmentVariable)
+
+
+        public InputManager(string targetDirectory, CommandLineArgs parsedArgs)
             : this(targetDirectory)
         {
             // copy possibly modified PATH variable
-            this.PathEnvironmentVariable = pathEnvironmentVariable;
+            this.PathEnvironmentVariable = parsedArgs.PathEnvironmentVariable;
 
-            if(configFile != null)
-                LoadConfig(configFile);
+            Option_OnlyAddons = parsedArgs.OnlyAddons;
+            Option_MogreNewt = parsedArgs.MogreNewt;
+
+            // load config file (if defined as argument)
+            if(parsedArgs.ConfigFile != null)
+                LoadConfig(parsedArgs.ConfigFile);
         }
         
+
+
+
+
         // environment variable PATH
-        public String PathEnvironmentVariable
+        public String PathEnvironmentVariable  // don't add this to config file
         {
             get { return pathEnvironmentVariable; }
             set { pathEnvironmentVariable = value; }
         }
         private String pathEnvironmentVariable = Environment.GetEnvironmentVariable("path");  // system default
 
+        public Boolean Option_OnlyAddons { get; set; }
+        public Boolean Option_MogreNewt { get; set; }
+
+        // currently unsupported add-ons of the official add-ons repository
+        public Boolean Option_Hikari { get; set; }
+        public Boolean Option_Makuri { get; set; }
+        public Boolean Option_MogreDesignSupport { get; set; }
+        public Boolean Option_MogreFreeSL { get; set; }
+
+
 
         // build
         public string TargetDirectory { get; private set; }
         public string BuildConfiguration { get; private set; }
+        public string BuildOutputDirectory { get; private set; }  // don't add this to config file  (will be generated automatically)
 
         // clr
         public string ClrDirectory { get; private set; }
         public string ClrConfigHeaderFile { get; private set; }
         public string ClrObjectsBuildFile { get; private set; }
         public string ClrObjectsAutoFile { get; private set; }
+        public string ClrObjectsBuildDirectory { get; private set; }
 
         // mogre
         public string MogreAssemblyInfoFile { get; private set; }
@@ -86,60 +108,106 @@ namespace Mogre.Builder
         public string AutoWrappedCodeDirectory { get; private set; }
         public string AutoWrapWorkingDirectory { get; private set; }
 
-        private void LoadDefaults()
+
+        // Add-ons
+        public String MogreAddonsRepository { get; private set; }
+        public String MogreAddonsDirectory { get; private set; }
+
+
+        //--- MogreNewt ---
+        
+        public String NewtonMainDirectory                         { get; private set; }
+        
+        public String NewtonInputDirectory_Mogre_binary_debug     { get; private set; }
+        public String NewtonInputDirectory_Mogre_binary_release   { get; private set; }
+        public String NewtonInputDirectory_Ogre_headers           { get; private set; }
+        public String NewtonInputDirectory_Ogre_headers_Threading { get; private set; }
+        public String NewtonInputDirectory_Ogre_headers_Win32     { get; private set; }
+        public String NewtonInputDirectory_OgreMain_binaries      { get; private set; }
+        public String NewtonInputDirectory_OgreMain_headers       { get; private set; }
+        public String NewtonInputDirectory_NewtonLibrary          { get; private set; }
+
+        public String NewtonDepencySourceDir_Mogre_binary           { get; private set; }  // don't add this to config file  (will be generated automatically)
+        public String NewtonDepencySourceDir_Ogre_headers           { get; private set; }  // don't add this to config file
+        public String NewtonDepencySourceDir_Ogre_headers_Threading { get; private set; }  // don't add this to config file
+        public String NewtonDepencySourceDir_Ogre_headers_Win32     { get; private set; }  // don't add this to config file
+        public String NewtonDepencySourceDir_OgreMain_binaries      { get; private set; }  // don't add this to config file
+        public String NewtonDepencySourceDir_OgreMain_headers       { get; private set; }  // don't add this to config file
+        public String NewtonDepencySourceDir_NewtonLibrary          { get; private set; } 
+
+
+
+
+        /// <summary>
+        /// Generate some path variables, which are composed by other path variables
+        /// </summary>
+        public void GeneratePathVariables()
         {
+            // ----- Common -----
 
-            // build
-            BuildConfiguration = "Release";
+            BuildOutputDirectory = String.Format(@"bin\{0}.NET4", BuildConfiguration);
 
-            // clr
-            ClrDirectory = @"Main\Ogre\";
-            ClrConfigHeaderFile = @"Main\OgreSrc\ogre\OgreMain\include\CLRConfig.h";
-            ClrObjectsBuildFile = @"Main\OgreSrc\build\include\CLRObjects.inc";
-            ClrObjectsAutoFile = @"Main\include\auto\CLRObjects.inc";
 
-            // mogre
-            MogreAssemblyInfoFile = @"Main\AssemblyInfo.cpp";
-            MogreSolutionFile = @"Main\Mogre_vs2010.sln";
-            MogreRepository = @"https://bitbucket.org/mogre/mogre/";
-            MogreBranch = @"default";
+            // ----- Add-ons -----
 
-            // ogre
-            OgreRootDirectory = @"Main\OgreSrc\ogre\";
-            OgreBuildDirectory = @"Main\OgreSrc\build\";
-            OgreMainDirectory = @"Main\OgreSrc\ogre\OgreMain\";
-            OgreIncludeDirectory = @"Main\OgreSrc\ogre\OgreMain\include\";
-            OgreSourceDirectory = @"Main\OgreSrc\ogre\OgreMain\src\";
-            OgrePrequisitesFile = @"Main\OgreSrc\ogre\OgreMain\include\OgrePrerequisites.h";
-            OgreProjectFile = @"Main\OgreSrc\build\OgreMain\OgreMain.vcxproj";
-            OgreSolutionFile = @"Main\OgreSrc\build\OGRE.sln";
-            OgreRepository = @"https://bitbucket.org/sinbad/ogre/";
-            OgreBranch = @"v1-7";
+            if (Path.IsPathRooted(MogreAddonsDirectory) == false)
+            {
+                MogreAddonsDirectory = Path.Combine(TargetDirectory, MogreAddonsDirectory);
+            }
 
-            // cmake
-            CMakeExecutable = @"C:\Program Files (x86)\CMake 2.8\bin\cmake.exe"; 
-            CMakeCachePath = @"Main\OgreSrc\build\CMakeCache.txt";
 
-            // dependencies
-            DependenciesURL = "http://surfnet.dl.sourceforge.net/project/ogre/ogre-dependencies-vc%2B%2B/1.7/OgreDependencies_MSVC_20100501.zip";
-            DependenciesZip = @"Main\OgreSrc\ogre\Dependencies.zip";
-            DependenciesDirectory = @"Main\OgreSrc\ogre\Dependencies\";
-            DependenciesSolutionFile = @"Main\OgreSrc\ogre\Dependencies\src\OgreDependencies.VS2010.sln";
 
-            // patch
-            ClrPatchFile = @"Main\Ogre Patches\mogre-1.7.3-clrobject.patch";
-            CygonPatchFile = @"Main\Ogre Patches\mogre-1.7.3-cygon.patch";
+            // ----- MogreNewt add-on -----
 
-            // cpp2java
-            Cpp2JavaDirectory = @"Codegen\cpp2java";
-            Cpp2JavaMetaDataFile = @"Codegen\cpp2java\build\all.xml";
+            // NewtonMainDirectory
+            if (Path.IsPathRooted(NewtonMainDirectory))
+            {
+                // absolute directory   (Users can modify this config entry when they want to use a custom MogreNewt directory)
+                // --> do nothing
+            }
+            else
+            {
+                // relative directory
+                // --> adjust to path of cloned HG directory
+                NewtonMainDirectory = Path.Combine(MogreAddonsDirectory, NewtonMainDirectory);
+            }
 
-            // autowrap
-            AutoWrapExecutable = @"Codegen\AutoWrap\bin\Debug\AutoWrap.exe";
-            AutoWrapSolutionFile = @"Codegen\AutoWrap\AutoWrap_vs2010.sln";
-            AutoWrappedCodeDirectory = @"Main\src\auto\";
-            AutoWrapWorkingDirectory = @"Codegen\AutoWrap\bin\Debug\";
-        }
+            // get directories where to find the needed depency files
+            NewtonDepencySourceDir_Mogre_binary           = BuildOutputDirectory;
+            NewtonDepencySourceDir_Ogre_headers           = OgreIncludeDirectory;
+            NewtonDepencySourceDir_Ogre_headers_Threading = Path.Combine(OgreIncludeDirectory, "Threading");
+            NewtonDepencySourceDir_Ogre_headers_Win32     = Path.Combine(OgreIncludeDirectory, "WIN32");
+            NewtonDepencySourceDir_OgreMain_binaries      = BuildOutputDirectory;
+            NewtonDepencySourceDir_OgreMain_headers       = ClrObjectsBuildDirectory;
+            
+            NewtonDepencySourceDir_NewtonLibrary = "";  // TODO: Maybe add a task to download them from web (e.g. from a zip archive)
+
+
+            //--- make paths absolute ---
+
+            // relative to TargetDirectory
+            NewtonDepencySourceDir_Mogre_binary           = Path.Combine(TargetDirectory, NewtonDepencySourceDir_Mogre_binary);
+            NewtonDepencySourceDir_Ogre_headers           = Path.Combine(TargetDirectory, NewtonDepencySourceDir_Ogre_headers);
+            NewtonDepencySourceDir_Ogre_headers_Threading = Path.Combine(TargetDirectory, NewtonDepencySourceDir_Ogre_headers_Threading);
+            NewtonDepencySourceDir_Ogre_headers_Win32     = Path.Combine(TargetDirectory, NewtonDepencySourceDir_Ogre_headers_Win32);
+            NewtonDepencySourceDir_OgreMain_binaries      = Path.Combine(TargetDirectory, NewtonDepencySourceDir_OgreMain_binaries);
+            NewtonDepencySourceDir_OgreMain_headers       = Path.Combine(TargetDirectory, NewtonDepencySourceDir_OgreMain_headers);
+
+            // relative to NewtonMainDirectory  (can be outside of the TargetDirectory)
+            NewtonInputDirectory_Mogre_binary_debug       = Path.Combine(NewtonMainDirectory, NewtonInputDirectory_Mogre_binary_debug);
+            NewtonInputDirectory_Mogre_binary_release     = Path.Combine(NewtonMainDirectory, NewtonInputDirectory_Mogre_binary_release);
+            NewtonInputDirectory_NewtonLibrary            = Path.Combine(NewtonMainDirectory, NewtonInputDirectory_NewtonLibrary);
+            NewtonInputDirectory_Ogre_headers             = Path.Combine(NewtonMainDirectory, NewtonInputDirectory_Ogre_headers);
+            NewtonInputDirectory_Ogre_headers_Threading   = Path.Combine(NewtonMainDirectory, NewtonInputDirectory_Ogre_headers_Threading);
+            NewtonInputDirectory_Ogre_headers_Win32       = Path.Combine(NewtonMainDirectory, NewtonInputDirectory_Ogre_headers_Win32);
+            NewtonInputDirectory_OgreMain_binaries        = Path.Combine(NewtonMainDirectory, NewtonInputDirectory_OgreMain_binaries);
+            NewtonInputDirectory_OgreMain_headers         = Path.Combine(NewtonMainDirectory, NewtonInputDirectory_OgreMain_headers);
+
+
+        } //  GeneratePathVariables()
+
+
+
 
         public void LoadConfig(string configFile)
         {
