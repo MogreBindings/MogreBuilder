@@ -46,9 +46,9 @@ Please give feedback in the MogreBuilder forum topic:
 http://www.ogre3d.org/addonforums/viewtopic.php?f=8&t=29272
 
 If there are problems, tell it. 
-If everything is well, tell it, too.
+If everything is well, tell it too.
 
-Note: Consider to use the "Snipping Tool" of Windows 7 for easy screenshot creation. 
+Note: To report problems, consider to use the "Snipping Tool" of Windows 7 for easy screenshot creation. 
       Just type "snipp" into the search field of the start menu. 
 
 

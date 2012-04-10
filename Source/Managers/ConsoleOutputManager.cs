@@ -170,7 +170,7 @@ namespace Mogre.Builder
 
             if (errorList.Count > 0)
             {
-                DisplayMessage("\n\n===================== Repeat of all errors and warning =====================\n", ConsoleColor.White);
+                DisplayMessage("\n\n===================== Repeat of all errors and warnings =====================\n", ConsoleColor.White);
 
                 String lastAction = "";
 

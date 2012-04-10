@@ -97,5 +97,22 @@ namespace Mogre.Builder
         }
 
 
+
+
+        public static void PrintExceptionTrace(IOutputManager outputManager, String trace)
+        {
+            if ((trace == null) || (trace == ""))
+                return;
+
+            String message = 
+                "\nException stack trace for debugging: \n" +
+                "--------------------------------------------------------------------------\n" +
+                trace +
+                "--------------------------------------------------------------------------\n\n";
+            outputManager.Info(message);
+
+        } // PrintExceptionTrace()
+
+
     } // class Misc
 }

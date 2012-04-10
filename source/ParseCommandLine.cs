@@ -104,6 +104,22 @@ namespace Mogre.Builder
 
 
 
+            //--- DEVELOPMENT FLAG ---
+
+            // check if user wants to disable the catching of unspecific exceptions
+            // --> 1 argument
+            for (Int16 i = 0;   i < inputList.Count;   i++)
+            {
+                if (inputList[i].ToLower() == "-development")
+                {
+                    parsedArgs.DevelopmentFlag = true;
+                    inputList.RemoveAt(i);
+                    break;
+                }
+            }
+
+
+
             //--- ADD-ON MogreNewt   TEST ---
 
             // check if user wants to disable boost
@@ -175,7 +191,7 @@ namespace Mogre.Builder
                     // user want to abort
                     outputManager.Warning(
                         "Note: Call MogreBuilder without argument to see the help.");
-                    throw new Exception("Application stopped");
+                    throw new ParseException(); // stop application
                 }
                 
             } // if
@@ -218,7 +234,7 @@ namespace Mogre.Builder
                         outputManager.Error(String.Format(
                             "FAILED to create directory. \n" + 
                             "Error message:  {0} ", e.Message));
-                        throw new Exception("Application stopped");  // force an exit
+                        throw new ParseException(); // stop application
                     }
                 }
                 else
@@ -233,8 +249,8 @@ namespace Mogre.Builder
                     outputManager.Error(String.Format(
                         "Aborted, because the path argument seems to be invalide. \n" +
                         "Path argument: '{0}'", path));
-                    
-                    throw new Exception("Application stopped");  // force an exit
+
+                    throw new ParseException(); // stop application
                 }
             }
         } // VerifyTargetDirectory()
@@ -282,6 +298,21 @@ namespace Mogre.Builder
 
 
 
+
+
+        /// <summary>
+        /// Check if the argument "-development" was used.
+        /// </summary>
+        private static Boolean DevelopmentArgumentCheck(String[] cmdLineArgs)
+        {
+            foreach (String arg in cmdLineArgs)
+                if (arg.ToLower() == "-development")
+                    return true;
+
+            return false;
+        }
+
+
     } // class Program
 
 
@@ -293,6 +324,7 @@ namespace Mogre.Builder
         public ProcessPriorityClass priority { get; set; }
         public Boolean MogreNewt { get; set; }
         public Boolean OnlyAddons { get; set; }
+        public Boolean DevelopmentFlag { get; set; }
 
         public String PathEnvironmentVariable 
         {

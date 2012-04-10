@@ -23,8 +23,10 @@ namespace Mogre.Builder
             // copy possibly modified PATH variable
             this.PathEnvironmentVariable = parsedArgs.PathEnvironmentVariable;
 
-            Option_OnlyAddons = parsedArgs.OnlyAddons;
-            Option_MogreNewt = parsedArgs.MogreNewt;
+            // copy some option flags
+            Option_OnlyAddons      = parsedArgs.OnlyAddons;
+            Option_MogreNewt       = parsedArgs.MogreNewt;
+            Option_DevelopmentFlag = parsedArgs.DevelopmentFlag;
 
             // load config file (if defined as argument)
             if(parsedArgs.ConfigFile != null)
@@ -45,6 +47,7 @@ namespace Mogre.Builder
 
         public Boolean Option_OnlyAddons { get; set; }
         public Boolean Option_MogreNewt { get; set; }
+        public Boolean Option_DevelopmentFlag { get; set; }
 
         // currently unsupported add-ons of the official add-ons repository
         public Boolean Option_Hikari { get; set; }

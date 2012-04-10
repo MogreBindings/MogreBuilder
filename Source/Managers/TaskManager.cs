@@ -93,24 +93,50 @@ namespace Mogre.Builder
         /// <returns>Returns false if aborted by an exception.</returns>
         public bool Run()
         {
-            try
-            {
-                List<Task> tasksToRun = BuildTaskList(_inputManager, _outputManager);
+            Boolean developmentFlag = _inputManager.Option_DevelopmentFlag;
 
-                foreach (Task task in tasksToRun)
-                {
-                    _outputManager.Action(task.Name);
-                    task.Run();
-                }
-            }
-            catch (Exception ex)
+            if (developmentFlag == true)
             {
-                _outputManager.Error(ex.Message);
-                return false;
+                // RUN
+                // --> don't catch exceptions  (better for debugging inside of Visual Studio)
+                RunNow();
             }
+            else
+            {
+                try
+                {
+                    // RUN
+                    // --> catch exceptions  (good for common users)
+                    RunNow();
+
+                }
+                catch (Exception e)
+                {
+                    // print error message
+                    _outputManager.Error(e.Message);
+                    Misc.PrintExceptionTrace(_outputManager, e.StackTrace);
+                    return false;
+                }
+            } // else
 
             return true;
+
         } // Run()
+
+
+
+
+
+        private void RunNow()
+        {
+            List<Task> tasksToRun = BuildTaskList(_inputManager, _outputManager);
+
+            foreach (Task task in tasksToRun)
+            {
+                _outputManager.Action(task.Name);
+                task.Run();
+            }
+        } // RunNow()
 
 
     }

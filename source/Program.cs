@@ -29,55 +29,50 @@ namespace Mogre.Builder
                 Console.WindowWidth = width;
             }
 
-
             ConsoleOutputManager outputManager = new ConsoleOutputManager();
 
-            try
+            // print information if started from Visual Studio
+            PrintIfVisualStudio(cmdLineArgs, outputManager);
+
+            // check if arguments available
+            if (cmdLineArgs.Length == 0)
             {
-                if (cmdLineArgs.Length == 0)
+                outputManager.Warning("\nYou need some arguments to run MogreBuilder! ");
+                ShowHelp();
+            }
+            else
+            {
+                // DO WORK
+
+                Boolean developmentFlag = DevelopmentArgumentCheck(cmdLineArgs);
+
+                if (developmentFlag == true)
                 {
-                    outputManager.Warning("\nYou need some arguments to run MogreBuilder! ");
-                    ShowHelp();
+                    // --> don't catch exceptions  (better for debugging inside of Visual Studio)
+                    outputManager.DisplayMessage("Development mode enabled:  No catching of unexcpected exceptions", ConsoleColor.White);
+                    DoWork(cmdLineArgs, outputManager);
                 }
                 else
                 {
-                    // print information if started from Visual Studio
-                    PrintIfVisualStudio(cmdLineArgs, outputManager);
+                    try
+                    {
+                        // --> catch exceptions  (good for common users)
+                        DoWork(cmdLineArgs, outputManager);
+                    }
+                    catch (ParseException)
+                    {
+                        outputManager.Error("Application stopped.");
+                    }
+                    catch (Exception e)
+                    {
+                        // print error message
+                        outputManager.Error(e.Message);
+                        Misc.PrintExceptionTrace(outputManager, e.StackTrace);
+                    }
+                } // else
 
-                    // Properties of successfully assigned arguments
-                    CommandLineArgs parsedArgs = new CommandLineArgs();
+            } // else
 
-                    // Default priority for worker processes.
-                    parsedArgs.priority = ProcessPriorityClass.BelowNormal;
-
-                    ParseCommandLine(cmdLineArgs, outputManager, ref parsedArgs);
-
-                    InputManager inputManager = new InputManager(parsedArgs.TargetDir, parsedArgs);
-                    TaskManager taskManager = new TaskManager(inputManager, outputManager);
-
-                    VerifyTargetDirectory(inputManager.TargetDirectory, outputManager);
-                    VerifyMore(inputManager, outputManager);
-
-                    inputManager.GeneratePathVariables();
-
-
-                    // apply priority setting
-                    if (parsedArgs.priority != ProcessPriorityClass.Normal)
-                        ProcessPriorityControl.StartController(parsedArgs.priority, outputManager);
-
-                    // do tasks
-                    taskManager.Run();
-
-                    // print summary
-                    outputManager.PrintSummary();
-
-                    
-                }
-            }
-            catch (Exception ex)
-            {
-                outputManager.Error(ex.Message);
-            }
 
 
             // print duration time
@@ -93,6 +88,42 @@ namespace Mogre.Builder
             Console.ReadKey();
 #endif
         } // Main()
+
+
+
+
+
+        private static void DoWork(string[] cmdLineArgs, ConsoleOutputManager outputManager)
+        {
+            // Properties of successfully assigned arguments
+            CommandLineArgs parsedArgs = new CommandLineArgs();
+
+            // Default priority for worker processes.
+            parsedArgs.priority = ProcessPriorityClass.BelowNormal;
+
+            ParseCommandLine(cmdLineArgs, outputManager, ref parsedArgs);
+
+            InputManager inputManager = new InputManager(parsedArgs.TargetDir, parsedArgs);
+            TaskManager taskManager = new TaskManager(inputManager, outputManager);
+
+            VerifyTargetDirectory(inputManager.TargetDirectory, outputManager);
+            VerifyMore(inputManager, outputManager);
+
+            inputManager.GeneratePathVariables();
+
+
+            // apply priority setting
+            if (parsedArgs.priority != ProcessPriorityClass.Normal)
+                ProcessPriorityControl.StartController(parsedArgs.priority, outputManager);
+
+            // do tasks
+            taskManager.Run();
+
+            // print summary
+            outputManager.PrintSummary();
+
+        } // DoWork()
+
 
 
 

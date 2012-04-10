@@ -7,4 +7,14 @@ namespace Mogre.Builder
         public UserException()               : base()        { }
         public UserException(string message) : base(message) { }
     }
+
+
+
+
+    class ParseException : Exception
+    {
+        public ParseException() : base() { }
+        //public ParseException(String message) : base(message) { }
+    }
+
 }
