@@ -79,7 +79,7 @@ namespace Mogre.Builder
         /// </summary>
         public String[] GetAllPatterns()
         {
-            String[] allPatterns = Regex.Split(FilePattern, " *");
+            String[] allPatterns = Regex.Split(FilePattern, @"[ ]+");
 
             if (allPatterns.Length == 0)
                 return new String[] { "*" };
@@ -106,9 +106,13 @@ namespace Mogre.Builder
         /// <summary>Perform the copy or move process</summary>
         private void CopyMove(Boolean doMove, Boolean createBackup, ClearType targetClearType)
         {
+            // check if valide source directory
+            if (Directory.Exists(SourceDirectory) == false)
+                return;
+
             // create backup if needed
             if (createBackup)
-                BackupOldFiles(TargetDirectory);
+                BackupOldFiles(TargetDirectory, PrintDots);
 
 
             // delete old files of target directory if needed
@@ -131,7 +135,10 @@ namespace Mogre.Builder
 
                 // deletion
                 foreach (String file in killingList)
+                {
+                    RemoveWriteProtection(file);
                     File.Delete(file);
+                }
             }
 
 
@@ -140,6 +147,7 @@ namespace Mogre.Builder
                 foreach (String sourceFile in Directory.GetFiles(SourceDirectory, pattern))
                 {
                     String targetFile = Path.Combine(TargetDirectory, Path.GetFileName(sourceFile));
+                    RemoveWriteProtection(targetFile);
                     File.Copy(sourceFile, targetFile, true);
 
                     // move or copy?
@@ -156,7 +164,6 @@ namespace Mogre.Builder
             if (PrintDots)
                 Console.WriteLine();
 
-                 
         } // CopyMove()
 
 
@@ -226,30 +233,77 @@ namespace Mogre.Builder
         /// If the directory is invalide, nothing happens. (No exception, no warning.)
         /// </summary>
         /// <param name="directory">Directory where to create a backup</param>
-        public static void BackupOldFiles(String directory)
+        /// <param name="printDots">If enabled, for each copied file a dot "." will be printed.</param>
+        public static void BackupOldFiles(String directory, Boolean printDots)
         {
             if (Directory.Exists(directory) == false)
                 return;
 
-            String bakDir = Path.Combine(directory, "backup");
-            String[] allFiles = Directory.GetFiles(directory);
+            String errorMessage = "Error at file backup:   ";
 
-            // create backup directory if needed
-            if (allFiles.Length > 0)
-                Directory.CreateDirectory(bakDir);
-
-            // copy all files
-            foreach (String file in allFiles)
+            try
             {
-                String bakFileTarget = Path.Combine(bakDir, Path.GetFileName(file));
-                File.Copy(file, bakFileTarget, true);
+                String bakDir = Path.Combine(directory, "backup");
+                String[] allFiles = Directory.GetFiles(directory);
+
+                // create backup directory if needed
+                if (allFiles.Length > 0)
+                    Directory.CreateDirectory(bakDir);
+
+                // copy all files
+                foreach (String file in allFiles)
+                {
+                    String bakFileTarget = Path.Combine(bakDir, Path.GetFileName(file));
+                    RemoveWriteProtection(bakFileTarget);
+                    File.Copy(file, bakFileTarget, true);
+
+                    // print dots
+                    if (printDots)
+                        Console.Write("*");
+                }
             }
+            catch (IOException e)
+            {
+                throw new Exception(errorMessage + e.Message, e.InnerException);
+            }
+            catch (UnauthorizedAccessException e)
+            {
+                throw new Exception(errorMessage + e.Message, e.InnerException);
+            }
+            catch (ArgumentNullException e)
+            {
+                throw new Exception(errorMessage + e.Message, e.InnerException);
+            }
+
+
         } // BackupOldFiles()
 
 
 
 
+
+        /// <summary>
+        /// Remove file property "read only". 
+        /// It's for the special case that a copied file contains this flag. So the backup files can't be modified.
+        /// </summary>
+        /// <param name="file">File name (Recommend: Include full path)</param>
+        public static void RemoveWriteProtection(String file)
+        {
+            if (File.Exists(file))
+            {
+                FileAttributes attributes = File.GetAttributes(file);
+                
+                // check if "read only"
+                if ((attributes & FileAttributes.ReadOnly) == FileAttributes.ReadOnly)
+                {
+                    attributes = attributes ^ FileAttributes.ReadOnly;  // invert flag
+                    File.SetAttributes(file, attributes);
+                }
+            }
+        } // RemoveWriteProtection()
+
+
     } // class FileCopyTask
 
 
-}
+} // namespace

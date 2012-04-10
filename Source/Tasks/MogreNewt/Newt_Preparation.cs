@@ -145,10 +145,19 @@ namespace Mogre.Builder.Tasks
             }
 
 
+
             //--- copy all needed depency files ---
 
-            outputManager.Info("Copy all needed files ... ");
+            Boolean printDots = true;
+            Boolean createBackup = true;
+
+            outputManager.DisplayMessage("\nCopy all needed files", ConsoleColor.White);
+
+            if (createBackup == true)
+                outputManager.Info("Backup creation for previous files is enabled.");
+            Console.WriteLine();
             
+
             // create task list
             List<FileCopyTask> fileCopyTasks = new List<FileCopyTask>() 
             { 
@@ -185,7 +194,7 @@ namespace Mogre.Builder.Tasks
                     "Mogre.*"));
 
                 // clear "debug" directory to avoid problems  (before: create backup)
-                FileCopyTask.BackupOldFiles(inputManager.NewtonInputDirectory_Mogre_binary_debug);
+                FileCopyTask.BackupOldFiles(inputManager.NewtonInputDirectory_Mogre_binary_debug, printDots);
                 foreach (String file in Directory.GetFiles(inputManager.NewtonInputDirectory_Mogre_binary_debug, 
                     "Mogre.*"))
                     File.Delete(file);
@@ -198,7 +207,7 @@ namespace Mogre.Builder.Tasks
                     "Mogre.*"));
 
                 // clear "release" directory to avoid problems  (before: create backup)
-                FileCopyTask.BackupOldFiles(inputManager.NewtonInputDirectory_Mogre_binary_release);
+                FileCopyTask.BackupOldFiles(inputManager.NewtonInputDirectory_Mogre_binary_release, printDots);
                 foreach (String file in Directory.GetFiles(inputManager.NewtonInputDirectory_Mogre_binary_release,
                     "Mogre.*"))
                     File.Delete(file);
@@ -220,13 +229,16 @@ namespace Mogre.Builder.Tasks
             foreach (FileCopyTask task in fileCopyTasks)
             {
                 // create a backup of the previous files in target directory
-                task.CreateBackup = true;
+                task.CreateBackup = createBackup;
 
                 // delete all files, where the pattern matches
                 //   --> Avoid conficts with old files
                 //   --> Other files (e.g. text files) will not be deleted
                 task.TargetClearType = FileCopyTask.ClearType.DeleteByPatterns;
-                task.PrintDots = true;
+                task.PrintDots = printDots;
+
+                Console.WriteLine("Copy from:  " + task.SourceDirectory);
+                Console.WriteLine("File pattern:  " + task.FilePattern);
 
                 task.DoCopy();
 
@@ -245,14 +257,14 @@ namespace Mogre.Builder.Tasks
                 }
                 
                 copyCounter += task.Counter;
-            }
+            } // foreach
 
             // print notice
             if (noFileWarning)
                 outputManager.Warning(" --> Are you shure that Mogre was build successfully before? ");
 
             // print amout of copied files
-            outputManager.Info(String.Format("{0} files were copied.", copyCounter));
+            outputManager.Info(String.Format("\n{0} files were copied.", copyCounter));
 
 
 
