@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Text.RegularExpressions;
 using System.IO;
 using System.Reflection;
 
@@ -241,9 +242,14 @@ namespace Mogre.Builder
                 {
                     line = line.Trim();
 
-                    // skip comments and blanks
+                    // skip pure comment lines and blank lines
                     if (!line.StartsWith(@"//") && !string.IsNullOrEmpty(line))
                     {
+                        // remove comments after line of code
+                        String commentPattern = @";\s*//.*";
+                        if (Regex.IsMatch(line, commentPattern))
+                            line = Regex.Replace(line, commentPattern, ";");
+
                         string[] bits = line.Split('=');
 
                         if (bits.Length != 2)

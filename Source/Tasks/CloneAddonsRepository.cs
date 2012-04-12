@@ -49,13 +49,15 @@ namespace Mogre.Builder.Tasks
                 outputManager.Info("Created directory:  " + inputManager.MogreAddonsDirectory);
             }
 
+            // check if still cloned
             if (Directory.EnumerateFileSystemEntries(inputManager.MogreAddonsDirectory).Any())
             {
+                // no cloning needed
                 outputManager.DisplayMessage(String.Format(
                     "\nThe directory '{0}' is not empty, assuming Mogre Add-ons source code checked out already", 
                     inputManager.MogreAddonsDirectory),ConsoleColor.White);
             }
-            else
+            else // do clone
             {
                 // make paths bullet-proof  (needed if they contain directories with a space symbol)
                 String repositoryPath = Misc.HgPathSecurity(inputManager.MogreAddonsRepository);

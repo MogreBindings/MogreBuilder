@@ -56,7 +56,7 @@ namespace Mogre.Builder.Tasks
                 ModifyFile(inputManager.MogreAssemblyInfoFile, "AssemblyVersionAttribute.*", String.Format("AssemblyVersionAttribute(\"{0}\")];", assemblyEntry));
 
                 // print message
-                String versionMessage = String.Format("Mogre version:  {0}.{1}.{2}.{3}");
+                String versionMessage = String.Format("Mogre version:  {0}.{1}.{2}", major, minor, patch);
                 if (versionName != "")
                     versionMessage += "  (" + versionName + ")";  // add version name if available
                 outputManager.Info(versionMessage);
