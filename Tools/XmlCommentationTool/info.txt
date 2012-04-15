@@ -1,0 +1,15 @@
+
+This command-line tool can be used to generate XML commentation files 
+for Mogre and add-ons. (e.g. Mogre.xml)
+
+By these XML files the user can see the member documentation 
+inside of Visual Studio.
+
+The usage syntax you'll see when you call it without arguments.
+
+More details you find on the wiki page:
+http://www.ogre3d.org/tikiwiki/Mogre+XML+commentation+tool
+
+
+This tool was created in 2009 by user smiley80.
+Thanks !!
