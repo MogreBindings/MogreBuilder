@@ -68,6 +68,7 @@ namespace Mogre.Builder
                         // print error message
                         outputManager.Error(e.Message);
                         Misc.PrintExceptionTrace(outputManager, e.StackTrace);
+                        outputManager.Error("\n BUILD PROCESS ABORTED\n.");
                     }
                 } // else
 
@@ -120,7 +121,7 @@ namespace Mogre.Builder
             taskManager.Run();
 
             // print summary
-            outputManager.PrintSummary();
+            outputManager.PrintSummary(inputManager);
 
         } // DoWork()
 
@@ -204,7 +205,16 @@ namespace Mogre.Builder
 
             String all = "";
             foreach (String arg in cmdLineArgs)
-                all += arg + " ";
+            {
+                String argPrint = arg;
+
+                // re-add quotation for arguments with spaces 
+                //  --> display arguments equal to the shell input
+                if (argPrint.Contains(" "))
+                    argPrint = "\"" + argPrint + "\"";
+
+                all += argPrint + " ";
+            }
             outputManager.DisplayMessage(all + "\n", ConsoleColor.White);
         }
 

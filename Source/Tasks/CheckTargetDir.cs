@@ -40,7 +40,9 @@ namespace Mogre.Builder.Tasks
             ).Length;
 
             if (found != 3)
-                throw new UserException("Target directory does not appear to be the root of a Mogre code tree.");
+                throw new UserException(
+                    "Target directory does not appear to be the root of a Mogre code tree. \n" +
+                    " --> Check the repository URL of parameter 'MogreRepository' in your config file.");
 
             outputManager.Info(string.Format("Target Directory: {0}", Directory.GetCurrentDirectory()));
         }

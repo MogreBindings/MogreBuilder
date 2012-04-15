@@ -75,34 +75,50 @@ namespace Mogre.Builder
                     {
                         if (!string.IsNullOrWhiteSpace(e.Data))
                         {
+
+                            //--  reduce useless information when patch failed --
+
+                            if ((this.ID == "cygon:patch")
+                                && (   e.Data.StartsWith("Reversed (or previously applied) patch detected!  Assume -R? [n]")
+                                    || e.Data.StartsWith("Apply anyway? [n]")
+                                    || e.Data.Contains("ignored -- saving rejects to")))
+                            {
+                                // ignore these lines
+                                return;
+                            }
+
+
+                            //-- console output  (optionally as warning) --
+
                             if (ConsoleOutputManager.ContainsWarningKeyword(e.Data))
                                 // contains warning keyword
                                 outputManager.Warning(e.Data);
                             else
                                 // normal message
                                 outputManager.Info(e.Data);
+
+
+                            //-- catch Ogre features --
+
+                            //     NOTE: The information is printed line by line. (not a single message)
+                            //           So catch every line (of following outputs) between the 2 following rulers "----------------"
+
+                            // check:  disable logging?
+                            if (e.Data.Contains("----------------")
+                                && (outputManager.FeatureSummary.Length > 0))  // ignore fist line of "-" symbols
+                            {
+                                outputManager.FeatureLoggingIsEnabled = false;
+                            }
+
+                            // do logging
+                            if (outputManager.FeatureLoggingIsEnabled && (e.Data.Contains("----------------") == false))
+                                outputManager.FeatureSummary += e.Data + " \n";
+
+                            // check:  enable logging?
+                            if (e.Data.Contains("FEATURE SUMMARY"))
+                                outputManager.FeatureLoggingIsEnabled = true;
+                        
                         }
-
-                        //-- catch Ogre features --
-
-                        //     NOTE: The information is printed line by line. (not a single message)
-                        //           So catch every line (of following outputs) between the 2 following rulers "----------------"
-
-                        // check:  disable logging?
-                        if (e.Data.Contains("----------------") 
-                            && (outputManager.FeatureSummary.Length > 0))  // ignore fist line of "-" symbols
-                        {
-                            outputManager.FeatureLoggingIsEnabled = false;
-                        }
-
-                        // do logging
-                        if (outputManager.FeatureLoggingIsEnabled && (e.Data.Contains("----------------") == false))
-                            outputManager.FeatureSummary += e.Data + " \n";
-
-                        // check:  enable logging?
-                        if (e.Data.Contains("FEATURE SUMMARY"))
-                            outputManager.FeatureLoggingIsEnabled = true;
-
                         output.AppendLine(e.Data);
                     }
                 };

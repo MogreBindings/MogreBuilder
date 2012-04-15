@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Text.RegularExpressions;
+using System.IO;
 
 namespace Mogre.Builder
 {
@@ -155,16 +156,26 @@ namespace Mogre.Builder
         private Boolean featureLoggingIsEnabled = false;
 
 
+        public String MogreVersion 
+        {
+            get { return mogreVersion; }
+            set { mogreVersion = value; } 
+        }
+        private String mogreVersion = "??";
+
+        public Boolean SuccessfulOgreBuild { get; set; }
 
 
 
-        public void PrintSummary()
+
+        public void PrintSummary(InputManager inputManager)
         {
 
             if (FeatureSummary.Length > 0)
             {
                 DisplayMessage("\n\n===================== Feature summary =====================\n", ConsoleColor.White);
-                DisplayMessage(FeatureSummary, ConsoleColor.Gray);
+
+                Info(FeatureSummary); // grabbed CMake summary
             }
 
 
@@ -198,12 +209,21 @@ namespace Mogre.Builder
                     }
 
                 } // foreach
-
-                //Console.WriteLine("\nIf you need more details, scroll through all messages." + 
-                //                  "If you don't see the whole history, set the console 'height buffer' to 9999." + 
-                //                  "For this rickt-click to the title of the console window, click to 'Preferences' and choose tab 'Layout'. \n");
-
             }
+
+
+            // success message
+            if (SuccessfulOgreBuild)
+            {
+                DisplayMessage("\n\n===================== Result =====================\n", ConsoleColor.White);
+
+                Info("Mogre version:        " + MogreVersion);
+                Info("Build configuration:  " + inputManager.BuildConfiguration + "\n");
+                DisplayMessage("The Ogre/Mogre build process seems to be finished successfully (-: \n", ConsoleColor.Green);
+                Info("You find the created binary files in: \n    " 
+                    + Path.Combine(inputManager.TargetDirectory, inputManager.BuildOutputDirectory));
+            }
+
 
         } // PrintSummary()
 

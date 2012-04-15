@@ -41,7 +41,9 @@ namespace Mogre.Builder
                 // patch
                 taskList.Add(new PatchOgreCode(inputManager, outputManager));
                 taskList.Add(new OgreDependencies(inputManager, outputManager, msBuildManager));
-                taskList.Add(new OgreCmake(inputManager, outputManager));
+                
+                if (inputManager.Option_SkipCMake == false)
+                    taskList.Add(new OgreCmake(inputManager, outputManager));
 
                 // Auto-wrapping
                 taskList.Add(new AutoWrap(inputManager, outputManager, msBuildManager));

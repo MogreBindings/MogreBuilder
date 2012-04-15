@@ -15,5 +15,7 @@ namespace Mogre.Builder
 
         String FeatureSummary { get; set; }
         Boolean FeatureLoggingIsEnabled { get; set; }
+        Boolean SuccessfulOgreBuild { get; set; }
+        String MogreVersion { get; set; }
     }
 }

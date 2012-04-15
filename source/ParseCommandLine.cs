@@ -104,6 +104,22 @@ namespace Mogre.Builder
 
 
 
+            //--- SKIP CMake ---
+
+            // check if user wants to skip the CMake processing 
+            // --> 1 argument
+            for (Int16 i = 0;   i < inputList.Count;   i++)
+            {
+                if (inputList[i].ToLower() == "-skipcmake")
+                {
+                    parsedArgs.SkipCMake = true;
+                    inputList.RemoveAt(i);
+                    break;
+                }
+            }
+
+
+
             //--- DEVELOPMENT FLAG ---
 
             // check if user wants to disable the catching of unspecific exceptions
@@ -325,6 +341,7 @@ namespace Mogre.Builder
         public Boolean MogreNewt { get; set; }
         public Boolean OnlyAddons { get; set; }
         public Boolean DevelopmentFlag { get; set; }
+        public Boolean SkipCMake { get; set; }
 
         public String PathEnvironmentVariable 
         {

@@ -47,9 +47,8 @@ namespace Mogre.Builder.Tasks
                 }
             } // foreach
 
-            // print success message
-            outputManager.DisplayMessage("\nThe Ogre/Mogre build process seems to be finished successfully (-:", ConsoleColor.Green);
-            outputManager.Info("You find the created binary files in: \n    " + inputManager.TargetDirectory);
+
+            outputManager.SuccessfulOgreBuild = true;
 
         } // Run()
 
