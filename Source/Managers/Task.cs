@@ -149,6 +149,8 @@ namespace Mogre.Builder
             return result;
         }
 
+
+
         private string OutputAndCapture(Process process)
         {
             outputManager.Error(process.StandardError.ReadToEnd());
@@ -158,6 +160,16 @@ namespace Mogre.Builder
             return output;
         }
 
+
+
+        /// <summary>
+        /// Open a file and replace strings. The replacement is based on regular expressions. <br/>
+        /// IMPORTANT: With 3 arguments the RegEx scope is only one SINGLE LINE. (The RegEx call will be applied line by line.) 
+        /// With 4 arguments the regular expression scope is the WHOLE FILE. 
+        /// </summary>
+        /// <param name="filePath">Path of the file</param>
+        /// <param name="pattern">Regular expression pattern (No pure String search!)</param>
+        /// <param name="replacement">String to replace the matches</param>
         protected void ModifyFile(string filePath, string pattern, string replacement)
         {
             List<string> lineList = new List<string>();
@@ -184,6 +196,16 @@ namespace Mogre.Builder
             }
         }
 
+
+
+        /// <summary>
+        /// Open a file and replace strings. The replacement is based on regular expressions. <br/>
+        /// IMPORTANT:  <br/>
+        /// With 3 arguments the RegEx scope is only one SINGLE LINE. (The RegEx call will be applied line by line.)  <br/>
+        /// With 4 arguments the regular expression scope is the WHOLE FILE. 
+        /// <param name="filePath">Path of the file</param>
+        /// <param name="pattern">Regular expression pattern (No pure String search!)</param>
+        /// <param name="replacement">String to replace the matches</param>
         protected void ModifyFile(string filePath, string pattern, string replacement, RegexOptions regexOptions)
         {
             string text = File.ReadAllText(filePath);
@@ -192,6 +214,8 @@ namespace Mogre.Builder
             File.WriteAllText(filePath, modifiedText);
         }
     }
+
+
 
     struct CommandResult
     {

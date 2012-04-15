@@ -52,11 +52,11 @@ namespace Mogre.Builder.Tasks
             if (success)
             {
                 // update assembly information file
-                String assemblyEntry = String.Format("{0}.{1}.{2}.*", major, minor, patch);
+                String assemblyEntry = String.Format("{0}.{1}.{2}", major, minor, patch);
                 ModifyFile(inputManager.MogreAssemblyInfoFile, "AssemblyVersionAttribute.*", String.Format("AssemblyVersionAttribute(\"{0}\")];", assemblyEntry));
 
                 // create message string
-                String versionMessage = String.Format("{0}.{1}.{2}", major, minor, patch);
+                String versionMessage = assemblyEntry;
                 if (versionName != "")
                     versionMessage += "  (" + versionName + ")";  // add version name if available
 
@@ -68,8 +68,26 @@ namespace Mogre.Builder.Tasks
 
             }
             else
-                outputManager.Warning("Unable to update Mogre version, the version number could be wrong");
-        }
+                outputManager.Warning("Unable to detect the Ogre version. So the Mogre version number could be wrong.");
+
+
+            // update assembly description
+            String infoPattern = @"^\[assembly:AssemblyDescriptionAttribute\(.*";
+            String infoReplacement = String.Format(
+                "[assembly:AssemblyDescriptionAttribute(\"Created by MogreBuilder on {0}-{1:00}-{2:00}\")];",
+                DateTime.Now.Year, DateTime.Now.Month, DateTime.Now.Day);
+            ModifyFile(inputManager.MogreAssemblyInfoFile, infoPattern, infoReplacement);
+
+            // update assemlby build type
+            String typePattern = @"^\[assembly:AssemblyConfigurationAttribute\(.*";
+            String typeReplacement = String.Format(
+                "[assembly:AssemblyConfigurationAttribute(\"{0}\")];",
+                inputManager.BuildConfiguration);
+            ModifyFile(inputManager.MogreAssemblyInfoFile, typePattern, typeReplacement );
+
+        } // Run()
+
+
 
         private string ExtractDefineValue(string line)
         {
