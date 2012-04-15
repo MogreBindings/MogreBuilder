@@ -73,6 +73,7 @@
     <Compile Include="Tasks\MogreNewt\Newt_Compilaton.cs" />
     <Compile Include="Tasks\MogreNewt\Newt_LibraryDownload.cs" />
     <Compile Include="Tasks\MogreNewt\Newt_Preparation.cs" />
+    <Compile Include="Tasks\MOIS\BuildMois.cs" />
     <Compile Include="Tasks\MsBuildTask.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

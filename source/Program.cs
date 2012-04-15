@@ -68,7 +68,11 @@ namespace Mogre.Builder
                         // print error message
                         outputManager.Error(e.Message);
                         Misc.PrintExceptionTrace(outputManager, e.StackTrace);
-                        outputManager.Error("\n BUILD PROCESS ABORTED\n.");
+                        outputManager.Error("\n BUILD PROCESS ABORTED\n\n.");
+                        
+                        outputManager.Info(
+                            "Please report crashes in our MogreBuilder forum topic.  \n" + 
+                            "     A screenshoot of the stack trace and error messages would be nice.\n" );
                     }
                 } // else
 
