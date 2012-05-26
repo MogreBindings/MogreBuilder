@@ -10,13 +10,15 @@ using System.Runtime.InteropServices;
 // set of attributes. Change these attribute values to modify the information
 // associated with an assembly.
 [assembly: AssemblyTitle("MogreXml")]
-[assembly: AssemblyDescription("")]
+[assembly: AssemblyDescription("Mogre Xml comments creator")]
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("")]
 [assembly: AssemblyProduct("MogreXml")]
-[assembly: AssemblyCopyright("Copyright 2009")]
+[assembly: AssemblyCopyright("© 2009 by 'smiley80'")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
+//[assembly: NeutralResourcesLanguage("en")] // "en-GB" "en-US"
+//[assembly: CLSCompliant(true)]
 
 // This sets the default COM visibility of types in the assembly to invisible.
 // If you need to expose a type to COM, use [ComVisible(true)] on that type.
