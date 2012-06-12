@@ -31,19 +31,6 @@ namespace Mogre.Builder.Tasks
 
                 throw new UserException("\nFailed running CMake on Ogre source tree: \n" + result.Error);
             }
-
-            // Hack resulting solution file remove CMake's "Zero Check" project reference.
-            String cmakeCache = File.ReadAllText(inputManager.CMakeCachePath);
-            Match match = Regex.Match(cmakeCache, @"ZERO_CHECK_GUID_CMAKE:\w+=(\S+)");
-
-            if (!match.Success)
-            {
-                outputManager.Warning("Failed to find CMake zero check GUID, compilation might fail with unknown GUID error");
-                return;
-            }
-            String zeroCheckGuid = match.Groups[1].Value;
-
-            ModifyFile(inputManager.OgreSolutionFile, "^\\s*\\{" + zeroCheckGuid + "\\}.*$\\n", "", RegexOptions.Multiline);
         }
     }
 }
