@@ -48,10 +48,8 @@ namespace Mogre.Builder
             CMakeCachePath  = @"Main\OgreSrc\build\CMakeCache.txt";
 
             // dependencies
-            DependenciesURL          = "http://surfnet.dl.sourceforge.net/project/ogre/ogre-dependencies-vc%2B%2B/1.7/OgreDependencies_MSVC_20100501.zip";
-            DependenciesZip          = @"Main\OgreSrc\ogre\Dependencies.zip";
+            DependenciesRepository   = "https://bitbucket.org/cabalistic/ogredeps";
             DependenciesDirectory    = @"Main\OgreSrc\ogre\Dependencies\";
-            DependenciesSolutionFile = @"Main\OgreSrc\ogre\Dependencies\src\OgreDependencies.VS2010.sln";
 
             // patch
             ClrPatchFile   = @"Main\Ogre Patches\mogre-1.7.3-clrobject.patch";

@@ -95,10 +95,8 @@ namespace Mogre.Builder
         public string CMakeCachePath { get; private set; }
 
         // dependencies
-        public string DependenciesURL { get; private set; }
-        public string DependenciesZip { get; private set; }
+        public string DependenciesRepository { get; private set; }
         public string DependenciesDirectory { get; private set; }
-        public string DependenciesSolutionFile { get; private set; }
 
         // patch
         public string ClrPatchFile { get; private set; }

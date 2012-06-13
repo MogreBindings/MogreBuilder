@@ -30,6 +30,7 @@ namespace Mogre.Builder.Tasks
                     "Plugin_PCZSceneManager"    + targetSuffix,
                     "RenderSystem_Direct3D9"    + targetSuffix,
                     "RenderSystem_GL"           + targetSuffix,
+                    "OIS"                       + targetSuffix,
                 }
             );
         }

@@ -23,6 +23,11 @@ namespace Mogre.Builder.Tasks
                 @"-DOGRE_CONFIG_ENABLE_PVRTC:BOOL=ON -OGRE_CONFIG_CONTAINERS_USE_CUSTOM_ALLOCATOR:BOOL=OFF -G ""Visual Studio 10"" ..\ogre",
                 inputManager.OgreBuildDirectory);
 
+            // run CMake again to include Ogre dependencies
+            result = RunCommand(inputManager.CMakeExecutable,
+                @"-DOGRE_CONFIG_ENABLE_PVRTC:BOOL=ON -OGRE_CONFIG_CONTAINERS_USE_CUSTOM_ALLOCATOR:BOOL=OFF -G ""Visual Studio 10"" ..\ogre",
+                inputManager.OgreBuildDirectory);
+
             if (result.ExitCode != 0)
             {
                 // check for problem "directory changed"

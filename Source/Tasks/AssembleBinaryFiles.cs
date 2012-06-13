@@ -26,7 +26,6 @@ namespace Mogre.Builder.Tasks
                 String.Format(@"Main\lib\{0}", inputManager.BuildConfiguration),
                 String.Format(@"Main\OgreSrc\build\bin\{0}", inputManager.BuildConfiguration),
                 String.Format(@"Main\OgreSrc\build\lib\{0}", inputManager.BuildConfiguration),
-                Path.Combine(inputManager.DependenciesDirectory, "bin", inputManager.BuildConfiguration) // Main\OgreSrc\ogre\Dependencies\bin\...
             };
 
             String[] patterns = new String[] { "*.dll", "*.lib", "*.pdb" };
@@ -75,24 +74,6 @@ namespace Mogre.Builder.Tasks
                     "       Therefore it's possible, that some binary files are missed in the output directory (e.g. 'cg.dll'). \n" +
                     "       Consider to search and copy them manually.",
                     inputManager.BuildConfiguration));
-            }
-
-            // depency warning if "Debug"
-            //   --> TODO: Create an advanced copy task later for Debug builds
-            //       For this we need to check what's the name of the built files (could contain "_d" in the file name) 
-            //       and if they are written to bin\debug or bin\release
-            //       Also the behaviour could be change in newer Ogre versions. (related to the used CMake or VS config files)
-            //       Idea: Copy all files from bin\debug AND bin\release, when the DATE_TIME is newer than MogreBuilder start time.
-            //       For this the 'FileCopyTask' class could be extended and used.
-            if (inputManager.BuildConfiguration.ToLower() == "debug")
-            {
-                outputManager.Warning(String.Format(
-                    "Note:  The build configuration is 'Debug'. \n " +
-                    "       Therefore it's possible, that some binary files (of depencies) are missed in the output directory. \n" +
-                    "       Consider to look to the 'release' binary directory of the depencies. \n" +
-                    "       Path:   '{0}'",
-                    Path.Combine(inputManager.DependenciesDirectory, inputManager.BuildConfiguration)
-                    ));
             }
 
             outputManager.SuccessfulOgreBuild = true;
