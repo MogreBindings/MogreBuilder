@@ -31,17 +31,6 @@ namespace Mogre.Builder.Tasks
 
         public override void Run()
         {
-            // check if Mercurial is installed
-            try
-            {
-                RunCommand("hg", "--version", null);
-                outputManager.Info(""); // empty line for better overview
-            }
-            catch (Exception ex)
-            {
-                throw new Exception("Can't find hg in path. Make sure hg is installed and available in the system path.", ex);
-            }
-
             // create directory if needed
             if (Directory.Exists(inputManager.MogreAddonsDirectory) == false)
             {
