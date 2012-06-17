@@ -61,9 +61,6 @@ namespace Mogre.Builder
                 taskList.Add(new BuildMogre(inputManager, outputManager, msBuildManager));
                 taskList.Add(new BuildOgreWithMogreLinking(inputManager, outputManager, msBuildManager));
 
-                // Organizing the result
-                taskList.Add(new AssembleBinaryFiles(inputManager, outputManager));
-
             }
 
 
@@ -71,7 +68,7 @@ namespace Mogre.Builder
 
             // clone official Mogre-addons repository   (if one of the included add-ons is needed)
             if (inputManager.Option_MogreNewt || inputManager.Option_Hikari || inputManager.Option_Makuri ||
-                inputManager.Option_MogreDesignSupport || inputManager.Option_MogreFreeSL)
+                inputManager.Option_MogreDesignSupport || inputManager.Option_MogreFreeSL || inputManager.Option_Mois)
             {
                 taskList.Add(new CloneAddonsRepository(inputManager, outputManager));
             }
@@ -85,6 +82,16 @@ namespace Mogre.Builder
 
             }
 
+
+            // build Mois
+            if (inputManager.Option_Mois)
+            {
+                taskList.Add(new BuildMoisTask(inputManager, outputManager, msBuildManager));
+            }
+
+
+            // Organizing the result
+            taskList.Add(new AssembleBinaryFiles(inputManager, outputManager));
 
             return taskList;
         } // BuildTaskList()

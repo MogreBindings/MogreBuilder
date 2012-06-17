@@ -26,6 +26,7 @@ namespace Mogre.Builder.Tasks
                 String.Format(@"Main\lib\{0}", inputManager.BuildConfiguration),
                 String.Format(@"Main\OgreSrc\build\bin\{0}", inputManager.BuildConfiguration),
                 String.Format(@"Main\OgreSrc\build\lib\{0}", inputManager.BuildConfiguration),
+                String.Format(@"MogreAddons\MOIS\MOIS\bin\{0}", inputManager.BuildConfiguration)
             };
 
             String[] patterns = new String[] { "*.dll", "*.lib", "*.pdb" };

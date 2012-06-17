@@ -138,13 +138,26 @@ namespace Mogre.Builder
 
             //--- ADD-ON MogreNewt   TEST ---
 
-            // check if user wants to disable boost
+            // check if user wants to enable MogreNewt
             // --> 1 argument
             for (Int16 i = 0;   i < inputList.Count;   i++)
             {
                 if (inputList[i].ToLower() == "-mogrenewt")
                 {
                     parsedArgs.MogreNewt = true;
+                    inputList.RemoveAt(i);
+                    break;
+                }
+            }
+
+
+            // check if user wants to enable MOIS
+            // --> 1 argument
+            for (Int16 i = 0; i < inputList.Count; i++)
+            {
+                if (inputList[i].ToLower() == "-mois")
+                {
+                    parsedArgs.Mois = true;
                     inputList.RemoveAt(i);
                     break;
                 }
@@ -339,6 +352,7 @@ namespace Mogre.Builder
         public string ConfigFile { get; set; }
         public ProcessPriorityClass priority { get; set; }
         public Boolean MogreNewt { get; set; }
+        public Boolean Mois { get; set; }
         public Boolean OnlyAddons { get; set; }
         public Boolean DevelopmentFlag { get; set; }
         public Boolean SkipCMake { get; set; }

@@ -27,6 +27,7 @@ namespace Mogre.Builder
             // copy some option flags
             Option_OnlyAddons      = parsedArgs.OnlyAddons;
             Option_MogreNewt       = parsedArgs.MogreNewt;
+            Option_Mois            = parsedArgs.Mois;
             Option_DevelopmentFlag = parsedArgs.DevelopmentFlag;
             Option_SkipCMake       = parsedArgs.SkipCMake;
 
@@ -49,6 +50,7 @@ namespace Mogre.Builder
 
         public Boolean Option_OnlyAddons { get; set; }
         public Boolean Option_MogreNewt { get; set; }
+        public Boolean Option_Mois { get; set; }
         public Boolean Option_DevelopmentFlag { get; set; }
         public Boolean Option_SkipCMake { get; set; }
 
@@ -137,8 +139,11 @@ namespace Mogre.Builder
         public String NewtonDepencySourceDir_Ogre_headers_Win32     { get; private set; }  // don't add this to config file
         public String NewtonDepencySourceDir_OgreMain_binaries      { get; private set; }  // don't add this to config file
         public String NewtonDepencySourceDir_OgreMain_headers       { get; private set; }  // don't add this to config file
-        public String NewtonDepencySourceDir_NewtonLibrary          { get; private set; } 
+        public String NewtonDepencySourceDir_NewtonLibrary          { get; private set; }
 
+
+        // MOIS
+        public String MoisSolutionFile { get; private set; }
 
 
 

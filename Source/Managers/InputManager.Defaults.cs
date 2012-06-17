@@ -106,6 +106,9 @@ namespace Mogre.Builder
             // directory where to find the newton binaries
             NewtonDepencySourceDir_NewtonLibrary           = @"";
 
+
+            MoisSolutionFile = @"MogreAddons\MOIS\MOIS\MOIS_vs2010.sln";
+
         } // LoadDefaults()
 
     } // class InputManager

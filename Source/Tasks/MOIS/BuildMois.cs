@@ -18,7 +18,7 @@ namespace Mogre.Builder.Tasks
 
         public override void Run()
         {
-            //msBuildManager.Build(inputManager.MoisSolutionFile, inputManager.BuildConfiguration, "Win32", "Rebuild");
+            msBuildManager.Build(inputManager.MoisSolutionFile, inputManager.BuildConfiguration, "Win32", "Rebuild");
         }
     }
 }
