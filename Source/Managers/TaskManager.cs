@@ -27,13 +27,11 @@ namespace Mogre.Builder
             List<Task> taskList = new List<Task>();
             MsBuildManager msBuildManager = new MsBuildManager(outputManager);
 
-            taskList.Add(new CheckMercurial(inputManager, outputManager));
+            taskList.Add(new CheckTools(inputManager, outputManager));
 
             if (inputManager.Option_OnlyAddons == false)
             {
                 //--- tasks to build Ogre/Mogre ---
-
-                taskList.Add(new CheckEnvironment(inputManager, outputManager));
 
                 taskList.Add(new CloneMogreSource(inputManager, outputManager));
 

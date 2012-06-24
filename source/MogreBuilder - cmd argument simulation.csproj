@@ -83,11 +83,12 @@
     <Compile Include="Tasks\ApplyCygonPatch.cs" />
     <Compile Include="Tasks\AssembleBinaryFiles.cs" />
     <Compile Include="Tasks\BuildOgreTask.cs" />
-    <Compile Include="Tasks\CheckEnvironment.cs" />
+    <Compile Include="Tasks\CheckTools.cs" />
     <Compile Include="Tasks\CloneAddonsRepository.cs" />
     <Compile Include="Tasks\CloneMogreSource.cs" />
     <Compile Include="Tasks\CloneOgreSource.cs" />
     <Compile Include="Tasks\CheckTargetDir.cs" />
+    <Compile Include="Tasks\CloneDependenciesRepository.cs" />
     <Compile Include="Tasks\MogreNewt\Newt_Compilaton.cs" />
     <Compile Include="Tasks\MogreNewt\Newt_LibraryDownload.cs" />
     <Compile Include="Tasks\MogreNewt\Newt_Preparation.cs" />
@@ -101,7 +102,6 @@
     <Compile Include="Tasks\BuildOgreWithMogreLinking.cs" />
     <Compile Include="Tasks\BuildOgreWithoutMogreLinking.cs" />
     <Compile Include="Tasks\OgreCmake.cs" />
-    <Compile Include="Tasks\OgreDependencies.cs" />
     <Compile Include="Tasks\PatchOgreCode.cs" />
     <Compile Include="Tasks\UpdateMogreVersion.cs" />
   </ItemGroup>

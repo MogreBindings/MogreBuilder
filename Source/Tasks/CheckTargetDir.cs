@@ -4,7 +4,7 @@ using System.IO;
 namespace Mogre.Builder.Tasks
 {
     /// <summary>
-    /// Looks for the Ogre source directory.
+    /// Check to see that the target directory is a valid
     /// </summary>
     class CheckTargetDir : Task
     {
@@ -42,7 +42,8 @@ namespace Mogre.Builder.Tasks
             if (found != 3)
                 throw new UserException(
                     "Target directory does not appear to be the root of a Mogre code tree. \n" +
-                    " --> Check the repository URL of parameter 'MogreRepository' in your config file.");
+                    " --> Check the repository URL of parameter 'MogreRepository' in your config file. \n" +
+                    " --> Delete the target directory if still exists. (If a previous cloning was aborted, the content is corrupt.)");
 
             outputManager.Info(string.Format("Target Directory: {0}", Directory.GetCurrentDirectory()));
         }
