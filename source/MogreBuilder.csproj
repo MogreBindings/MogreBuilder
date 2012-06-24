@@ -66,6 +66,7 @@
     <Compile Include="Tasks\AssembleBinaryFiles.cs" />
     <Compile Include="Tasks\BuildOgreTask.cs" />
     <Compile Include="Tasks\CheckEnvironment.cs" />
+    <Compile Include="Tasks\CheckMercurial.cs" />
     <Compile Include="Tasks\CloneAddonsRepository.cs" />
     <Compile Include="Tasks\CloneMogreSource.cs" />
     <Compile Include="Tasks\CloneOgreSource.cs" />

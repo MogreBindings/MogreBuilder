@@ -25,16 +25,6 @@ namespace Mogre.Builder.Tasks
             {
                 throw new Exception("Can't find cmake in path. Make sure cmake is installed and available in the system path.", ex);
             }
-
-            // check if Mercurial is installed
-            try
-            {
-                RunCommand("hg", "--version", null);
-            }
-            catch (Exception ex)
-            {
-                throw new Exception("Can't find hg in path. Make sure hg is installed and available in the system path.", ex);
-            }
         }
     }
 }
