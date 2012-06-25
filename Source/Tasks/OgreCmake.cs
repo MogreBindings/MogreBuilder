@@ -26,10 +26,8 @@ namespace Mogre.Builder.Tasks
                 @"-G ""Visual Studio 10"" " +
                 @"..\ogre";
 
+            // run CMake
             CommandResult result = RunCommand(inputManager.CMakeExecutable, cmakeArguments, inputManager.OgreBuildDirectory);
-
-            // run CMake again to include Ogre dependencies
-            result = RunCommand(inputManager.CMakeExecutable, cmakeArguments, inputManager.OgreBuildDirectory);
 
             if (result.ExitCode != 0)
             {
@@ -39,6 +37,21 @@ namespace Mogre.Builder.Tasks
 
                 throw new UserException("\nFailed running CMake on Ogre source tree: \n" + result.Error);
             }
-        }
+
+
+            //--- run CMake again to include Ogre dependencies ---
+
+            outputManager.Action("Running CMake again to include fresh built Ogre depencies");
+
+            // clear the catched feature list of first CMake run
+            outputManager.FeatureSummary = "";
+
+            // run CMake
+            result = RunCommand(inputManager.CMakeExecutable, cmakeArguments, inputManager.OgreBuildDirectory);
+
+            if (result.ExitCode != 0)
+                throw new UserException("\nFailed running CMake on Ogre source tree: \n" + result.Error);
+            
+        } // Run()
     }
 }
