@@ -29,12 +29,10 @@ namespace Mogre.Builder.Tasks
             // run CMake
             CommandResult result = RunCommand(inputManager.CMakeExecutable, cmakeArguments, inputManager.OgreBuildDirectory);
 
-            if (result.ExitCode != 0)
+            // check for problem "directory changed"
+            if (Regex.IsMatch(result.Error, @"The current CMakeCache\.txt directory .* is different than the directory"))
             {
-                // check for problem "directory changed"
-                if (Regex.IsMatch(result.Error, @"The current CMakeCache\.txt directory .* is different than the directory"))
-                    outputManager.Warning("Suggestion for this CMake error:  Delete the target directory and try again.");
-
+                outputManager.Warning("Suggestion for this CMake error:  Delete the target directory and try again.");
                 throw new UserException("\nFailed running CMake on Ogre source tree: \n" + result.Error);
             }
 
