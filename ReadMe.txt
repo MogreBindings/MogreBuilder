@@ -1,10 +1,10 @@
 ﻿
 --- Preparation ---
 
-Install Microsoft Visual C# 2010 Express and Visual C++ Express. 
+Install Microsoft Visual C# 2010 Express AND Visual C++ Express. 
 http://www.microsoft.com/visualstudio/en-us/products/2010-editions/visual-csharp-express
 http://www.microsoft.com/visualstudio/en-us/products/2010-editions/visual-cpp-express
-..... Or alternatively install Visual Stutio. 
+..... OR alternatively install Visual Studio. 
 
 Install TortoiseHg. 
 http://tortoisehg.bitbucket.org/download/index.html
@@ -14,8 +14,6 @@ http://www.cmake.org/cmake/resources/software.html
 
 Install the DirectX SDK (June 2010)
 http://www.microsoft.com/download/en/details.aspx?id=6812
-
-Note: Some Ogre depencies will be downloaded automatically. 
 
 
 
@@ -36,7 +34,13 @@ Note: Some Ogre depencies will be downloaded automatically.
 
 The auto-builder should now ran successfully.
 (Be patient during the repository cloning tasks at the first usage.)
-After the downloads are finished, it needs about 1 hour for building Mogre.
+After the downloads are finished, the build process needs about 1 or 2 hours.
+
+
+Aside the config files there are also command-line options. 
+Currently there is no documentation about. 
+Consider to have a look to this file for details:  
+MogreBuilder\Source\ParseCommandLine.cs
 
 
 
@@ -51,4 +55,17 @@ If everything is well, tell it too.
 Note: To report problems, consider to use the "Snipping Tool" of Windows 7 for easy screenshot creation. 
       Just type "snipp" into the search field of the start menu. 
 
+
+
+--- Notes for .NET 4.0 ---
+
+Currently MogreBuilder only builds Mogre against .NET 4.0. 
+
+This means: 
+* You need Visual Studio 2010 or newer (Visual Studio 2008 isn't usable).
+* Change your project settings to .NET 4.0.
+* All of you dll files has to be replaced by .NET 4.0 builds, too.
+* If not possible, you can try a mixture usage of .NET versions. 
+  For this select a ".NET Client mode" in the project settings. 
+  (Although this isn't recommended, because it can cause trouble.)
 
