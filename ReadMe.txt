@@ -32,17 +32,19 @@ http://www.microsoft.com/download/en/details.aspx?id=6812
 
 --- Step by step ---
 
-1. Download MogreBuilder source and compile.
+1. Download MogreBuilder source from:
    https://bitbucket.org/mogre/mogrebuilder
 
-2. Enter directory "bin_Debug", open file "GO_example.bat",
+2. Compile MogreBuilder by use of file "MogreBuilder.sln".
+
+3. Enter directory "bin_Debug", open file "GO_example.bat",
    and type in your wanted target directory.
  
-3. Setup the config file if required. There is a Default.cfg as an example. 
+4. Setup the config file if required. There is a Default.cfg as an example. 
    You can specify a different one using the command line options. e.g.
    MogreBuilder C:\Mogre -config Default.cfg
 
-4. Call "GO_example.bat".
+5. Call "RUN_example.bat".
    Alternatively you can call the MogreBuilder from command line.
 
 The auto-builder should now ran successfully.
