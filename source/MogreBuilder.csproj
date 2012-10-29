@@ -92,9 +92,8 @@
       <Link>Default.cfg</Link>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Include="..\Source_additions\GO_example.bat">
-      <Link>GO_example.bat</Link>
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    <None Include="..\Source_additions\RUN_example.bat">
+      <Link>RUN_example.bat</Link>
     </None>
   </ItemGroup>
   <ItemGroup>
