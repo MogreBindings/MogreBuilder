@@ -65,6 +65,7 @@ namespace Mogre.Builder
         // build
         public string TargetDirectory { get; private set; }
         public string BuildConfiguration { get; private set; }
+        public string BuildGenerator { get; private set; }
         public string BuildOutputDirectory { get; private set; }  // don't add this to config file  (will be generated automatically)
 
         // clr

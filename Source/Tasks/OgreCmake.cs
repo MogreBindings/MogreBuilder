@@ -23,7 +23,7 @@ namespace Mogre.Builder.Tasks
             String cmakeArguments =
                 @"-DOGRE_CONFIG_ENABLE_PVRTC:BOOL=ON -OGRE_CONFIG_CONTAINERS_USE_CUSTOM_ALLOCATOR:BOOL=OFF " +
                 @"-DCMAKE_DISABLE_FIND_PACKAGE_PkgConfig:BOOL=TRUE -DCMAKE_DISABLE_FIND_PACKAGE_Doxygen:BOOL=TRUE " +
-                @"-G ""Visual Studio 10"" " +
+                 "-G \"" + inputManager.BuildGenerator + "\" " +
                 @"..\ogre";
 
             // run CMake

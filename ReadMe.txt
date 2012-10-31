@@ -6,6 +6,8 @@ http://www.microsoft.com/visualstudio/en-us/products/2010-editions/visual-csharp
 http://www.microsoft.com/visualstudio/en-us/products/2010-editions/visual-cpp-express
 ..... OR alternatively install Visual Studio. 
 
+Visual Studio 2012 can also be used. Please read "Buildung with Visual Studio 2012" below.
+
 Install TortoiseHg. 
 http://tortoisehg.bitbucket.org/download/index.html
 
@@ -56,6 +58,19 @@ Aside the config files there are also command-line options.
 Currently there is no documentation about. 
 Consider to have a look to this file for details:  
 MogreBuilder\Source\ParseCommandLine.cs
+
+
+
+--- Building with Visual Studio 2012 ---
+
+To use Visual Studio 2012, follow the step-by-step guide. In step 4 change the
+following settings in your config file:
+
+BuildGenerator = "Visual Studio 11";
+MogreSolutionFile = @"Main\Mogre_vs2012.sln";
+MoisSolutionFile = @"MogreAddons\MOIS\MOIS\MOIS_vs2012.sln";
+
+Please note that currently only the MOIS addon has been modified to work with VS 2012.
 
 
 

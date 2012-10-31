@@ -17,6 +17,7 @@ namespace Mogre.Builder
 
             // build
             BuildConfiguration = "Release";
+            BuildGenerator     = "Visual Studio 10";
 
             // clr
             ClrDirectory        = @"Main\Ogre\";
