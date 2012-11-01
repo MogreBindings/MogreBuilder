@@ -39,7 +39,7 @@ http://www.microsoft.com/download/en/details.aspx?id=6812
 
 2. Compile MogreBuilder by use of file "MogreBuilder.sln".
 
-3. Enter directory "bin_Debug", open file "GO_example.bat",
+3. Enter directory "bin_Debug", open file "RUN_example.bat",
    and type in your wanted target directory.
  
 4. Setup the config file if required. There is a Default.cfg as an example. 
@@ -54,10 +54,15 @@ The auto-builder should now ran successfully.
 After the downloads are finished, the build process needs about 1 or 2 hours.
 
 
-Aside the config files there are also command-line options. 
-Currently there is no documentation about. 
-Consider to have a look to this file for details:  
-MogreBuilder\Source\ParseCommandLine.cs
+Aside the config files the following command-line options are available:
+-config <filename>          Use <filename> as config file
+-priority <priority>        Use specified process priority. Priorities are 'Idle', 'BelowNormal', 'AboveNormal'
+-noboost                    Build Ogre without boost
+-skipcmake                  Do not run CMake (use existing files)
+-development                Do not catch exceptions in MogreBuilder
+-mogrenewt                  Build MogreNewt add-on
+-mois                       Build MOIS add-on
+-onlyaddons                 Skip building Mogre, only build add-ons
 
 
 
