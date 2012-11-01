@@ -5,8 +5,7 @@ Install Microsoft Visual C# 2010 Express AND Visual C++ Express.
 http://www.microsoft.com/visualstudio/en-us/products/2010-editions/visual-csharp-express
 http://www.microsoft.com/visualstudio/en-us/products/2010-editions/visual-cpp-express
 ..... OR alternatively install Visual Studio. 
-
-Visual Studio 2012 can also be used. Please read "Buildung with Visual Studio 2012" below.
+..... Visual Studio 2012 can also be used. Please read "Buildung with Visual Studio 2012" below.
 
 Install TortoiseHg. 
 http://tortoisehg.bitbucket.org/download/index.html
@@ -54,15 +53,19 @@ The auto-builder should now ran successfully.
 After the downloads are finished, the build process needs about 1 or 2 hours.
 
 
+
+--- Command-line options ---
+
 Aside the config files the following command-line options are available:
 -config <filename>          Use <filename> as config file
 -priority <priority>        Use specified process priority. Priorities are 'Idle', 'BelowNormal', 'AboveNormal'
--noboost                    Build Ogre without boost
+-noboost                    Build Ogre without boost (doesn't work yet)
 -skipcmake                  Do not run CMake (use existing files)
 -development                Do not catch exceptions in MogreBuilder
--mogrenewt                  Build MogreNewt add-on
+-mogrenewt                  Build MogreNewt add-on (does preparations, but need some manual steps)
+                            Instructions you find here: http://www.ogre3d.org/addonforums/viewtopic.php?p=100289#p100289
 -mois                       Build MOIS add-on
--onlyaddons                 Skip building Mogre, only build add-ons
+-onlyaddons                 Skip building Mogre, only build enabled add-ons (only useful if Mogre was already built)
 
 
 
