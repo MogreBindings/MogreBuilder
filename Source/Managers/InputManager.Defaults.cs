@@ -17,7 +17,6 @@ namespace Mogre.Builder
 
             // build
             BuildConfiguration = "Release";
-            BuildGenerator     = "Visual Studio 10";
 
             // clr
             ClrDirectory        = @"Main\Ogre\";
@@ -27,10 +26,11 @@ namespace Mogre.Builder
             ClrObjectsBuildDirectory = @"Main\OgreSrc\build\include\";
 
             // mogre
-            MogreAssemblyInfoFile = @"Main\AssemblyInfo.cpp";
-            MogreSolutionFile     = @"Main\Mogre_vs2010.sln";
-            MogreRepository       = @"https://bitbucket.org/mogre/mogre/";
-            MogreBranch           = @"default";
+            MogreAssemblyInfoFile    = @"Main\AssemblyInfo.cpp";
+            MogreSolutionFile_VS2010 = @"Main\Mogre_vs2010.sln";
+            MogreSolutionFile_VS2012 = @"Main\Mogre_vs2012.sln";
+            MogreRepository          = @"https://bitbucket.org/mogre/mogre/";
+            MogreBranch              = @"default";
 
             // ogre
             OgreRootDirectory    = @"Main\OgreSrc\ogre\";
@@ -108,7 +108,8 @@ namespace Mogre.Builder
             NewtonDepencySourceDir_NewtonLibrary           = @"";
 
 
-            MoisSolutionFile = @"MogreAddons\MOIS\MOIS\MOIS_vs2010.sln";
+            MoisSolutionFile_VS2010 = @"MogreAddons\MOIS\MOIS\MOIS_vs2010.sln";
+            MoisSolutionFile_VS2012 = @"MogreAddons\MOIS\MOIS\MOIS_vs2012.sln";
 
         } // LoadDefaults()
 

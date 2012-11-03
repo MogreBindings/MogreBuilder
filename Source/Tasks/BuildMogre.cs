@@ -1,6 +1,4 @@
-﻿using System;
-
-namespace Mogre.Builder.Tasks
+﻿namespace Mogre.Builder.Tasks
 {
     class BuildMogre : MsBuildTask
     {
@@ -15,7 +13,9 @@ namespace Mogre.Builder.Tasks
 
         public override void Run()
         {
-            msBuildManager.Build(inputManager.MogreSolutionFile, inputManager.BuildConfiguration, "Win32", "Rebuild");
+            string solutionFile = inputManager.Option_Vs2012 ? inputManager.MogreSolutionFile_VS2012 : inputManager.MogreSolutionFile_VS2010;
+
+            msBuildManager.Build(solutionFile, inputManager.BuildConfiguration, "Win32", "Rebuild");
         }
     }
 }

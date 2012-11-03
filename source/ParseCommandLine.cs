@@ -53,6 +53,19 @@ namespace Mogre.Builder
             }
 
 
+            // check if user wants to compile with VS 2012
+            // --> 1 arguments
+            for (Int16 i = 0; i < inputList.Count; i++)
+            {
+                if (inputList[i] == "-vs2012")
+                {
+                    parsedArgs.Vs2012 = true;
+                    inputList.RemoveAt(i);
+                    break;
+                }
+            }
+
+
             //--- PRIORITY ---
 
             // check for process priority option
@@ -350,6 +363,7 @@ namespace Mogre.Builder
     {
         public string TargetDir { get; set; }
         public string ConfigFile { get; set; }
+        public Boolean Vs2012 { get; set; }
         public ProcessPriorityClass priority { get; set; }
         public Boolean MogreNewt { get; set; }
         public Boolean Mois { get; set; }

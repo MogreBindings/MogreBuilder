@@ -25,6 +25,7 @@ namespace Mogre.Builder
             this.PathEnvironmentVariable = parsedArgs.PathEnvironmentVariable;
 
             // copy some option flags
+            Option_Vs2012          = parsedArgs.Vs2012;
             Option_OnlyAddons      = parsedArgs.OnlyAddons;
             Option_MogreNewt       = parsedArgs.MogreNewt;
             Option_Mois            = parsedArgs.Mois;
@@ -48,6 +49,7 @@ namespace Mogre.Builder
         }
         private String pathEnvironmentVariable = Environment.GetEnvironmentVariable("path");  // system default
 
+        public Boolean Option_Vs2012 { get; set; }
         public Boolean Option_OnlyAddons { get; set; }
         public Boolean Option_MogreNewt { get; set; }
         public Boolean Option_Mois { get; set; }
@@ -65,7 +67,6 @@ namespace Mogre.Builder
         // build
         public string TargetDirectory { get; private set; }
         public string BuildConfiguration { get; private set; }
-        public string BuildGenerator { get; private set; }
         public string BuildOutputDirectory { get; private set; }  // don't add this to config file  (will be generated automatically)
 
         // clr
@@ -77,7 +78,8 @@ namespace Mogre.Builder
 
         // mogre
         public string MogreAssemblyInfoFile { get; private set; }
-        public string MogreSolutionFile { get; private set; }
+        public string MogreSolutionFile_VS2010 { get; private set; }
+        public string MogreSolutionFile_VS2012 { get; private set; }
         public string MogreRepository { get; private set; }
         public string MogreBranch { get; private set; }
 
@@ -144,7 +146,8 @@ namespace Mogre.Builder
 
 
         // MOIS
-        public String MoisSolutionFile { get; private set; }
+        public String MoisSolutionFile_VS2010 { get; private set; }
+        public String MoisSolutionFile_VS2012 { get; private set; }
 
 
 
