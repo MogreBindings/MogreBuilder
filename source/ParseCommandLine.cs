@@ -1,7 +1,6 @@
 ﻿using System;
 using System.IO;
 using System.Collections.Generic;
-using Mogre.Builder.Tasks;
 using System.Text.RegularExpressions;
 using System.Diagnostics;
 
@@ -22,9 +21,6 @@ namespace Mogre.Builder
             List<String> inputList = new List<String>(cmdLineArgs); 
 
 
-            
-            //--- PATH ---
-
             // check if first argument could be a pathVar
             if ((inputList.Count > 0) && (inputList[0].StartsWith("-") == false))
             {
@@ -36,168 +32,60 @@ namespace Mogre.Builder
             }
 
 
-            //--- CONFIG FILE ---
-
             // check for config file option
-            // --> 2 arguments
-            for (Int16 i = 0;   i < inputList.Count - 1;   i++)
-            {
-                if (inputList[i] == "-config")
-                {
-                    // TODO: Check if file exists
-
-                    parsedArgs.ConfigFile = inputList[i + 1];
-                    inputList.RemoveRange(i, 2);
-                    break;
-                }
-            }
+            parsedArgs.ConfigFile = ReadValue("-config", inputList);
+            // TODO: Check if file exists
 
 
             // check if user wants to compile with VS 2012
-            // --> 1 arguments
-            for (Int16 i = 0; i < inputList.Count; i++)
-            {
-                if (inputList[i] == "-vs2012")
-                {
-                    parsedArgs.Vs2012 = true;
-                    inputList.RemoveAt(i);
-                    break;
-                }
-            }
+            parsedArgs.Vs2012 = ReadBool("-vs2012", inputList);
 
-
-            //--- PRIORITY ---
 
             // check for process priority option
-            // --> 2 arguments
-            for (Int16 i = 0;   i < inputList.Count - 1;   i++)
+            string priority = ReadValue("-priority", inputList);
+            if(priority != null)
             {
-                if (inputList[i] == "-priority")
+                try
                 {
-                    String prioParam = inputList[i + 1];
-                    inputList.RemoveRange(i, 2);
+                    parsedArgs.priority =
+                        (ProcessPriorityClass) Enum.Parse(typeof (ProcessPriorityClass), priority, true);
+                }
+                catch(ArgumentException)
+                {
+                    outputManager.Warning(String.Format(
+                        "WARNING:  Unknown priority parameter '{0}' \n" +
+                        "          Useful values: 'Idle', 'BelowNormal', 'AboveNormal'  (not case-sensitive) ",
+                        priority));
+                }
+            }
 
-                    Boolean argumentIsValide = false;
-
-                    // try to find corresponding priority
-                    foreach (String prioName in Enum.GetNames(typeof(ProcessPriorityClass)))
-                        if (prioName.ToLower() == prioParam.ToLower())
-                        {
-                            parsedArgs.priority = (ProcessPriorityClass)Enum.Parse(typeof(ProcessPriorityClass), prioName);
-                            argumentIsValide = true;
-                            break;
-                        }
-
-                    if (argumentIsValide == false)
-                    {
-                        outputManager.Warning(String.Format(
-                            "WARNING:  Unknown priority parameter '{0}' \n" +
-                            "          Useful values: 'Idle', 'BelowNormal', 'AboveNormal'  (not case-sensitive) ", prioParam));
-                    }
-
-                    break; // skip because option found
-                } // if
-            } // for
-
-
-            //--- DISABLE BOOST ---
 
             // check if user wants to disable boost
-            // --> 1 argument
-            for (Int16 i = 0;   i < inputList.Count;   i++)
+            if(ReadBool("-noboost", inputList))
             {
-                if (inputList[i].ToLower() == "-noboost")
-                {
-                    Misc.ModifyEnvironmentPath(ref parsedArgs, outputManager, Misc.PathRemove.Boost);
-                    Misc.ModifyEnvironmentPath(ref parsedArgs, outputManager, Misc.PathRemove.Test);  // TEST
-                    inputList.RemoveAt(i);
-                    break;
-                }
+                Misc.ModifyEnvironmentPath(ref parsedArgs, outputManager, Misc.PathRemove.Boost);
+                Misc.ModifyEnvironmentPath(ref parsedArgs, outputManager, Misc.PathRemove.Test);  // TEST
             }
 
-
-
-            //--- SKIP CMake ---
 
             // check if user wants to skip the CMake processing 
-            // --> 1 argument
-            for (Int16 i = 0;   i < inputList.Count;   i++)
-            {
-                if (inputList[i].ToLower() == "-skipcmake")
-                {
-                    parsedArgs.SkipCMake = true;
-                    inputList.RemoveAt(i);
-                    break;
-                }
-            }
+            parsedArgs.SkipCMake = ReadBool("-skipcmake", inputList);
 
-
-
-            //--- DEVELOPMENT FLAG ---
 
             // check if user wants to disable the catching of unspecific exceptions
-            // --> 1 argument
-            for (Int16 i = 0;   i < inputList.Count;   i++)
-            {
-                if (inputList[i].ToLower() == "-development")
-                {
-                    parsedArgs.DevelopmentFlag = true;
-                    inputList.RemoveAt(i);
-                    break;
-                }
-            }
+            parsedArgs.DevelopmentFlag = ReadBool("-development", inputList);
 
-
-
-            //--- ADD-ON MogreNewt   TEST ---
 
             // check if user wants to enable MogreNewt
-            // --> 1 argument
-            for (Int16 i = 0;   i < inputList.Count;   i++)
-            {
-                if (inputList[i].ToLower() == "-mogrenewt")
-                {
-                    parsedArgs.MogreNewt = true;
-                    inputList.RemoveAt(i);
-                    break;
-                }
-            }
+            parsedArgs.MogreNewt = ReadBool("-mogrenewt", inputList);
 
 
             // check if user wants to enable MOIS
-            // --> 1 argument
-            for (Int16 i = 0; i < inputList.Count; i++)
-            {
-                if (inputList[i].ToLower() == "-mois")
-                {
-                    parsedArgs.Mois = true;
-                    inputList.RemoveAt(i);
-                    break;
-                }
-            }
+            parsedArgs.Mois = ReadBool("-mois", inputList);
 
-
-
-            //--- ONLY ADD-ONS ---
 
             // check if user wants to skip the Mogre/Ogre build 
-            // --> 1 argument
-            for (Int16 i = 0;   i < inputList.Count;   i++)
-            {
-                if (inputList[i].ToLower() == "-onlyaddons")
-                {
-                    parsedArgs.OnlyAddons = true;
-                    inputList.RemoveAt(i);
-                    break;
-                }
-            }
-
-
-
-
-
-
-
+            parsedArgs.OnlyAddons = ReadBool("-onlyaddons", inputList);
 
 
             //------------------>>>>>>> ... more option here ...  <<<<<<<<------------------
@@ -240,7 +128,54 @@ namespace Mogre.Builder
 
 
             return parsedArgs;
-        } // ParseCommandLine()
+        }
+
+
+
+        /// <summary>
+        /// Read a boolean option from the argument list. If found, the option is removed from list.
+        /// </summary>
+        /// <param name="option">Option to read.</param>
+        /// <param name="inputList">List of command line arguments</param>
+        /// <returns>True if option was set. Otherwise false.</returns>
+        private static bool ReadBool(string option, List<string> inputList)
+        {
+            for (Int16 i = 0; i < inputList.Count; i++)
+            {
+                if (inputList[i].ToLower() == option)
+                {
+                    inputList.RemoveAt(i);
+                    return true;
+                }
+            }
+
+            return false;
+        }
+
+
+        /// <summary>
+        /// Read a value from the argument list. Values are specified on the command line as "-option value".
+        /// If found, the option and the value are removed from list.
+        /// </summary>
+        /// <param name="option">Option to read.</param>
+        /// <param name="inputList">List of command line arguments</param>
+        /// <returns>Value if it was set. Otherwise null.</returns>
+        private static string ReadValue(string option, List<string> inputList)
+        {
+            for (Int16 i = 0; i < inputList.Count; i++)
+            {
+                if (inputList[i].ToLower() == option)
+                {
+                    string value = inputList[i + 1];
+                    inputList.RemoveRange(i, 2);
+                    return value;
+                }
+            }
+
+            return null;
+        }
+
+// ParseCommandLine()
 
 
 
