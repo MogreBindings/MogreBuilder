@@ -7,7 +7,7 @@ using System.IO;
 
 namespace Mogre.Builder.Tasks
 {
-    internal class CloneMogreSource : Task
+    internal class CloneMogreSource : RepositoryTask
     {
         public override string ID
         {
@@ -31,20 +31,7 @@ namespace Mogre.Builder.Tasks
 
         public override void Run()
         {
-            if (Directory.EnumerateFileSystemEntries(inputManager.TargetDirectory).Any())
-            {
-                outputManager.Info(
-                    string.Format("{0} not empty, assuming Mogre source code checked out already", inputManager.TargetDirectory));
-            }
-            else
-            {
-                // make paths bullet-proof  (needed if they contain directories with a space symbol)
-                String repositoryPath = Misc.HgPathSecurity(inputManager.MogreRepository);
-                String targetPath = Misc.HgPathSecurity(inputManager.TargetDirectory);
-
-                RunCommand("hg", string.Format("clone --verbose {0} -u {1} {2}",
-                    repositoryPath, inputManager.MogreBranch, targetPath), null);
-            }
+            PrepareRepository(inputManager.MogreRepository, inputManager.TargetDirectory, inputManager.MogreBranch);
         }
     }
 }

@@ -18,31 +18,20 @@ namespace Mogre.Builder.Tasks
 
         public override void Run()
         {
-            if (RunCommand("hg", "st --modified", inputManager.OgreRootDirectory).Output.Trim() != "")
-            {
-                outputManager.Info("Ogre code appears to be already patched, skipping patch");
-                return;
-            }
-
             String patchExe = Path.Combine(Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location), "patch.exe");
             String patchFilePath = Path.Combine(Directory.GetCurrentDirectory(), inputManager.ClrPatchFile);
             CommandResult result = RunCommand(patchExe, String.Format("-p0 -i \"{0}\"", patchFilePath), inputManager.OgreRootDirectory);
 
             if (result.ExitCode != 0)
             {
-
-                // throw new UserException("Ogre patch Failed: " + result.Error);
+                // Files are cleaned during cloning/updating. If patching failed, something went wrong.
 
                 // prepare message
                 String message = "Ogre patch failed";
-                if (result.Error == "")
-                    message += "!    (Happens when the files are still patched by a previous run.)";
-                else
+                if (result.Error != "")
                     message += ":  " + result.Error;
 
-                // print message
-                outputManager.Warning(message);
-
+                throw new Exception(message);
             }
         } // Run()
 

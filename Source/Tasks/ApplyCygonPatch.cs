@@ -41,17 +41,14 @@ namespace Mogre.Builder
 
             if (result.ExitCode != 0)
             {
-                // it's often not so bad if this patch fails so lets just produce a warning
+                // Files are cleaned during cloning/updating. If patching failed, something went wrong.
 
                 // prepare message
                 String message = "Cygon patch failed";
-                if (result.Error == "")
-                    message += "!    \n --> Happens when the files are still patched by a previous run.";
-                else
+                if (result.Error != "")
                     message += ":  " + result.Error;
 
-                // print message
-                outputManager.Warning(message);
+                throw new Exception(message);
             }
 
         } // Run()
