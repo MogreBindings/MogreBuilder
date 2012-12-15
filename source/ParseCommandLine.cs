@@ -72,6 +72,10 @@ namespace Mogre.Builder
             parsedArgs.SkipCMake = ReadBool("-skipcmake", inputList);
 
 
+            // check if user doesn't want to update repositories. 
+            parsedArgs.NoUpdate = ReadBool("-noupdate", inputList);
+
+
             // check if user wants to disable the catching of unspecific exceptions
             parsedArgs.DevelopmentFlag = ReadBool("-development", inputList);
 
@@ -305,6 +309,7 @@ namespace Mogre.Builder
         public Boolean OnlyAddons { get; set; }
         public Boolean DevelopmentFlag { get; set; }
         public Boolean SkipCMake { get; set; }
+        public Boolean NoUpdate { get; set; }
 
         public String PathEnvironmentVariable 
         {

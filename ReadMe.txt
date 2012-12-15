@@ -61,6 +61,7 @@ Aside the config files the following command-line options are available:
 -vs2012                     Use Visual Studio 2012 to build (default is VS 2010)
 -priority <priority>        Use specified process priority. Priorities are 'Idle', 'BelowNormal', 'AboveNormal'
 -noboost                    Build Ogre without boost (doesn't work yet)
+-noupdate                   Do not update repositories from remote source. Use latest local commit instead.
 -skipcmake                  Do not run CMake (use existing files)
 -development                Do not catch exceptions in MogreBuilder
 -mogrenewt                  Build MogreNewt add-on (does preparations, but need some manual steps)

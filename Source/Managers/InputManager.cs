@@ -31,6 +31,7 @@ namespace Mogre.Builder
             Option_Mois            = parsedArgs.Mois;
             Option_DevelopmentFlag = parsedArgs.DevelopmentFlag;
             Option_SkipCMake       = parsedArgs.SkipCMake;
+            Option_NoUpdate        = parsedArgs.NoUpdate;
 
             // load config file (if defined as argument)
             if(parsedArgs.ConfigFile != null)
@@ -55,6 +56,7 @@ namespace Mogre.Builder
         public Boolean Option_Mois { get; set; }
         public Boolean Option_DevelopmentFlag { get; set; }
         public Boolean Option_SkipCMake { get; set; }
+        public Boolean Option_NoUpdate { get; set; }
 
         // currently unsupported add-ons of the official add-ons repository
         public Boolean Option_Hikari { get; set; }

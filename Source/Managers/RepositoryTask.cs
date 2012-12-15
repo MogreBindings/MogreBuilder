@@ -20,10 +20,17 @@ namespace Mogre.Builder
             // if repository is already cloned
             if (Directory.Exists(Path.Combine(target, ".hg")))
             {
-                // pull latest changes from remote repository
-                if (RunCommand("hg", string.Format("pull -R {0} {1}", targetPath, repository), null).ExitCode != 0)
+                if (!inputManager.Option_NoUpdate)
                 {
-                    throw new Exception(string.Format("Could not pull to repository {0}", target));
+                    // pull latest changes from remote repository
+                    if (RunCommand("hg", string.Format("pull -R {0} {1}", targetPath, repository), null).ExitCode != 0)
+                    {
+                        throw new Exception(string.Format("Could not pull to repository {0}", target));
+                    }
+                }
+                else
+                {
+                    outputManager.Info(string.Format("Updating repositories was disabled. Using latest local commit instead."));
                 }
 
                 // update working copy to latest changeset and discard uncommited changes
