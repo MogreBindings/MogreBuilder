@@ -193,50 +193,28 @@ namespace Mogre.Builder
         /// Check if target directory exists. If not, it will tried to create it. 
         /// Messages should help the user with problems. 
         /// </summary>
-        /// <param name="pathVar">pathVar of target directory</param>
+        /// <param name="path">path of target directory</param>
         /// <param name="outputManager">Used to created coloured console outputs.</param>
         private static void VerifyTargetDirectory(String path, ConsoleOutputManager outputManager)
         {
             if (path == null)
                 path = "";
 
-            // check if exists
-            if (Directory.Exists(path) == false)
+            // create directory
+            try
             {
-                // check if seems to be a valid pathVar parameter
-                if (Regex.IsMatch(path, @"^[A-Za-z]:\\."))  // true e.g. for "C:\myTarget"
-                {
-                    outputManager.Action(String.Format(
-                        "Create target directory:  {0} ", path));
+                Directory.CreateDirectory(path);
+                Directory.SetCurrentDirectory(path);
 
-                    // create directory
-                    try
-                    {
-                        Directory.CreateDirectory(path);
-                    }
-                    catch (Exception e)
-                    {
-                        outputManager.Error(String.Format(
-                            "FAILED to create directory. \n" + 
-                            "Error message:  {0} ", e.Message));
-                        throw new ParseException(); // stop application
-                    }
-                }
-                else
-                {
-                    // show info if pathVar arguments seems to be invalid
-                    outputManager.Warning(String.Format(
-                        "NOTE: \n" + 
-                        "The first argument has to be the path of the target directory. \n\n" +
-                        "Either use an absolute path (then the directory will be created automatically) \n" + 
-                        "OR create the directory manually if you want to use a relative path. \n"
-                        ));
-                    outputManager.Error(String.Format(
-                        "Aborted, because the path argument seems to be invalide. \n" +
-                        "Path argument: '{0}'", path));
+                outputManager.Action(String.Format("Using target directory: {0} ", path));
+            }
+            catch (Exception e)
+            {
+                outputManager.Error(String.Format(
+                    "Can not use target directory {0}\n" +
+                    "Error message:  {1} ", path, e.Message));
 
-                    throw new ParseException(); // stop application
-                }
+                throw new ParseException(); // stop application
             }
         } // VerifyTargetDirectory()
 

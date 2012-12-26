@@ -69,7 +69,6 @@
     <Compile Include="Tasks\CloneAddonsRepository.cs" />
     <Compile Include="Tasks\CloneMogreSource.cs" />
     <Compile Include="Tasks\CloneOgreSource.cs" />
-    <Compile Include="Tasks\CheckTargetDir.cs" />
     <Compile Include="Tasks\CloneDependenciesRepository.cs" />
     <Compile Include="Managers\RepositoryTask.cs" />
     <Compile Include="Tasks\MogreNewt\Newt_Compilaton.cs" />

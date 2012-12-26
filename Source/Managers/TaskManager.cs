@@ -35,8 +35,6 @@ namespace Mogre.Builder
 
                 taskList.Add(new CloneMogreSource(inputManager, outputManager));
 
-                taskList.Add(new CheckTargetDir(inputManager, outputManager));
-
                 taskList.Add(new CloneOgreSource(inputManager, outputManager));
 
                 // patch
