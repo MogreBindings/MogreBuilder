@@ -22,6 +22,9 @@ namespace Mogre.Builder.Tasks
 
             string generator = inputManager.Option_Vs2012 ? "Visual Studio 11" : "Visual Studio 10";
 
+            if (inputManager.Option_x64)
+                generator += " Win64";
+
             String cmakeArguments =
                 @"-DOGRE_CONFIG_ENABLE_PVRTC:BOOL=ON -OGRE_CONFIG_CONTAINERS_USE_CUSTOM_ALLOCATOR:BOOL=OFF " +
                 @"-DCMAKE_DISABLE_FIND_PACKAGE_PkgConfig:BOOL=TRUE -DCMAKE_DISABLE_FIND_PACKAGE_Doxygen:BOOL=TRUE " +

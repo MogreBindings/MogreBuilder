@@ -59,6 +59,7 @@ After the downloads are finished, the build process needs about 1 or 2 hours.
 Aside the config files the following command-line options are available:
 -config <filename>          Use <filename> as config file
 -vs2012                     Use Visual Studio 2012 to build (default is VS 2010)
+-x64                        Build for x64 (default is x86)
 -priority <priority>        Use specified process priority. Priorities are 'Idle', 'BelowNormal', 'AboveNormal'
 -noboost                    Build Ogre without boost (doesn't work yet)
 -noupdate                   Do not update repositories from remote source. Use latest local commit instead.

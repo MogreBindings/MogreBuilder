@@ -41,6 +41,10 @@ namespace Mogre.Builder
             parsedArgs.Vs2012 = ReadBool("-vs2012", inputList);
 
 
+            // check if user wants to compile with VS 2012
+            parsedArgs.X64 = ReadBool("-x64", inputList);
+
+
             // check for process priority option
             string priority = ReadValue("-priority", inputList);
             if(priority != null)
@@ -303,6 +307,7 @@ namespace Mogre.Builder
         public string TargetDir { get; set; }
         public string ConfigFile { get; set; }
         public Boolean Vs2012 { get; set; }
+        public Boolean X64 { get; set; }
         public ProcessPriorityClass priority { get; set; }
         public Boolean MogreNewt { get; set; }
         public Boolean Mois { get; set; }

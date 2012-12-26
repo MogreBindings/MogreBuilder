@@ -13,9 +13,11 @@ namespace Mogre.Builder.Tasks
         {
             ModifyFile(inputManager.ClrConfigHeaderFile, @"LINK_TO_MOGRE\s+\d+", "LINK_TO_MOGRE " + (linkToMogre ? "1" : "0"));
 
+            string platform = inputManager.Option_x64 ? "x64" : "Win32";
+
             String targetSuffix = rebuild ? ":Rebuild" : "";
             msBuildManager.Build(
-                inputManager.OgreSolutionFile, configuration, "Win32",
+                inputManager.OgreSolutionFile, configuration, platform,
                 new string[] 
                 {
                     "OgreMain"                  + targetSuffix,

@@ -14,8 +14,9 @@
         public override void Run()
         {
             string solutionFile = inputManager.Option_Vs2012 ? inputManager.MogreSolutionFile_VS2012 : inputManager.MogreSolutionFile_VS2010;
+            string platform = inputManager.Option_x64 ? "x64" : "Win32";
 
-            msBuildManager.Build(solutionFile, inputManager.BuildConfiguration, "Win32", "Rebuild");
+            msBuildManager.Build(solutionFile, inputManager.BuildConfiguration, platform, "Rebuild");
         }
     }
 }
