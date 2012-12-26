@@ -75,19 +75,6 @@ namespace Mogre.Builder
                     {
                         if (!string.IsNullOrWhiteSpace(e.Data))
                         {
-
-                            //--  reduce useless information when patch failed --
-
-                            if ((this.ID == "cygon:patch")
-                                && (   e.Data.StartsWith("Reversed (or previously applied) patch detected!  Assume -R? [n]")
-                                    || e.Data.StartsWith("Apply anyway? [n]")
-                                    || e.Data.Contains("ignored -- saving rejects to")))
-                            {
-                                // ignore these lines
-                                return;
-                            }
-
-
                             //-- console output  (optionally as warning) --
 
                             if (ConsoleOutputManager.ContainsWarningKeyword(e.Data))
