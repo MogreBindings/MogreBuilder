@@ -18,19 +18,6 @@ http://www.microsoft.com/download/en/details.aspx?id=6812
 
 
 
-=========== IMPORTANT === IMPORTANT === IMPORTANT =============
---->  
---->  There are problems with the new Mercurial version 2.3.
---->  
---->  So do NOT use TortoiseHG 2.4.3 (contains Mercurial 2.3)
---->  Instead   USE TortoiseHG 2.4.2 (contains Mercurial 2.2)
---->  
---->  If somebody find the reason/solution, please tell us. 
---->  
-===============================================================
-
-
-
 --- Step by step ---
 
 1. Download MogreBuilder source from:
