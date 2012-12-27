@@ -46,7 +46,6 @@ namespace Mogre.Builder
 
             // cmake
             CMakeExecutable = @"C:\Program Files (x86)\CMake 2.8\bin\cmake.exe"; 
-            CMakeCachePath  = @"Main\OgreSrc\build\CMakeCache.txt";
 
             // dependencies
             DependenciesRepository   = "https://bitbucket.org/cabalistic/ogredeps";

@@ -101,7 +101,6 @@ namespace Mogre.Builder
 
         // cmake
         public string CMakeExecutable { get; private set; }
-        public string CMakeCachePath { get; private set; }
 
         // dependencies
         public string DependenciesRepository { get; private set; }
