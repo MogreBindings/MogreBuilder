@@ -112,7 +112,6 @@ namespace Mogre.Builder
             TaskManager taskManager = new TaskManager(inputManager, outputManager);
 
             VerifyTargetDirectory(inputManager.TargetDirectory, outputManager);
-            VerifyMore(inputManager, outputManager);
 
             inputManager.GeneratePathVariables();
 

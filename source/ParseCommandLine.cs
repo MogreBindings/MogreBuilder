@@ -219,50 +219,6 @@ namespace Mogre.Builder
         } // VerifyTargetDirectory()
 
 
-
-
-
-        private static void VerifyMore(InputManager inputManager, ConsoleOutputManager outputManager)
-        {
-
-//            // Try to find in environment variable "pathVar"
-//
-//            String pathVar = System.Environment.GetEnvironmentVariable("path");
-//            //String[] pathList = Regex.Split(pathVar, ";");
-//
-//            String[] pathList = {"c:\\ddd", "c:\\ddd\\", "b:\\bb"}; // TEST
-//
-//            foreach (String path in pathList)
-//            {
-//                String fullPath = Path.Combine(path, "cmake.exe");  // with Combine() it doesn't care if the path has a backslash at the end
-//                Console.WriteLine(fullPath);
-//
-//                //if (File.Exists())
-//            }
-//            throw new NotImplementedException("CONTINUE HERE");
-//            return; // TEST
-
-
-
-            if (File.Exists(inputManager.CMakeExecutable) == false)
-            {
-                outputManager.Error(String.Format(
-                    "Aborted, because the CMake path seems to be wrong! \n" +
-                    "Currently it's: '{0}' \n" + 
-                    "Enter the correct path into your config file.", inputManager.CMakeExecutable));
-
-                throw new Exception("Application stopped");  // force an exit
-
-
-            }
-
-
-        } // VerifyMore()
-
-
-
-
-
         /// <summary>
         /// Check if the argument "-development" was used.
         /// </summary>

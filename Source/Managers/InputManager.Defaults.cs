@@ -45,7 +45,7 @@ namespace Mogre.Builder
             OgreBranch           = @"v1-7";
 
             // cmake
-            CMakeExecutable = @"C:\Program Files (x86)\CMake 2.8\bin\cmake.exe"; 
+            CMakeExecutable = @"cmake.exe"; 
 
             // dependencies
             DependenciesRepository   = "https://bitbucket.org/cabalistic/ogredeps";
