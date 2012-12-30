@@ -35,7 +35,6 @@ namespace Mogre.Builder
             // ogre
             OgreRootDirectory    = @"Main\OgreSrc\ogre\";
             OgreBuildDirectory   = @"Main\OgreSrc\build\";
-            OgreMainDirectory    = @"Main\OgreSrc\ogre\OgreMain\";
             OgreIncludeDirectory = @"Main\OgreSrc\ogre\OgreMain\include\";
             OgreSourceDirectory  = @"Main\OgreSrc\ogre\OgreMain\src\";
             OgrePrequisitesFile  = @"Main\OgreSrc\ogre\OgreMain\include\OgrePrerequisites.h";

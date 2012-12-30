@@ -90,7 +90,6 @@ namespace Mogre.Builder
         // ogre
         public string OgreRootDirectory { get; private set; }
         public string OgreBuildDirectory { get; private set; }
-        public string OgreMainDirectory { get; private set; }
         public string OgreIncludeDirectory { get; private set; }
         public string OgreSourceDirectory { get; private set; }
         public string OgrePrequisitesFile { get; private set; }
