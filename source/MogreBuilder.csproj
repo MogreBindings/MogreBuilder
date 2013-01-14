@@ -78,7 +78,6 @@
     <Compile Include="Tasks\MsBuildTask.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Tasks\AddClrClassesToOgre.cs" />
     <Compile Include="Tasks\AutoWrap.cs" />
     <Compile Include="Tasks\BuildMogre.cs" />
     <Compile Include="Tasks\BuildOgreWithMogreLinking.cs" />

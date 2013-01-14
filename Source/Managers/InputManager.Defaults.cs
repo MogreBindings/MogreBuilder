@@ -20,9 +20,7 @@ namespace Mogre.Builder
 
             // clr
             ClrDirectory        = @"Main\Ogre\";
-            ClrConfigHeaderFile = @"Main\OgreSrc\ogre\OgreMain\include\CLRConfig.h";
-            ClrObjectsBuildFile = @"Main\OgreSrc\build\include\CLRObjects.inc";
-            ClrObjectsAutoFile  = @"Main\include\auto\CLRObjects.inc";
+            ClrConfigHeaderFile = @"Main\Ogre\CLRConfig.h";
             ClrObjectsBuildDirectory = @"Main\OgreSrc\build\include\";
 
             // mogre

@@ -76,8 +76,6 @@ namespace Mogre.Builder
         // clr
         public string ClrDirectory { get; private set; }
         public string ClrConfigHeaderFile { get; private set; }
-        public string ClrObjectsBuildFile { get; private set; }
-        public string ClrObjectsAutoFile { get; private set; }
         public string ClrObjectsBuildDirectory { get; private set; }
 
         // mogre

@@ -48,7 +48,6 @@ namespace Mogre.Builder
 
                 // Auto-wrapping
                 taskList.Add(new AutoWrap(inputManager, outputManager, msBuildManager));
-                taskList.Add(new AddClrClassesToOgre(inputManager, outputManager));
 
                 // apply cygon patch
                 taskList.Add(new ApplyCygonPatch(inputManager, outputManager));
