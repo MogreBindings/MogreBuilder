@@ -46,7 +46,9 @@ namespace Mogre.Builder
         public void Error(string message)
         {
             DisplayMessage(message, errorColour);
-            errorList.Add(new ErrorEntry(currentAction, message, ErrorType.Error));
+
+            if (IsErrorRecordingEnabled)
+                errorList.Add(new ErrorEntry(currentAction, message, ErrorType.Error));
         }
 
 
@@ -57,7 +59,9 @@ namespace Mogre.Builder
         public void Warning(string message)
         {
             DisplayMessage(message, warningColour);
-            errorList.Add(new ErrorEntry(currentAction, message, ErrorType.Warning));
+
+            if(IsErrorRecordingEnabled)
+                errorList.Add(new ErrorEntry(currentAction, message, ErrorType.Warning));
         }
 
 
@@ -148,6 +152,11 @@ namespace Mogre.Builder
             FeatureSummary = "";
             MogreVersion = "??";
         }
+
+        /// <summary>
+        /// Can be used to temporarily disable error recording so errors don' show up on PrintSummary()
+        /// </summary>
+        public bool IsErrorRecordingEnabled { get; set; }
 
 
         public void PrintSummary(InputManager inputManager)
