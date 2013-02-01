@@ -40,7 +40,7 @@ namespace Mogre.Builder
         /// Remove a specific application entry from the environment variable "PATH". 
         /// The settings will only applied to worker processes. 
         /// </summary>
-        public static void ModifyEnvironmentPath(ref CommandLineArgs parsedArgs, ConsoleOutputManager outputManager, PathRemove whatToRemove)
+        public static void ModifyEnvironmentPath(ref CommandLineArgs parsedArgs, OutputManager outputManager, PathRemove whatToRemove)
         {
 
             // read all directories
@@ -99,7 +99,7 @@ namespace Mogre.Builder
 
 
 
-        public static void PrintExceptionTrace(IOutputManager outputManager, String trace)
+        public static void PrintExceptionTrace(OutputManager outputManager, String trace)
         {
             if ((trace == null) || (trace == ""))
                 return;

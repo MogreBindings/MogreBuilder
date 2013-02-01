@@ -10,10 +10,10 @@ namespace Mogre.Builder
 {
     abstract class Task
     {
-        protected IOutputManager outputManager;
+        protected OutputManager outputManager;
         protected InputManager inputManager;
 
-        public Task(InputManager inputManager, IOutputManager outputManager)
+        public Task(InputManager inputManager, OutputManager outputManager)
         {
             this.outputManager = outputManager;
             this.inputManager = inputManager;
@@ -77,7 +77,7 @@ namespace Mogre.Builder
                         {
                             //-- console output  (optionally as warning) --
 
-                            if (ConsoleOutputManager.ContainsWarningKeyword(e.Data))
+                            if (OutputManager.ContainsWarningKeyword(e.Data))
                                 // contains warning keyword
                                 outputManager.Warning(e.Data);
                             else

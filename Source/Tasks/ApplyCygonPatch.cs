@@ -23,7 +23,7 @@ namespace Mogre.Builder
     /// </summary>
     class ApplyCygonPatch : Task
     {
-        public ApplyCygonPatch(InputManager inputManager, IOutputManager outputManager)
+        public ApplyCygonPatch(InputManager inputManager, OutputManager outputManager)
             : base(inputManager, outputManager) 
         { 
         }

@@ -5,7 +5,7 @@ namespace Mogre.Builder.Tasks
 {
     class AutoWrap : MsBuildTask
     {
-        public AutoWrap(InputManager inputManager, IOutputManager outputManager, MsBuildManager msBuildMgr)
+        public AutoWrap(InputManager inputManager, OutputManager outputManager, MsBuildManager msBuildMgr)
             : base(inputManager, outputManager, msBuildMgr) 
         { 
         }

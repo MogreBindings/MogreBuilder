@@ -24,7 +24,7 @@ namespace Mogre.Builder.Tasks
             get { return "This task checks out the Mogre repository and downloads the sources to a specified location."; }
         }
 
-        public CloneMogreSource(InputManager inputManager, IOutputManager outputManager)
+        public CloneMogreSource(InputManager inputManager, OutputManager outputManager)
             : base(inputManager, outputManager)
         {
         }

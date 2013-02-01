@@ -51,11 +51,10 @@
     <Compile Include="Helpers\Misc.cs" />
     <Compile Include="Helpers\ProcessPriorityControl.cs" />
     <Compile Include="Helpers\TaskbarBlink.cs" />
-    <Compile Include="Managers\ConsoleOutputManager.cs" />
+    <Compile Include="Managers\OutputManager.cs" />
     <Compile Include="Managers\FileCopyTask.cs" />
     <Compile Include="Managers\InputManager.cs" />
     <Compile Include="Managers\InputManager.Defaults.cs" />
-    <Compile Include="Managers\IOutputManager.cs" />
     <Compile Include="Managers\MsBuildManager.cs" />
     <Compile Include="Managers\Task.cs" />
     <Compile Include="Managers\TaskManager.cs" />

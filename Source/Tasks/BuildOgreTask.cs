@@ -4,7 +4,7 @@ namespace Mogre.Builder.Tasks
 {
     abstract class BuildOgreTask : MsBuildTask
     {
-        public BuildOgreTask(InputManager inputManager, IOutputManager outputManager, MsBuildManager msBuildMgr)
+        public BuildOgreTask(InputManager inputManager, OutputManager outputManager, MsBuildManager msBuildMgr)
             : base(inputManager, outputManager, msBuildMgr) 
         { 
         }

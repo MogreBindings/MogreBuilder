@@ -5,7 +5,7 @@ namespace Mogre.Builder.Tasks
 {
     class AssembleBinaryFiles : Task
     {
-        public AssembleBinaryFiles(InputManager inputManager, IOutputManager outputManager)
+        public AssembleBinaryFiles(InputManager inputManager, OutputManager outputManager)
             : base(inputManager, outputManager) 
         { 
         }

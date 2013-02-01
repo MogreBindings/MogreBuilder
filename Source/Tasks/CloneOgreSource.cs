@@ -23,7 +23,7 @@ namespace Mogre.Builder.Tasks
             get { return "This task checks out the Ogre repository and downloads the sources to a specified location."; }
         }
 
-        public CloneOgreSource(InputManager inputManager, IOutputManager outputManager)
+        public CloneOgreSource(InputManager inputManager, OutputManager outputManager)
             : base(inputManager, outputManager)
         {
         }

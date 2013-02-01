@@ -24,7 +24,7 @@ namespace Mogre.Builder.Tasks
             get { return "This task tries to compile MogreNewt."; }
         }
 
-        public NewtonCompilation(InputManager inputManager, IOutputManager outputManager)
+        public NewtonCompilation(InputManager inputManager, OutputManager outputManager)
             : base(inputManager, outputManager)
         {
         }

@@ -29,7 +29,7 @@ namespace Mogre.Builder
                 Console.WindowWidth = width;
             }
 
-            ConsoleOutputManager outputManager = new ConsoleOutputManager();
+            OutputManager outputManager = new OutputManager();
 
             // print information if started from Visual Studio
             PrintIfVisualStudio(cmdLineArgs, outputManager);
@@ -98,7 +98,7 @@ namespace Mogre.Builder
 
 
 
-        private static void DoWork(string[] cmdLineArgs, ConsoleOutputManager outputManager)
+        private static void DoWork(string[] cmdLineArgs, OutputManager outputManager)
         {
             // Properties of successfully assigned arguments
             CommandLineArgs parsedArgs = new CommandLineArgs();
@@ -145,7 +145,7 @@ namespace Mogre.Builder
 
 
 
-        private static void PrintDurationTime(Int64 startTime, ConsoleOutputManager outputManager)
+        private static void PrintDurationTime(Int64 startTime, OutputManager outputManager)
         {
             TimeSpan duration = TimeSpan.FromTicks((DateTime.Now.Ticks - startTime));
 
@@ -193,7 +193,7 @@ namespace Mogre.Builder
         /// <summary>
         /// If started by Visual Studio, the arguments will be printed. (Otherwise you can't see it.)
         /// </summary>
-        private static void PrintIfVisualStudio(String[] cmdLineArgs, ConsoleOutputManager outputManager)
+        private static void PrintIfVisualStudio(String[] cmdLineArgs, OutputManager outputManager)
         {
             // print nothing if started by console or Windows Explorer
             if ((Console.CursorLeft != 0) || (Console.CursorTop != 0))

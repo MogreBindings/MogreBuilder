@@ -7,7 +7,7 @@ namespace Mogre.Builder.Tasks
 {
     class PatchOgreCode : Task
     {
-        public PatchOgreCode(InputManager inputManager, IOutputManager outputManager)
+        public PatchOgreCode(InputManager inputManager, OutputManager outputManager)
             : base(inputManager, outputManager) 
         { 
         }

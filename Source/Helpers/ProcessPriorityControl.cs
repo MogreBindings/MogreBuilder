@@ -20,7 +20,7 @@ namespace Mogre.Builder
         static String[] threadNames = { "cmake", "cl", "doxygen", "link", "mspdbsrv" };
         //                              NOTE: Process "hg" is not in list, because it causes only low CPU load
 
-        public static void StartController(ProcessPriorityClass priority, ConsoleOutputManager outputManager)
+        public static void StartController(ProcessPriorityClass priority, OutputManager outputManager)
         {
             ThreadParams threadParams = new ThreadParams(priority, outputManager);
 
@@ -88,9 +88,9 @@ namespace Mogre.Builder
         public struct ThreadParams
         {
             public ProcessPriorityClass priority;
-            public ConsoleOutputManager outputManager;
+            public OutputManager outputManager;
 
-            public ThreadParams(ProcessPriorityClass priority, ConsoleOutputManager outputManager)
+            public ThreadParams(ProcessPriorityClass priority, OutputManager outputManager)
             {
                 this.priority = priority;
                 this.outputManager = outputManager;

@@ -7,7 +7,7 @@ using System.IO;
 
 namespace Mogre.Builder
 {
-    public class ConsoleOutputManager : IOutputManager
+    public class OutputManager
     {
         // COLOURS
         private ConsoleColor errorColour = ConsoleColor.Red;
@@ -254,5 +254,5 @@ namespace Mogre.Builder
             Error, Waring
         }
 
-    } //  class ConsoleOutputManager
+    } //  class OutputManager
 }

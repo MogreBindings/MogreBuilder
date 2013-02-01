@@ -4,7 +4,7 @@
     {
         protected MsBuildManager msBuildManager;
 
-        public MsBuildTask(InputManager inputManager, IOutputManager outputManager, MsBuildManager msBuildManager)
+        public MsBuildTask(InputManager inputManager, OutputManager outputManager, MsBuildManager msBuildManager)
             : base(inputManager, outputManager)
         {
             this.msBuildManager = msBuildManager;

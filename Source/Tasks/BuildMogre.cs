@@ -2,7 +2,7 @@
 {
     class BuildMogre : MsBuildTask
     {
-        public BuildMogre(InputManager inputManager, IOutputManager outputManager, MsBuildManager msBuildMgr)
+        public BuildMogre(InputManager inputManager, OutputManager outputManager, MsBuildManager msBuildMgr)
             : base(inputManager, outputManager, msBuildMgr) 
         { 
         }

@@ -6,7 +6,7 @@ namespace Mogre.Builder.Tasks
 {
     class OgreCmake : Task
     {
-        public OgreCmake(InputManager inputManager, IOutputManager outputManager) 
+        public OgreCmake(InputManager inputManager, OutputManager outputManager) 
             : base(inputManager, outputManager) 
         { 
         }

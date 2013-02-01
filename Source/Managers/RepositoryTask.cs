@@ -5,7 +5,7 @@ namespace Mogre.Builder
 {
     abstract class RepositoryTask : Task
     {
-        public RepositoryTask(InputManager inputManager, IOutputManager outputManager)
+        public RepositoryTask(InputManager inputManager, OutputManager outputManager)
             : base(inputManager, outputManager)
         {
             

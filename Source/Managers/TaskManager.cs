@@ -9,9 +9,9 @@ namespace Mogre.Builder
     public class TaskManager
     {
         private InputManager _inputManager;
-        private IOutputManager _outputManager;
+        private OutputManager _outputManager;
 
-        public TaskManager(InputManager inputManager, IOutputManager outputManager)
+        public TaskManager(InputManager inputManager, OutputManager outputManager)
         {
             _inputManager = inputManager;
             _outputManager = outputManager;
@@ -22,7 +22,7 @@ namespace Mogre.Builder
         /// <summary>
         /// Create a list of all needed tasks (related to the choosed options).
         /// </summary>
-        private static List<Task> BuildTaskList(InputManager inputManager, IOutputManager outputManager)
+        private static List<Task> BuildTaskList(InputManager inputManager, OutputManager outputManager)
         {
             List<Task> taskList = new List<Task>();
             MsBuildManager msBuildManager = new MsBuildManager(outputManager);

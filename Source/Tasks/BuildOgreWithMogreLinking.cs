@@ -4,7 +4,7 @@ namespace Mogre.Builder.Tasks
 {
     class BuildOgreWithMogreLinking : BuildOgreTask
     {
-        public BuildOgreWithMogreLinking(InputManager inputManager, IOutputManager outputManager, MsBuildManager msBuildMgr)
+        public BuildOgreWithMogreLinking(InputManager inputManager, OutputManager outputManager, MsBuildManager msBuildMgr)
             : base(inputManager, outputManager, msBuildMgr) 
         { 
         }

@@ -24,7 +24,7 @@ namespace Mogre.Builder.Tasks
             get { return "This task checks out the Mogre Add-ons repository and downloads the sources to a specified location."; }
         }
 
-        public CloneAddonsRepository(InputManager inputManager, IOutputManager outputManager)
+        public CloneAddonsRepository(InputManager inputManager, OutputManager outputManager)
             : base(inputManager, outputManager)
         {
         }

@@ -10,9 +10,9 @@ namespace Mogre.Builder
     class MsBuildManager : ILogger
     {
         private List<string>  visited;
-        private IOutputManager outputManager;
+        private OutputManager outputManager;
         
-        public MsBuildManager(IOutputManager outputManager)
+        public MsBuildManager(OutputManager outputManager)
         {
             this.outputManager = outputManager;
         }

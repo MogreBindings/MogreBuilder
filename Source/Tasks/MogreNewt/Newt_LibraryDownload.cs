@@ -24,7 +24,7 @@ namespace Mogre.Builder.Tasks
             get { return "This task downloads the Newton library (if needed)."; }
         }
 
-        public NewtonLibraryDownload(InputManager inputManager, IOutputManager outputManager)
+        public NewtonLibraryDownload(InputManager inputManager, OutputManager outputManager)
             : base(inputManager, outputManager)
         {
         }

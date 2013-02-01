@@ -8,7 +8,7 @@ namespace Mogre.Builder.Tasks
 {
     class UpdateMogreVersion : Task
     {
-        public UpdateMogreVersion(InputManager inputManager, IOutputManager outputManager)
+        public UpdateMogreVersion(InputManager inputManager, OutputManager outputManager)
             : base(inputManager, outputManager) 
         { 
         }

@@ -5,7 +5,7 @@ namespace Mogre.Builder.Tasks
 {
     class CheckTools : Task
     {
-        public CheckTools(InputManager inputManager, IOutputManager outputManager) 
+        public CheckTools(InputManager inputManager, OutputManager outputManager) 
             : base(inputManager, outputManager) 
         { 
         }

@@ -15,7 +15,7 @@ namespace Mogre.Builder
         /// The first argument is assumed to be the target pathVar. (Optional, because maybe in the future it can also be defined by a config file). 
         /// For all other arguments it will tried to associate the wanted option. 
         /// </summary>
-        private static CommandLineArgs ParseCommandLine(String[] cmdLineArgs, ConsoleOutputManager outputManager, ref CommandLineArgs parsedArgs)
+        private static CommandLineArgs ParseCommandLine(String[] cmdLineArgs, OutputManager outputManager, ref CommandLineArgs parsedArgs)
         {
             // The inputList contains all arguments. Successfully parsed arguments will be removed.
             List<String> inputList = new List<String>(cmdLineArgs); 
@@ -195,7 +195,7 @@ namespace Mogre.Builder
         /// </summary>
         /// <param name="path">path of target directory</param>
         /// <param name="outputManager">Used to created coloured console outputs.</param>
-        private static void VerifyTargetDirectory(String path, ConsoleOutputManager outputManager)
+        private static void VerifyTargetDirectory(String path, OutputManager outputManager)
         {
             if (path == null)
                 path = "";

@@ -2,7 +2,7 @@
 {
     class BuildMoisTask : MsBuildTask
     {
-        public BuildMoisTask(InputManager inputManager, IOutputManager outputManager, MsBuildManager msBuildMgr)
+        public BuildMoisTask(InputManager inputManager, OutputManager outputManager, MsBuildManager msBuildMgr)
             : base(inputManager, outputManager, msBuildMgr)
         {
         }

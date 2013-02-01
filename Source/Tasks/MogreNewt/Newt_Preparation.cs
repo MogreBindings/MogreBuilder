@@ -24,7 +24,7 @@ namespace Mogre.Builder.Tasks
             get { return "This task checks directories and and grabs all needed depency files."; }
         }
 
-        public NewtonPrepatation(InputManager inputManager, IOutputManager outputManager)
+        public NewtonPrepatation(InputManager inputManager, OutputManager outputManager)
             : base(inputManager, outputManager)
         {
         }
