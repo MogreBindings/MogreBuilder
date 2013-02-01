@@ -27,14 +27,11 @@ namespace Mogre.Builder
 
         protected CommandResult RunCommand(string command, string arguments, string workingDirectory)
         {
-            Process process = new System.Diagnostics.Process();
+            Process process = new Process();
             process.EnableRaisingEvents = false;
             process.StartInfo.FileName = command;
 
             process.StartInfo.EnvironmentVariables["Path"] = inputManager.PathEnvironmentVariable;
-            process.StartInfo.UseShellExecute = true;  // needed to apply the modified path
-                                                       // NOTE:  Maybe "true" causes problems. Look to MSDN for details:
-                                                       //        http://msdn.microsoft.com/en-us/library/system.diagnostics.processstartinfo.useshellexecute.aspx
 
             if (arguments != null)
                 process.StartInfo.Arguments = arguments;
@@ -53,8 +50,7 @@ namespace Mogre.Builder
             {
                 process.StartInfo.WorkingDirectory = Directory.GetCurrentDirectory();
             }
-
-            // http://stackoverflow.com/questions/139593/processstartinfo-hanging-on-waitforexit-why
+            
             process.StartInfo.UseShellExecute = false;
             process.StartInfo.RedirectStandardOutput = true;
             process.StartInfo.RedirectStandardError = true;
@@ -62,91 +58,70 @@ namespace Mogre.Builder
             StringBuilder output = new StringBuilder();
             StringBuilder error = new StringBuilder();
 
-            using (AutoResetEvent outputWaitHandle = new AutoResetEvent(false))
-            using (AutoResetEvent errorWaitHandle = new AutoResetEvent(false))
+            process.OutputDataReceived += (sender, e) =>
             {
-                process.OutputDataReceived += (sender, e) =>
+                if (e.Data == null)
+                    return;
+
+                if (!string.IsNullOrWhiteSpace(e.Data))
                 {
-                    if (e.Data == null)
-                    {
-                        outputWaitHandle.Set();
-                    }
+                    //-- console output  (optionally as warning) --
+
+                    if (OutputManager.ContainsWarningKeyword(e.Data))
+                        // contains warning keyword
+                        outputManager.Warning(e.Data);
                     else
+                        // normal message
+                        outputManager.Info(e.Data);
+
+
+                    //-- catch Ogre features --
+
+                    //     NOTE: The information is printed line by line. (not a single message)
+                    //           So catch every line (of following outputs) between the 2 following rulers "----------------"
+
+                    // check:  disable logging?
+                    if (e.Data.Contains("----------------")
+                        && (outputManager.FeatureSummary.Length > 0))  // ignore fist line of "-" symbols
                     {
-                        if (!string.IsNullOrWhiteSpace(e.Data))
-                        {
-                            //-- console output  (optionally as warning) --
-
-                            if (OutputManager.ContainsWarningKeyword(e.Data))
-                                // contains warning keyword
-                                outputManager.Warning(e.Data);
-                            else
-                                // normal message
-                                outputManager.Info(e.Data);
-
-
-                            //-- catch Ogre features --
-
-                            //     NOTE: The information is printed line by line. (not a single message)
-                            //           So catch every line (of following outputs) between the 2 following rulers "----------------"
-
-                            // check:  disable logging?
-                            if (e.Data.Contains("----------------")
-                                && (outputManager.FeatureSummary.Length > 0))  // ignore fist line of "-" symbols
-                            {
-                                outputManager.FeatureLoggingIsEnabled = false;
-                            }
-
-                            // do logging
-                            if (outputManager.FeatureLoggingIsEnabled && (e.Data.Contains("----------------") == false))
-                                outputManager.FeatureSummary += e.Data + " \n";
-
-                            // check:  enable logging?
-                            if (e.Data.Contains("FEATURE SUMMARY"))
-                                outputManager.FeatureLoggingIsEnabled = true;
-                        
-                        }
-                        output.AppendLine(e.Data);
+                        outputManager.IsFeatureLoggingEnabled = false;
                     }
-                };
-                process.ErrorDataReceived += (sender, e) =>
-                {
-                    if (e.Data == null)
-                    {
-                        errorWaitHandle.Set();
-                    }
-                    else
-                    {
-                        if(!string.IsNullOrWhiteSpace(e.Data))
-                            outputManager.Error(e.Data);
 
-                        error.AppendLine(e.Data);
-                    }
-                };
+                    // do logging
+                    if (outputManager.IsFeatureLoggingEnabled && (e.Data.Contains("----------------") == false))
+                        outputManager.FeatureSummary += e.Data + " \n";
 
-                process.Start();
+                    // check:  enable logging?
+                    if (e.Data.Contains("FEATURE SUMMARY"))
+                        outputManager.IsFeatureLoggingEnabled = true;
 
-                process.BeginOutputReadLine();
-                process.BeginErrorReadLine();
-                process.WaitForExit();
-            }
+                }
+                output.AppendLine(e.Data);
+            };
+            process.ErrorDataReceived += (sender, e) =>
+            {
+                if (e.Data == null)
+                    return;
+
+                if (!string.IsNullOrWhiteSpace(e.Data))
+                    outputManager.Error(e.Data);
+
+                error.AppendLine(e.Data);
+            };
+        
+                
+
+            process.Start();
+
+            process.BeginOutputReadLine();
+            process.BeginErrorReadLine();
+                
+            process.WaitForExit();
 
             CommandResult result = new CommandResult(output.ToString(), error.ToString(), process.ExitCode);
             process.Dispose();
             return result;
         }
-
-
-
-        private string OutputAndCapture(Process process)
-        {
-            outputManager.Error(process.StandardError.ReadToEnd());
-
-            string output = process.StandardOutput.ReadToEnd();
-            outputManager.Info(output);
-            return output;
-        }
-
 
 
         /// <summary>

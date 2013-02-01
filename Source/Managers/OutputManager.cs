@@ -1,8 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Text.RegularExpressions;
 using System.IO;
 
 namespace Mogre.Builder
@@ -11,7 +8,7 @@ namespace Mogre.Builder
     {
         // COLOURS
         private ConsoleColor errorColour = ConsoleColor.Red;
-        private ConsoleColor waringColour = ConsoleColor.Yellow;
+        private ConsoleColor warningColour = ConsoleColor.Yellow;
         private ConsoleColor actionColour = ConsoleColor.Cyan;
 
         // list of warnings and errors
@@ -42,36 +39,34 @@ namespace Mogre.Builder
         }
 
 
-
+        /// <summary>
+        /// Output an error to the console in red colour.
+        /// </summary>
+        /// <param name="message">Message to print</param>
         public void Error(string message)
         {
-            DisplayMessage(message, errorColour); // RED
+            DisplayMessage(message, errorColour);
             errorList.Add(new ErrorEntry(currentAction, message, ErrorType.Error));
-
-            // debugging
-            if (
-                Regex.IsMatch(message, @"boost-date_time") ||
-                Regex.IsMatch(message, @"Notice: Output directory .* does not exist. I have created it for you.") ||
-                Regex.IsMatch(message, @"Generating XML output for file OgreTextureManager.h") ||
-                Regex.IsMatch(message, @"send_error")
-                
-                )
-            {
-                // Debug breakpoint
-            }
         }
 
 
-
-        public void Warning(string message) // YELLOW
+        /// <summary>
+        /// Output a warning to the console in yellow colour.
+        /// </summary>
+        /// <param name="message">Message to print</param>
+        public void Warning(string message)
         {
-            DisplayMessage(message, waringColour);
-            errorList.Add(new ErrorEntry(currentAction, message, ErrorType.Waring));
+            DisplayMessage(message, warningColour);
+            errorList.Add(new ErrorEntry(currentAction, message, ErrorType.Warning));
         }
 
 
 
-        public void Action(string message) // CYAN
+        /// <summary>
+        /// Output an action message to the console in cian colour.
+        /// </summary>
+        /// <param name="message">Message to print</param>
+        public void Action(string message)
         {
             Console.WriteLine();
             DisplayMessage(message, actionColour);
@@ -139,33 +134,20 @@ namespace Mogre.Builder
         }
 
 
+        public string FeatureSummary { get; set; }
 
-        public String FeatureSummary 
-        {
-            get { return featureSummary; }
-            set { featureSummary = value; }
-        }
-        private String featureSummary = "";
+        public bool IsFeatureLoggingEnabled { get; set; }
 
-
-        public Boolean FeatureLoggingIsEnabled 
-        {
-            get { return featureLoggingIsEnabled; }
-            set { featureLoggingIsEnabled = value; }
-        }
-        private Boolean featureLoggingIsEnabled = false;
-
-
-        public String MogreVersion 
-        {
-            get { return mogreVersion; }
-            set { mogreVersion = value; } 
-        }
-        private String mogreVersion = "??";
+        public string MogreVersion { get; set; }
 
         public Boolean SuccessfulOgreBuild { get; set; }
 
 
+        public OutputManager()
+        {
+            FeatureSummary = "";
+            MogreVersion = "??";
+        }
 
 
         public void PrintSummary(InputManager inputManager)
@@ -200,8 +182,8 @@ namespace Mogre.Builder
                             DisplayMessage(entry.message, errorColour);
                             break;
 
-                        case ErrorType.Waring:
-                            DisplayMessage(entry.message, waringColour);
+                        case ErrorType.Warning:
+                            DisplayMessage(entry.message, warningColour);
                             break;
 
                         default:
@@ -251,7 +233,7 @@ namespace Mogre.Builder
 
         private enum ErrorType
         {
-            Error, Waring
+            Error, Warning
         }
 
     } //  class OutputManager
