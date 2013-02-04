@@ -25,12 +25,35 @@ namespace Mogre.Builder.Tasks
             if (inputManager.Option_x64)
                 generator += " Win64";
 
+            // set build configuration for CMake
             String cmakeArguments =
-                @"-DOGRE_CONFIG_ENABLE_PVRTC:BOOL=ON -OGRE_CONFIG_CONTAINERS_USE_CUSTOM_ALLOCATOR:BOOL=OFF " +
-                @"-DCMAKE_DISABLE_FIND_PACKAGE_PkgConfig:BOOL=TRUE -DCMAKE_DISABLE_FIND_PACKAGE_Doxygen:BOOL=TRUE " +
-                @"-DOGRE_INSTALL_DEPENDENCIES:BOOL=OFF " +
-                 "-G \"" + generator + "\" " +
-                @"..\ogre";
+                "-DCMAKE_BUILD_TYPE:STRING=" + inputManager.BuildConfiguration + " " +
+                "-DCMAKE_CONFIGURATION_TYPES=" + inputManager.BuildConfiguration + " ";
+
+            // set needed options for CMake
+            cmakeArguments +=
+                "-DOGRE_CONFIG_ENABLE_PVRTC:BOOL=ON " + // enable PVRTC codec (texture compression)
+                "-OGRE_CONFIG_CONTAINERS_USE_CUSTOM_ALLOCATOR:BOOL=OFF "; // use default allocator
+
+            // disable unnecessary features
+            cmakeArguments +=
+                "-DCMAKE_DISABLE_FIND_PACKAGE_PkgConfig:BOOL=ON " + // don't use PkgConfig (not available on Windows)
+                "-DCMAKE_DISABLE_FIND_PACKAGE_Doxygen:BOOL=ON " +   // don't search for Doxygen
+                "-DOGRE_BUILD_TOOLS:BOOL=OFF " +                    // don't build tools
+                "-DOGRE_BUILD_SAMPLES:BOOL=OFF " +                  // don't build samples
+                "-DOGREDEPS_BUILD_OIS:BOOL=OFF ";                   // disable OIS (will be built separately for MOIS)
+
+            // disable all installation targets
+            cmakeArguments +=
+                "-DOGREDEPS_INSTALL_DEV:BOOL=OFF " +
+                "-DOGRE_INSTALL_DEPENDENCIES:BOOL=OFF " +
+                "-DOGRE_INSTALL_DOCS:BOOL=OFF " +
+                "-DOGRE_INSTALL_PDB:BOOL=OFF " +
+                "-DOGRE_INSTALL_SAMPLES:BOOL=OFF " +
+                "-DOGRE_INSTALL_SAMPLES_SOURCE:BOOL=OFF ";
+
+            // add generator and target path
+            cmakeArguments += "-G \"" + generator + "\" " + @"..\ogre";
             
             // run CMake (with disabled output processing to not record errors) 
             outputManager.IsErrorRecordingEnabled = false;
