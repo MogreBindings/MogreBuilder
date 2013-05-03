@@ -105,7 +105,6 @@ namespace Mogre.Builder
 
         // patch
         public string ClrPatchFile { get; private set; }
-        public string CygonPatchFile { get; private set; }
 
         // cpp2java
         public string Cpp2JavaDirectory { get; private set; }

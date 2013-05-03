@@ -61,7 +61,6 @@
     <Compile Include="ParseCommandLine.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Tasks\ApplyCygonPatch.cs" />
     <Compile Include="Tasks\AssembleBinaryFiles.cs" />
     <Compile Include="Tasks\BuildOgreTask.cs" />
     <Compile Include="Tasks\CheckTools.cs" />

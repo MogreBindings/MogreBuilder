@@ -50,7 +50,6 @@ namespace Mogre.Builder
 
             // patch
             ClrPatchFile   = @"Main\Ogre Patches\mogre-1.7.3-clrobject.patch";
-            CygonPatchFile = @"Main\Ogre Patches\mogre-1.7.3-cygon.patch";
 
             // cpp2java
             Cpp2JavaDirectory    = @"Codegen\cpp2java";
