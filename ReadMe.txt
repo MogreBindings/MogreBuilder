@@ -10,7 +10,8 @@ http://www.microsoft.com/visualstudio/en-us/products/2010-editions/visual-cpp-ex
 Install TortoiseHg. 
 http://tortoisehg.bitbucket.org/download/index.html
 
-Install Cmake (add to system path, reboot). 
+Install Cmake.
+Important: Choose the setup option "Add CMake to the system PATH".
 http://www.cmake.org/cmake/resources/software.html   
 
 Install the DirectX SDK (June 2010)
