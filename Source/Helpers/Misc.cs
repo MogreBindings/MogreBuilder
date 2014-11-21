@@ -105,10 +105,11 @@ namespace Mogre.Builder
                 return;
 
             String message = 
-                "\nException stack trace for debugging: \n" +
+                "Exception stack trace for debugging: \n" +
                 "--------------------------------------------------------------------------\n" +
-                trace +
+                trace + "\n" +
                 "--------------------------------------------------------------------------\n\n";
+            outputManager.AddBlankLine();
             outputManager.Info(message);
 
         } // PrintExceptionTrace()

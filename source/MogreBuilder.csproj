@@ -48,6 +48,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Helpers\Exceptions.cs" />
+    <Compile Include="Helpers\HtmlLogger.cs" />
     <Compile Include="Helpers\Misc.cs" />
     <Compile Include="Helpers\ProcessPriorityControl.cs" />
     <Compile Include="Helpers\TaskbarBlink.cs" />

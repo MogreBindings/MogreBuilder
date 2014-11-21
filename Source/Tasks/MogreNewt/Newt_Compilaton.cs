@@ -38,7 +38,8 @@ namespace Mogre.Builder.Tasks
 
 
             // print success message
-            outputManager.DisplayMessage("\nThe MogreNewt build process seems to be finished successfully (-:", ConsoleColor.Green);
+            outputManager.AddBlankLine();
+            outputManager.DisplayMessage("The MogreNewt build process seems to be finished successfully (-:", ConsoleColor.Green);
 
         }
 

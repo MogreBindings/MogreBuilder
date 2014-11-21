@@ -86,6 +86,7 @@ namespace Mogre.Builder
             // highlight window in taskbar
             HighlightInTaskbar(startTime);
 
+            outputManager.CloseLogfile();
             
 
 #if DEBUG

@@ -24,19 +24,44 @@ namespace Mogre.Builder
             "does not exist"
         };
 
+        /// <summary>Class to create a HTML logfile.</summary>
+        private HtmlLogger htmlLog;
 
+
+
+        /// <summary>
+        /// Output a message to the console with user defined colour.
+        /// </summary>
+        /// <param name="message">Message to print</param>
+        /// <param name="color">Colour enum</param>
         public void DisplayMessage(string message, ConsoleColor color)
         {
             // move to new line if needed
             if (Console.CursorLeft > 0)
-                Console.WriteLine();
+                AddBlankLine();
 
             Console.ResetColor();
             Console.ForegroundColor = color;
             Console.Write(message);
             Console.ResetColor();
             Console.WriteLine("");
+
+            htmlLog.WriteLine(message, color);
         }
+
+
+
+
+        /// <summary>
+        /// Add a blank line for better overview. 
+        /// If the line buffer contains text, it will be flushed before the blank line. 
+        /// </summary>
+        public void AddBlankLine()
+        {
+            Console.WriteLine();
+            htmlLog.WriteBlankLine();
+        }
+
 
 
         /// <summary>
@@ -67,21 +92,26 @@ namespace Mogre.Builder
 
 
         /// <summary>
-        /// Output an action message to the console in cian colour.
+        /// Output an action message to the console in cyan colour.
         /// </summary>
         /// <param name="message">Message to print</param>
         public void Action(string message)
         {
-            Console.WriteLine();
+            AddBlankLine();
             DisplayMessage(message, actionColour);
             currentAction = message;
         }
 
 
 
+        /// <summary>
+        /// Output a message to the console in default colour (gray).
+        /// </summary>
+        /// <param name="message">Message to print</param>
         public void Info(string message)
         {
             Console.WriteLine(message);
+            htmlLog.WriteLine(message, ConsoleColor.Gray);
         }
 
 
@@ -89,6 +119,7 @@ namespace Mogre.Builder
         public void StartProgress(string message)
         {
             Console.Write(message);
+            htmlLog.Write(message);
         }
 
 
@@ -113,6 +144,7 @@ namespace Mogre.Builder
             else
             {
                 Console.Write(".");
+                htmlLog.Write(".");
             }
         }
 
@@ -120,7 +152,7 @@ namespace Mogre.Builder
 
         public void EndProgress()
         {
-            Console.WriteLine();
+            AddBlankLine();
             Console.CursorVisible = true;
         }
 
@@ -146,17 +178,24 @@ namespace Mogre.Builder
 
         public Boolean SuccessfulOgreBuild { get; set; }
 
-
-        public OutputManager()
-        {
-            FeatureSummary = "";
-            MogreVersion = "??";
-        }
-
         /// <summary>
         /// Can be used to temporarily disable error recording so errors don' show up on PrintSummary()
         /// </summary>
         public bool IsErrorRecordingEnabled { get; set; }
+
+        
+        // constructor
+        public OutputManager()
+        {
+            FeatureSummary = "";
+            MogreVersion = "??";
+
+
+            //String fileName = Path.Combine(inputManager.TargetDirectory, inputManager.BuildOutputDirectory)
+            String fileName = String.Format("MogreBuilder_logfile.htm");
+            htmlLog = new HtmlLogger(fileName, DateTime.Now.Ticks, Environment.CommandLine);
+        }
+
 
 
         public void PrintSummary(InputManager inputManager)
@@ -164,7 +203,9 @@ namespace Mogre.Builder
 
             if (FeatureSummary.Length > 0)
             {
-                DisplayMessage("\n\n===================== Feature summary =====================\n", ConsoleColor.White);
+                AddBlankLine();
+                AddBlankLine();
+                DisplayMessage("===================== Feature summary =====================\n", ConsoleColor.White);
 
                 Info(FeatureSummary); // grabbed CMake summary
             }
@@ -172,7 +213,9 @@ namespace Mogre.Builder
 
             if (errorList.Count > 0)
             {
-                DisplayMessage("\n\n===================== Repeat of all errors and warnings =====================\n", ConsoleColor.White);
+                AddBlankLine();
+                AddBlankLine();
+                DisplayMessage("===================== Repeat of all errors and warnings =====================\n", ConsoleColor.White);
 
                 String lastAction = "";
 
@@ -218,6 +261,13 @@ namespace Mogre.Builder
 
         } // PrintSummary()
 
+
+
+
+        public void CloseLogfile()
+        {
+            htmlLog.CloseLogfile();
+        }
 
 
 

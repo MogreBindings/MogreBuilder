@@ -154,8 +154,7 @@ namespace Mogre.Builder.Tasks
             outputManager.DisplayMessage("\nCopy all needed files", ConsoleColor.White);
 
             if (createBackup == true)
-                outputManager.Info("Backup creation for previous files is enabled.");
-            Console.WriteLine();
+                outputManager.Info("Backup creation for previous files is enabled. \n");
             
 
             // create task list
@@ -237,8 +236,8 @@ namespace Mogre.Builder.Tasks
                 task.TargetClearType = FileCopyTask.ClearType.DeleteByPatterns;
                 task.PrintDots = printDots;
 
-                Console.WriteLine("Copy from:  " + task.SourceDirectory);
-                Console.WriteLine("File pattern:  " + task.FilePattern);
+                outputManager.Info("Copy from:  " + task.SourceDirectory);
+                outputManager.Info("File pattern:  " + task.FilePattern);
 
                 task.DoCopy();
 

@@ -120,8 +120,7 @@ namespace Mogre.Builder
 
                 // ask user if he want to quit
                 outputManager.DisplayMessage(
-                    "Do you want to continue?  [y/n]   ", ConsoleColor.Cyan);
-                Console.WriteLine();
+                    "Do you want to continue?  [y/n]   \n", ConsoleColor.Cyan);
 
                 ConsoleKeyInfo answer = Console.ReadKey(true);
                 if (answer.Key.ToString().ToLower() != "y")
