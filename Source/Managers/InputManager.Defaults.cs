@@ -27,6 +27,7 @@ namespace Mogre.Builder
             MogreAssemblyInfoFile    = @"Main\AssemblyInfo.cpp";
             MogreSolutionFile_VS2010 = @"Main\Mogre_vs2010.sln";
             MogreSolutionFile_VS2012 = @"Main\Mogre_vs2012.sln";
+            MogreSolutionFile_VS2013 = @"Main\Mogre_vs2013.sln";            
             MogreRepository          = @"https://bitbucket.org/mogre/mogre/";
             MogreBranch              = @"default";
 

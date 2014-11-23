@@ -21,6 +21,8 @@ namespace Mogre.Builder.Tasks
             Directory.CreateDirectory(inputManager.OgreBuildDirectory);
 
             string generator = inputManager.Option_Vs2012 ? "Visual Studio 11" : "Visual Studio 10";
+            if (inputManager.Option_Vs2013)
+                generator = "Visual Studio 12";
 
             if (inputManager.Option_x64)
                 generator += " Win64";
@@ -34,6 +36,10 @@ namespace Mogre.Builder.Tasks
             cmakeArguments +=
                 "-DOGRE_CONFIG_ENABLE_PVRTC:BOOL=ON " + // enable PVRTC codec (texture compression)
                 "-OGRE_CONFIG_CONTAINERS_USE_CUSTOM_ALLOCATOR:BOOL=OFF "; // use default allocator
+
+            // faster Ogre build
+            cmakeArguments +=
+                "-DOGRE_UNITY_BUILD:BOOL=ON ";
 
             // disable unnecessary features
             cmakeArguments +=

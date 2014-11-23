@@ -40,8 +40,10 @@ namespace Mogre.Builder
             // check if user wants to compile with VS 2012
             parsedArgs.Vs2012 = ReadBool("-vs2012", inputList);
 
+            // check if user wants to compile with VS 2013
+            parsedArgs.Vs2013 = ReadBool("-vs2013", inputList);
 
-            // check if user wants to compile with VS 2012
+            // check if user wants to compile with x64
             parsedArgs.X64 = ReadBool("-x64", inputList);
 
 
@@ -240,6 +242,7 @@ namespace Mogre.Builder
         public string TargetDir { get; set; }
         public string ConfigFile { get; set; }
         public Boolean Vs2012 { get; set; }
+        public Boolean Vs2013 { get; set; }
         public Boolean X64 { get; set; }
         public ProcessPriorityClass priority { get; set; }
         public Boolean MogreNewt { get; set; }

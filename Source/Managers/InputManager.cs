@@ -26,6 +26,7 @@ namespace Mogre.Builder
 
             // copy some option flags
             Option_Vs2012          = parsedArgs.Vs2012;
+            Option_Vs2013          = parsedArgs.Vs2013;
             Option_x64             = parsedArgs.X64;
             Option_OnlyAddons      = parsedArgs.OnlyAddons;
             Option_MogreNewt       = parsedArgs.MogreNewt;
@@ -52,6 +53,7 @@ namespace Mogre.Builder
         private String pathEnvironmentVariable = Environment.GetEnvironmentVariable("path");  // system default
 
         public Boolean Option_Vs2012 { get; set; }
+        public Boolean Option_Vs2013 { get; set; }
         public Boolean Option_x64 { get; set; }
         public Boolean Option_OnlyAddons { get; set; }
         public Boolean Option_MogreNewt { get; set; }
@@ -82,6 +84,7 @@ namespace Mogre.Builder
         public string MogreAssemblyInfoFile { get; private set; }
         public string MogreSolutionFile_VS2010 { get; private set; }
         public string MogreSolutionFile_VS2012 { get; private set; }
+        public string MogreSolutionFile_VS2013 { get; private set; }        
         public string MogreRepository { get; private set; }
         public string MogreBranch { get; private set; }
 
