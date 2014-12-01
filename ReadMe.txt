@@ -1,19 +1,25 @@
 ﻿
 --- Preparation ---
 
-Install Microsoft Visual C# 2010 Express AND Visual C++ Express. 
-http://www.microsoft.com/visualstudio/en-us/products/2010-editions/visual-csharp-express
-http://www.microsoft.com/visualstudio/en-us/products/2010-editions/visual-cpp-express
-..... OR alternatively install Visual Studio. 
-..... Visual Studio 2012 can also be used with the -vs2012 command-line switch.
+1.
+You need Microsoft Visual Studio 2010, 2012 or 2013. 
+If you don't have it, you can use the free express versions.
+..... In this case install both: Visual C# Express AND Visual C++ Express.
+..... http://www.microsoft.com/visualstudio/en-us/products/2010-editions/visual-csharp-express
+..... http://www.microsoft.com/visualstudio/en-us/products/2010-editions/visual-cpp-express
+VS2010 is supported by default.
+For VS2012 / 2013 you need to use the command-line switch -vs2012 / -vs2013.
 
+2.
 Install TortoiseHg. 
 http://tortoisehg.bitbucket.org/download/index.html
 
+3.
 Install Cmake.
 Important: Choose the setup option "Add CMake to the system PATH".
 http://www.cmake.org/cmake/resources/software.html   
 
+4.
 Install the DirectX SDK (June 2010)
 http://www.microsoft.com/download/en/details.aspx?id=6812
 
@@ -28,6 +34,7 @@ http://www.microsoft.com/download/en/details.aspx?id=6812
 
 3. Enter directory "bin_Debug", open file "RUN_example.bat",
    and type in your wanted target directory.
+   (For use with VS2012 / 2013 open the *.bat file and add the command-line switch "-vs2012" / "-vs2013" to the end of the first line.)
  
 4. Setup the config file if required. There is a Default.cfg as an example. 
    You can specify a different one using the command line options. e.g.
@@ -47,6 +54,7 @@ After the downloads are finished, the build process needs about 1 or 2 hours.
 Aside the config files the following command-line options are available:
 -config <filename>          Use <filename> as config file
 -vs2012                     Use Visual Studio 2012 to build (default is VS 2010)
+-vs2013                     Use Visual Studio 2013 to build
 -x64                        Build for x64 (default is x86)
 -priority <priority>        Use specified process priority. Priorities are 'Idle', 'BelowNormal', 'AboveNormal'
 -noboost                    Build Ogre without boost (doesn't work yet)

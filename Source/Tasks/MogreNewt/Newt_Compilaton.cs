@@ -34,7 +34,7 @@ namespace Mogre.Builder.Tasks
 
             // TODO
             outputManager.Warning("The compilation isn't implemented yet !!");
-            throw new Exception("Application stopped");
+            throw new NotImplementedException("Application stopped");
 
 
             // print success message

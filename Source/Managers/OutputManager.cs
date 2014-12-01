@@ -252,6 +252,8 @@ namespace Mogre.Builder
                 DisplayMessage("\n\n===================== Result =====================\n", ConsoleColor.White);
 
                 Info("Mogre version:        " + MogreVersion);
+                Info("   Ogre branch:       " + inputManager.OgreBranch);
+                Info("   Mogre branch:      " + inputManager.MogreBranch);
                 Info("Build configuration:  " + inputManager.BuildConfiguration + "\n");
                 DisplayMessage("The Ogre/Mogre build process seems to be finished successfully (-: \n", ConsoleColor.Green);
                 Info("You find the created binary files in: \n    " 

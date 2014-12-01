@@ -20,9 +20,22 @@ namespace Mogre.Builder.Tasks
             // we always want to do this otherwise switching between configurations fails (e.g. Debug then Release).
             Directory.CreateDirectory(inputManager.OgreBuildDirectory);
 
-            string generator = inputManager.Option_Vs2012 ? "Visual Studio 11" : "Visual Studio 10";
-            if (inputManager.Option_Vs2013)
-                generator = "Visual Studio 12";
+            string generator;
+            switch (inputManager.VisualStudio)
+            {
+                case InputManager.VisualStudioVersion.vs2010:
+                    generator = "Visual Studio 10";
+                    break;
+                case InputManager.VisualStudioVersion.vs2012:
+                    generator = "Visual Studio 11";
+                    break;
+                case InputManager.VisualStudioVersion.vs2013:
+                    generator = "Visual Studio 12";
+                    break;
+                default:
+                    throw new System.NotImplementedException("Unknown version of Visual Studio");
+            }
+            
 
             if (inputManager.Option_x64)
                 generator += " Win64";

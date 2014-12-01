@@ -25,8 +25,6 @@ namespace Mogre.Builder
             this.PathEnvironmentVariable = parsedArgs.PathEnvironmentVariable;
 
             // copy some option flags
-            Option_Vs2012          = parsedArgs.Vs2012;
-            Option_Vs2013          = parsedArgs.Vs2013;
             Option_x64             = parsedArgs.X64;
             Option_OnlyAddons      = parsedArgs.OnlyAddons;
             Option_MogreNewt       = parsedArgs.MogreNewt;
@@ -34,6 +32,14 @@ namespace Mogre.Builder
             Option_DevelopmentFlag = parsedArgs.DevelopmentFlag;
             Option_SkipCMake       = parsedArgs.SkipCMake;
             Option_NoUpdate        = parsedArgs.NoUpdate;
+
+            // set enum for Visual Studio version
+            if (parsedArgs.Vs2013 == true)
+                VisualStudio = VisualStudioVersion.vs2013;
+            else if (parsedArgs.Vs2012 == true)
+                VisualStudio = VisualStudioVersion.vs2012;
+            else
+                VisualStudio = VisualStudioVersion.vs2010;
 
             // load config file (if defined as argument)
             if(parsedArgs.ConfigFile != null)
@@ -52,8 +58,6 @@ namespace Mogre.Builder
         }
         private String pathEnvironmentVariable = Environment.GetEnvironmentVariable("path");  // system default
 
-        public Boolean Option_Vs2012 { get; set; }
-        public Boolean Option_Vs2013 { get; set; }
         public Boolean Option_x64 { get; set; }
         public Boolean Option_OnlyAddons { get; set; }
         public Boolean Option_MogreNewt { get; set; }
@@ -61,6 +65,10 @@ namespace Mogre.Builder
         public Boolean Option_DevelopmentFlag { get; set; }
         public Boolean Option_SkipCMake { get; set; }
         public Boolean Option_NoUpdate { get; set; }
+
+        public VisualStudioVersion VisualStudio { get; set; }
+        public enum VisualStudioVersion
+        { vs2010, vs2012, vs2013}
 
         // currently unsupported add-ons of the official add-ons repository
         public Boolean Option_Hikari { get; set; }

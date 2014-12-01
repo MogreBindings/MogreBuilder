@@ -13,9 +13,22 @@
 
         public override void Run()
         {
-            string solutionFile = inputManager.Option_Vs2012 ? inputManager.MoisSolutionFile_VS2012 : inputManager.MoisSolutionFile_VS2010;
-            if (inputManager.Option_Vs2013)
-                solutionFile = inputManager.MoisSolutionFile_VS2012;
+            string solutionFile;
+            switch (inputManager.VisualStudio)
+            {
+                case InputManager.VisualStudioVersion.vs2010:
+                    solutionFile = inputManager.MoisSolutionFile_VS2010;
+                    break;
+                case InputManager.VisualStudioVersion.vs2012:
+                    solutionFile = inputManager.MoisSolutionFile_VS2012;
+                    break;
+                case InputManager.VisualStudioVersion.vs2013:
+                    solutionFile = inputManager.MoisSolutionFile_VS2012;  // TODO: Check if this solution file works fine (possibly a solution file with TargetFramework 4.5.1 is needed)
+                    break;
+                default:
+                    throw new System.NotImplementedException("Unknown version of Visual Studio");
+            }
+            
             string platform = inputManager.Option_x64 ? "x64" : "Win32";
 
             msBuildManager.Build(solutionFile, inputManager.BuildConfiguration, platform, "MOIS");
