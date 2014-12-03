@@ -2,7 +2,7 @@
 --- Preparation ---
 
 1.
-You need Microsoft Visual Studio 2010, 2012 or 2013. 
+You need Visual Studio 2010, 2012 or 2013. 
 If you don't have it, you can use the free express versions.
 ..... In this case install both: Visual C# Express AND Visual C++ Express.
 ..... http://www.microsoft.com/visualstudio/en-us/products/2010-editions/visual-csharp-express
@@ -32,9 +32,10 @@ http://www.microsoft.com/download/en/details.aspx?id=6812
 
 2. Compile MogreBuilder by use of file "MogreBuilder.sln".
 
-3. Enter directory "bin_Debug", open file "RUN_example.bat",
-   and type in your wanted target directory.
-   (For use with VS2012 / 2013 open the *.bat file and add the command-line switch "-vs2012" / "-vs2013" to the end of the first line.)
+3. Enter directory "bin_Debug", open file "RUN_example.bat" 
+   and replace "C:\myMogreBuild" by your wanted target directory.
+   For use with VS2012 / 2013 additionally add the command-line switch 
+   "-vs2012" / "-vs2013" to the end of the first line.
  
 4. Setup the config file if required. There is a Default.cfg as an example. 
    You can specify a different one using the command line options. e.g.
